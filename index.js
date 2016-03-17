@@ -13,9 +13,6 @@ const PASSPORT_PATH = './app/passports'
 const PUBLIC_DIRECTORY_PATH = 'public'
 
 
-// Loading the routes
-require('./config/routes')(myServer.app)
-
 // Auto include the third-party middlewares
 fs.readdirSync(MIDDLEWARE_PATH).forEach(file => {
 	if (file.endsWith('.js')) {
@@ -29,6 +26,9 @@ fs.readdirSync(PASSPORT_PATH).forEach(file => {
 		myServer.setPassport(require(PASSPORT_PATH + '/' + file))
 	}
 })
+
+// Loading the routes
+require('./config/routes')(myServer.app)
 
 // Set the public directory
 myServer.setPublicDirectory(path.join(config.root, PUBLIC_DIRECTORY_PATH))
