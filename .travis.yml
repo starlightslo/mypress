@@ -10,4 +10,3 @@ branches:
     - development
 os:
   - linux
-  - osx
