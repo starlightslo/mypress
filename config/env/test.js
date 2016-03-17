@@ -3,8 +3,18 @@
 /**
  * Expose
  */
- module.exports = {
- 	port: process.env.PORT || 8081,
- 	secret: '123456789012345678901234567890',
- 	db: []
- }
+module.exports = {
+	port: process.env.PORT || 8081,
+	secret: '123456789012345678901234567890',
+	db: {
+		client: 'sqlite3',
+		database: './db/test.db'
+	}
+
+	[{
+		client: 'sqlite3',
+		connection: {
+			filename: './db/test.db'
+		}
+	}]
+}
