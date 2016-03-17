@@ -10,11 +10,4 @@ module.exports = {
 		client: 'sqlite3',
 		database: './db/test.db'
 	}
-
-	[{
-		client: 'sqlite3',
-		connection: {
-			filename: './db/test.db'
-		}
-	}]
 }

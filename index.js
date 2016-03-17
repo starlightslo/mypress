@@ -11,6 +11,18 @@ const myServer = new server(config)
 const MIDDLEWARE_PATH = './app/middlewares'
 const PASSPORT_PATH = './app/passports'
 const PUBLIC_DIRECTORY_PATH = 'public'
+const TABLES_SCHEMA_PATH = './config/tables'
+
+// Get all table schema
+let tableSchemaList = []
+fs.readdirSync(TABLES_SCHEMA_PATH).forEach(file => {
+	if (file.endsWith('.js')) {
+		tableSchemaList.push(require(TABLES_SCHEMA_PATH + '/' + file))
+	}
+})
+
+// Run database migration
+require('./config/migration')(tableSchemaList)
 
 
 // Auto include the third-party middlewares

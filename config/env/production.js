@@ -21,6 +21,10 @@ module.exports = {
 		adminUser: {
 			user: 'postgres',
 			password: ''
+		},
+		rootUser: {
+			user: 'postgres',
+			password: ''	
 		}
 	}
 }

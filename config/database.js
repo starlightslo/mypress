@@ -8,6 +8,7 @@ const Knex = require('knex')
 module.exports = function (db) {
 	let normalDB = null
 	let adminDB = null
+	let rootDB = null
 	switch(db.client) {
 		case 'sqlite3':
 			let sqliteConfig = {
@@ -18,6 +19,7 @@ module.exports = function (db) {
 			}
 			normalDB = require('knex')(sqliteConfig)
 			adminDB = require('knex')(sqliteConfig)
+			rootDB = require('knex')(sqliteConfig)
 			break
 		case 'postgresql':
 		case 'mysql':
@@ -39,18 +41,30 @@ module.exports = function (db) {
 					password: db.adminUser.password
 				}
 			}
+			let rootConfig = {
+				client: db.client,
+				connection: {
+					host: db.host,
+					database: db.database,
+					user: db.rootUser.user,
+					password: db.rootUser.password
+				}
+			}
 			if (db.pool) {
 				normalConfig.pool = db.pool
 				adminConfig.pool = db.pool
+				rootConfig.pool = db.pool
 			}
 			normalDB = require('knex')(normalConfig)
 			adminDB = require('knex')(adminConfig)
+			rootDB = require('knex')(rootConfig)
 			break
 		default:
 			break
 	}
 	return {
 		normalDB: normalDB,
-		adminDB: adminDB
+		adminDB: adminDB,
+		rootDB: rootDB
 	}
 }
