@@ -14,17 +14,15 @@ const PUBLIC_DIRECTORY_PATH = 'public'
 const TABLES_SCHEMA_PATH = './config/tables'
 
 // Get all table schema and run migration
-const migration = new (require('./config/migration'))()
-let tableSchemaList = []
+const Migration = (require('./config/migration'))
+let promiseList = []
 fs.readdirSync(TABLES_SCHEMA_PATH).forEach(file => {
 	if (file.endsWith('.js')) {
-		const result = migration.run(require(TABLES_SCHEMA_PATH + '/' + file))
-		if (result) {
-			result.then(() => {
-				console.log('successful')
-			})
-		}
+		promiseList.push(Migration.run(require(TABLES_SCHEMA_PATH + '/' + file)))
 	}
+})
+Promise.all(promiseList).then(() => {
+	console.log('successful')
 })
 
 // Auto include the third-party middlewares

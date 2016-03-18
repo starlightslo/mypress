@@ -10,7 +10,7 @@ class Migration {
 
 	}
 
-	run(tableSchema) {
+	static run(tableSchema) {
 		// Loading database
 		const database = require('./database')(config.db)
 
@@ -30,7 +30,7 @@ class Migration {
 	}
 
 	// Set column function
-	setColumn(table, column) {
+	static setColumn(table, column) {
 		let c = null
 		switch(column.type) {
 			case 'increments':
@@ -144,14 +144,14 @@ class Migration {
 	}
 
 	// Insert data
-	insertData(db, table, dataList) {
+	static insertData(db, table, dataList) {
 		dataList.forEach(data => {
 			db(table).insert(data).then(() => {})
 		})
 	}
 
 	// Migrate function
-	runMigrate(db, tableSchema) {
+	static runMigrate(db, tableSchema) {
 		const deferred = Promise.defer()
 
 		// Check columns
@@ -223,7 +223,7 @@ class Migration {
 		return deferred.promise
 	}
 
-	getColumnInfo(table) {
+	static getColumnInfo(table) {
 		const deferred = Promise.defer()
 
 		// Loading database
@@ -248,7 +248,7 @@ class Migration {
 		}
 	}
 
-	dropAll(tableSchemaList) {
+	static dropAll(tableSchemaList) {
 		// Loading database
 		const database = require('./database')(config.db)
 
@@ -265,18 +265,37 @@ class Migration {
 			if (database.rootDB) {
 				database.rootDB.destroy().then(() => {})
 			}
+			return
 		} else {
 			// Check the database instance
 			if (database.rootDB) {
+				let promiseList = []
 				tableSchemaList.forEach(tableSchema => {
-					database.rootDB.schema.hasTable(tableSchema.name).then(exists => {
-						if (exists) {
-							return database.rootDB.schema.dropTable(tableSchema.name)
-						}
-					}).then(() => {})
+					promiseList.push(database.rootDB.schema.dropTableIfExists(tableSchema.name))
 				})
+				return Promise.all(promiseList)
 			}
 		}
+	}
+
+	static listData(table) {
+		// Loading database
+		const database = require('./database')(config.db)
+
+
+		// Closing others database connection
+		if (database.normalDB) {
+			database.normalDB.destroy().then(() => {})
+		}
+		if (database.adminDB) {
+			database.adminDB.destroy().then(() => {})
+		}
+
+		// Check the database instance
+		if (database.rootDB) {
+			return database.rootDB.select('*').from(table)
+		}
+		return
 	}
 }
 

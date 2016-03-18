@@ -3,326 +3,7 @@
 const chai = require('chai')
 const should = chai.should()
 
-const fullTableSchema = {
-	name: 'test',
-	columnList: [{
-		name: 'col1',
-		type: 'increments'
-	},{
-		name: 'col2',
-		type: 'integer'
-	},{
-		name: 'col3',
-		type: 'bigInteger'
-	},{
-		name: 'col4',
-		type: 'text',
-	},{
-		name: 'col5',
-		type: 'text',
-		textType: 'mediumtext'
-	},{
-		name: 'col6',
-		type: 'text',
-		textType: 'longtext'
-	},{
-		name: 'col7',
-		type: 'string'
-	},{
-		name: 'col8',
-		type: 'string',
-		length: 123
-	},{
-		name: 'col9',
-		type: 'float'
-	},{
-		name: 'col10',
-		type: 'decimal'
-	},{
-		name: 'col11',
-		type: 'boolean'
-	},{
-		name: 'col12',
-		type: 'date'
-	},{
-		name: 'col13',
-		type: 'dateTime'
-	},{
-		name: 'col14',
-		type: 'time'
-	},{
-		name: 'col15',
-		type: 'timestamp'
-	},{
-		name: 'col16',
-		type: 'binary'
-	},{
-		name: 'col17',
-		type: 'json'
-	},{
-		name: 'col18',
-		type: 'jsonb'
-	},{
-		name: 'col19',
-		type: 'uuid'
-	},{
-		name: 'col20',
-		type: 'integer',
-		default: 999
-	},{
-		name: 'col21',
-		type: 'string',
-		default: 'test'
-	},{
-		name: 'col22',
-		type: 'string',
-		notNull: true
-	}]
-}
-
-const addTableSchema = {
-	name: 'test',
-	columnList: [{
-		name: 'col1',
-		type: 'increments'
-	},{
-		name: 'col2',
-		type: 'integer'
-	},{
-		name: 'col3',
-		type: 'bigInteger'
-	},{
-		name: 'col4',
-		type: 'text',
-	},{
-		name: 'col5',
-		type: 'text',
-		textType: 'mediumtext'
-	},{
-		name: 'col6',
-		type: 'text',
-		textType: 'longtext'
-	},{
-		name: 'col7',
-		type: 'string'
-	},{
-		name: 'col8',
-		type: 'string',
-		length: 123
-	},{
-		name: 'col9',
-		type: 'float'
-	},{
-		name: 'col10',
-		type: 'decimal'
-	},{
-		name: 'col11',
-		type: 'boolean'
-	},{
-		name: 'col12',
-		type: 'date'
-	},{
-		name: 'col13',
-		type: 'dateTime'
-	},{
-		name: 'col14',
-		type: 'time'
-	},{
-		name: 'col15',
-		type: 'timestamp'
-	},{
-		name: 'col16',
-		type: 'binary'
-	},{
-		name: 'col17',
-		type: 'json'
-	},{
-		name: 'col18',
-		type: 'jsonb'
-	},{
-		name: 'col19',
-		type: 'uuid'
-	},{
-		name: 'col20',
-		type: 'integer',
-		default: 999
-	},{
-		name: 'col21',
-		type: 'string',
-		default: 'test'
-	},{
-		name: 'col22',
-		type: 'string',
-		notNull: true
-	},{
-		name: 'col23',
-		type: 'string'
-	}]
-}
-
-const renameTableSchema = {
-	name: 'test',
-	columnList: [{
-		name: 'col1',
-		type: 'increments'
-	},{
-		name: 'col2',
-		type: 'integer'
-	},{
-		name: 'col3',
-		type: 'bigInteger'
-	},{
-		name: 'col4',
-		type: 'text',
-	},{
-		name: 'col5',
-		type: 'text',
-		textType: 'mediumtext'
-	},{
-		name: 'col6',
-		type: 'text',
-		textType: 'longtext'
-	},{
-		name: 'col7',
-		type: 'string'
-	},{
-		name: 'col8',
-		type: 'string',
-		length: 123
-	},{
-		name: 'col9',
-		type: 'float'
-	},{
-		name: 'col10',
-		type: 'decimal'
-	},{
-		name: 'col11',
-		type: 'boolean'
-	},{
-		name: 'col12',
-		type: 'date'
-	},{
-		name: 'col13',
-		type: 'dateTime'
-	},{
-		name: 'col14',
-		type: 'time'
-	},{
-		name: 'col15',
-		type: 'timestamp'
-	},{
-		name: 'col16',
-		type: 'binary'
-	},{
-		name: 'col17',
-		type: 'json'
-	},{
-		name: 'col18',
-		type: 'jsonb'
-	},{
-		name: 'col19',
-		type: 'uuid'
-	},{
-		name: 'col20',
-		type: 'integer',
-		default: 999
-	},{
-		name: 'col21',
-		type: 'string',
-		default: 'test'
-	},{
-		name: 'col22',
-		type: 'string',
-		notNull: true
-	},{
-		name: 'col23',
-		type: 'rename',
-		newName: 'col24'
-	}]
-}
-
-const removeTableSchema = {
-	name: 'test',
-	columnList: [{
-		name: 'col1',
-		type: 'increments'
-	},{
-		name: 'col2',
-		type: 'integer'
-	},{
-		name: 'col3',
-		type: 'bigInteger'
-	},{
-		name: 'col4',
-		type: 'text',
-	},{
-		name: 'col5',
-		type: 'text',
-		textType: 'mediumtext'
-	},{
-		name: 'col6',
-		type: 'text',
-		textType: 'longtext'
-	},{
-		name: 'col7',
-		type: 'string'
-	},{
-		name: 'col8',
-		type: 'string',
-		length: 123
-	},{
-		name: 'col9',
-		type: 'float'
-	},{
-		name: 'col10',
-		type: 'decimal'
-	},{
-		name: 'col11',
-		type: 'boolean'
-	},{
-		name: 'col12',
-		type: 'date'
-	},{
-		name: 'col13',
-		type: 'dateTime'
-	},{
-		name: 'col14',
-		type: 'time'
-	},{
-		name: 'col15',
-		type: 'timestamp'
-	},{
-		name: 'col16',
-		type: 'binary'
-	},{
-		name: 'col17',
-		type: 'json'
-	},{
-		name: 'col18',
-		type: 'jsonb'
-	},{
-		name: 'col19',
-		type: 'uuid'
-	},{
-		name: 'col20',
-		type: 'integer',
-		default: 999
-	},{
-		name: 'col21',
-		type: 'string',
-		default: 'test'
-	},{
-		name: 'col22',
-		type: 'string',
-		notNull: true
-	},{
-		name: 'col24',
-		type: 'remove'
-	}]
-}
-
-let tableSchemaList = []
-tableSchemaList.push(fullTableSchema)
+const tables = require('./data/tables')
 
 const checkColumns = (originalList, checkList) => {
 	originalList.forEach(column => {
@@ -395,75 +76,82 @@ describe('Database Migration', function() {
 	})
 
 	it('Drop all tables', function(done) {
-		new (require('../config/migration'))().dropAll(tableSchemaList)
-		done()
+		Promise.all([(require('../config/migration')).dropAll([tables.fullTableSchema])]).then(() => {
+			done()
+		})
 	})
 
 	it('Test table schema with wrong structure', function(done) {
-		new (require('../config/migration'))().run({})
-		done()
+		Promise.all([(require('../config/migration')).run({})]).then(() => {
+			done()
+		})
 	})
 
 	it('Test null table schema', function(done) {
-		new (require('../config/migration'))().run([{}])
-		new (require('../config/migration'))().run([{name: 'test'}])
-		new (require('../config/migration'))().run([{name: 'test', columnList: {}}])
-		new (require('../config/migration'))().run([{name: 'test', columnList: 'aaa'}])
-		new (require('../config/migration'))().run([{columnList: 'aaa'}])
-		done()
+		let promiseList = []
+		promiseList.push((require('../config/migration')).run([{}]))
+		promiseList.push((require('../config/migration')).run([{name: 'test'}]))
+		promiseList.push((require('../config/migration')).run([{name: 'test', columnList: {}}]))
+		promiseList.push((require('../config/migration')).run([{name: 'test', columnList: 'aaa'}]))
+		promiseList.push((require('../config/migration')).run([{columnList: 'aaa'}]))
+		Promise.all(promiseList).then(() => {
+			done()
+		})
 	})
 
 	it('Create a new table', function(done) {
-		const migration = new (require('../config/migration'))()
+		const Migration = (require('../config/migration'))
 		// Running migration
-		migration.run(fullTableSchema).then(() => {
+		Promise.all([Migration.run(tables.fullTableSchema)]).then(() => {
 			// Get columns info and check format
-			const getColumnInfo = migration.getColumnInfo(fullTableSchema.name)
-			should.exist(getColumnInfo)
-			getColumnInfo.then((columns) => {
-				checkColumns(fullTableSchema.columnList, columns)
+			Migration.getColumnInfo(tables.fullTableSchema.name).then((columns) => {
+				checkColumns(tables.fullTableSchema.columnList, columns)
 				done()
 			})
 		})
 	})
 
+	it('Checking default value', function(done) {
+		const Migration = (require('../config/migration'))
+		const result = Migration.listData(tables.fullTableSchema.name)
+		should.exist(result)
+		result.then(rows => {
+			rows.length.should.equal(1)
+			done()
+		})
+	})
+
 	it('Add column', function(done) {
-		const migration = new (require('../config/migration'))()
+		const Migration = (require('../config/migration'))
 		// Running migration
-		migration.run(addTableSchema).then(() => {
+		Promise.all([Migration.run(tables.addTableSchema)]).then(() => {
 			// Get columns info and check format
-			const getColumnInfo = migration.getColumnInfo(addTableSchema.name)
-			should.exist(getColumnInfo)
-			getColumnInfo.then((columns) => {
-				checkColumns(addTableSchema.columnList, columns)
+			Migration.getColumnInfo(tables.addTableSchema.name).then((columns) => {
+				checkColumns(tables.addTableSchema.columnList, columns)
 				done()
 			})
 		})
 	})
 
 	it('Rename column', function(done) {
-		const migration = new (require('../config/migration'))()
+		const Migration = (require('../config/migration'))
 		// Running migration
-		migration.run(renameTableSchema).then(() => {
+		Promise.all([Migration.run(tables.renameTableSchema)]).then(() => {
 			// Get columns info and check format
-			const getColumnInfo = migration.getColumnInfo(renameTableSchema.name)
-			should.exist(getColumnInfo)
-			getColumnInfo.then((columns) => {
-				checkColumns(renameTableSchema.columnList, columns)
+			Migration.getColumnInfo(tables.renameTableSchema.name).then((columns) => {
+				checkColumns(tables.renameTableSchema.columnList, columns)
 				done()
 			})
 		})
 	})
 
 	it('Remove column', function(done) {
-		const migration = new (require('../config/migration'))()
+		const Migration = (require('../config/migration'))
 		// Running migration
-		migration.run(removeTableSchema).then(() => {
+		Promise.all([Migration.run(tables.removeTableSchema)]).then(() => {
 			// Get columns info and check format
-			const getColumnInfo = migration.getColumnInfo(removeTableSchema.name)
-			should.exist(getColumnInfo)
-			getColumnInfo.then((columns) => {
-				checkColumns(removeTableSchema.columnList, columns)
+			Migration.getColumnInfo(tables.removeTableSchema.name).then((columns) => {
+				checkColumns(tables.removeTableSchema.columnList, columns)
 				done()
 			})
 		})
