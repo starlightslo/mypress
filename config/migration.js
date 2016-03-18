@@ -6,9 +6,27 @@ const config = require('./config')
 // Loading database
 const db = require('./database')(config.db)
 
-module.exports = function(tableSchemaList) {
+
+class Migration {
+	constructor() {
+
+	}
+
+	run(tableSchemaList) {
+		// Check the database instance
+		if (db.rootDB) {
+			tableSchemaList.forEach(tableSchema => {
+				this.runMigrate(tableSchema)
+			})
+		}
+
+		// Closing others database connection
+		db.normalDB.destroy().then(() => {})
+		db.adminDB.destroy().then(() => {})
+	}
+
 	// Set column function
-	const setColumn = (table, column) => {
+	setColumn(table, column) {
 		let c = null
 		switch(column.type) {
 			case 'increments':
@@ -119,19 +137,30 @@ module.exports = function(tableSchemaList) {
 		}
 	}
 
+	// Insert data
+	insertData(table, dataList) {
+		dataList.forEach(data => {
+			db.rootDB(table).insert(data).then(() => {})
+		})
+	}
+
 	// Migrate function
-	const runMigrate = tableSchema => {
+	runMigrate(tableSchema) {
 		// Check the table is existing or not
 		db.rootDB.schema.hasTable(tableSchema.name).then(exists => {
 			if (!exists) {
 				// Creating new table
 				db.rootDB.schema.createTable(tableSchema.name, table => {
-					tableSchema.columns.forEach(column => {
-						setColumn(table, column)
+					tableSchema.columnList.forEach(column => {
+						this.setColumn(table, column)
 					})
 				}).then(() => {
 					console.log('Creating new table successed.')
+
 					// Insert default value
+					if (('defaultDataList' in tableSchema) && (Array.isArray(tableSchema.defaultDataList))) {
+						this.insertData(tableSchema.name, tableSchema.defaultDataList)
+					}
 
 					// Closing connection
 					return db.rootDB.destroy()
@@ -143,7 +172,7 @@ module.exports = function(tableSchemaList) {
 				db.rootDB(tableSchema.name).columnInfo().then(currentColumns => {
 					// Check the column is existing or not
 					Object.keys(currentColumns).forEach(key => {
-						tableSchema.columns.forEach(column => {
+						tableSchema.columnList.forEach(column => {
 							if (column.name === key) {
 								column.exists = true
 							}
@@ -152,14 +181,14 @@ module.exports = function(tableSchemaList) {
 
 					// Starting migration
 					return db.rootDB.schema.table(tableSchema.name, table => {
-						tableSchema.columns.forEach(column => {
+						tableSchema.columnList.forEach(column => {
 							if (('exists' in column) && (column.exists === true)) {
 								if (column.type === 'remove') {
-									setColumn(table, column)
+									this.setColumn(table, column)
 								}
 							} else {
 								if (column.type !== 'remove') {
-									setColumn(table, column)
+									this.setColumn(table, column)
 								}
 							}
 						})
@@ -174,15 +203,9 @@ module.exports = function(tableSchemaList) {
 			}
 		})
 	}
-
-	// Check the database instance
-	if (db.rootDB) {
-		tableSchemaList.forEach(tableSchema => {
-			runMigrate(tableSchema)
-		})
-	}
-
-	// Closing others database connection
-	db.normalDB.destroy().then(() => {})
-	db.adminDB.destroy().then(() => {})
 }
+
+/**
+ * Exports
+ */
+module.exports = Migration

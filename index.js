@@ -22,8 +22,7 @@ fs.readdirSync(TABLES_SCHEMA_PATH).forEach(file => {
 })
 
 // Run database migration
-require('./config/migration')(tableSchemaList)
-
+new (require('./config/migration'))().run(tableSchemaList)
 
 // Auto include the third-party middlewares
 fs.readdirSync(MIDDLEWARE_PATH).forEach(file => {
