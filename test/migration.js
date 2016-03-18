@@ -3,8 +3,8 @@ var should = chai.should()
 
 var tables = require('./data/tables')
 
-var checkColumns = (originalList, checkList) => {
-	originalList.forEach(column => {
+var checkColumns = function (originalList, checkList) {
+	originalList.forEach(function(column) {
 		var checked = false
 		var exist = false
 		var name = column.name
@@ -12,7 +12,7 @@ var checkColumns = (originalList, checkList) => {
 		if (column.type === 'rename') {
 			name = column.newName
 		}
-		Object.keys(checkList).forEach(key => {
+		Object.keys(checkList).forEach(function(key) {
 			if (name === key) {
 				exist = true
 				if ((checkList[key].type.toLowerCase() === column.type.toLowerCase())
@@ -74,13 +74,13 @@ describe('Database Migration', function() {
 	})
 
 	it('Drop all tables', function(done) {
-		Promise.all([(require('../config/migration')).dropAll([tables.fullTableSchema])]).then(() => {
+		Promise.all([(require('../config/migration')).dropAll([tables.fullTableSchema])]).then(function() {
 			done()
 		})
 	})
 
 	it('Test table schema with wrong structure', function(done) {
-		Promise.all([(require('../config/migration')).run({})]).then(() => {
+		Promise.all([(require('../config/migration')).run({})]).then(function() {
 			done()
 		})
 	})
@@ -92,7 +92,7 @@ describe('Database Migration', function() {
 		promiseList.push((require('../config/migration')).run([{name: 'test', columnList: {}}]))
 		promiseList.push((require('../config/migration')).run([{name: 'test', columnList: 'aaa'}]))
 		promiseList.push((require('../config/migration')).run([{columnList: 'aaa'}]))
-		Promise.all(promiseList).then(() => {
+		Promise.all(promiseList).then(function() {
 			done()
 		})
 	})
@@ -100,9 +100,9 @@ describe('Database Migration', function() {
 	it('Create a new table', function(done) {
 		const Migration = (require('../config/migration'))
 		// Running migration
-		Promise.all([Migration.run(tables.fullTableSchema)]).then(() => {
+		Promise.all([Migration.run(tables.fullTableSchema)]).then(function() {
 			// Get columns info and check format
-			Migration.getColumnInfo(tables.fullTableSchema.name).then((columns) => {
+			Migration.getColumnInfo(tables.fullTableSchema.name).then(function(columns) {
 				checkColumns(tables.fullTableSchema.columnList, columns)
 				done()
 			})
@@ -113,7 +113,7 @@ describe('Database Migration', function() {
 		var Migration = (require('../config/migration'))
 		var result = Migration.listData(tables.fullTableSchema.name)
 		should.exist(result)
-		result.then(rows => {
+		result.then(function(rows) {
 			rows.length.should.equal(1)
 			done()
 		})
@@ -122,9 +122,9 @@ describe('Database Migration', function() {
 	it('Add column', function(done) {
 		var Migration = (require('../config/migration'))
 		// Running migration
-		Promise.all([Migration.run(tables.addTableSchema)]).then(() => {
+		Promise.all([Migration.run(tables.addTableSchema)]).then(function() {
 			// Get columns info and check format
-			Migration.getColumnInfo(tables.addTableSchema.name).then((columns) => {
+			Migration.getColumnInfo(tables.addTableSchema.name).then(function(columns) {
 				checkColumns(tables.addTableSchema.columnList, columns)
 				done()
 			})
@@ -134,9 +134,9 @@ describe('Database Migration', function() {
 	it('Rename column', function(done) {
 		var Migration = (require('../config/migration'))
 		// Running migration
-		Promise.all([Migration.run(tables.renameTableSchema)]).then(() => {
+		Promise.all([Migration.run(tables.renameTableSchema)]).then(function() {
 			// Get columns info and check format
-			Migration.getColumnInfo(tables.renameTableSchema.name).then((columns) => {
+			Migration.getColumnInfo(tables.renameTableSchema.name).then(function(columns) {
 				checkColumns(tables.renameTableSchema.columnList, columns)
 				done()
 			})
@@ -146,9 +146,9 @@ describe('Database Migration', function() {
 	it('Remove column', function(done) {
 		var Migration = (require('../config/migration'))
 		// Running migration
-		Promise.all([Migration.run(tables.removeTableSchema)]).then(() => {
+		Promise.all([Migration.run(tables.removeTableSchema)]).then(function() {
 			// Get columns info and check format
-			Migration.getColumnInfo(tables.removeTableSchema.name).then((columns) => {
+			Migration.getColumnInfo(tables.removeTableSchema.name).then(function(columns) {
 				checkColumns(tables.removeTableSchema.columnList, columns)
 				done()
 			})
