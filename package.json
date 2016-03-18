@@ -24,6 +24,7 @@
     "errorhandler": "^1.4.3",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
+    "knex": "^0.10.0",
     "passport": "^0.3.2"
   }
 }

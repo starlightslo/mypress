@@ -1,18 +1,20 @@
-var chai = require('chai')
-var should = chai.should()
+'use strict'
 
-var tables = require('./data/tables')
+const chai = require('chai')
+const should = chai.should()
 
-var checkColumns = function (originalList, checkList) {
-	originalList.forEach(function(column) {
-		var checked = false
-		var exist = false
-		var name = column.name
+const tables = require('./data/tables')
+
+const checkColumns = (originalList, checkList) => {
+	originalList.forEach(column => {
+		let checked = false
+		let exist = false
+		let name = column.name
 		// Check rename
 		if (column.type === 'rename') {
 			name = column.newName
 		}
-		Object.keys(checkList).forEach(function(key) {
+		Object.keys(checkList).forEach(key => {
 			if (name === key) {
 				exist = true
 				if ((checkList[key].type.toLowerCase() === column.type.toLowerCase())
@@ -74,25 +76,25 @@ describe('Database Migration', function() {
 	})
 
 	it('Drop all tables', function(done) {
-		Promise.all([(require('../config/migration')).dropAll([tables.fullTableSchema])]).then(function() {
+		Promise.all([(require('../config/migration')).dropAll([tables.fullTableSchema])]).then(() => {
 			done()
 		})
 	})
 
 	it('Test table schema with wrong structure', function(done) {
-		Promise.all([(require('../config/migration')).run({})]).then(function() {
+		Promise.all([(require('../config/migration')).run({})]).then(() => {
 			done()
 		})
 	})
 
 	it('Test null table schema', function(done) {
-		var promiseList = []
+		let promiseList = []
 		promiseList.push((require('../config/migration')).run([{}]))
 		promiseList.push((require('../config/migration')).run([{name: 'test'}]))
 		promiseList.push((require('../config/migration')).run([{name: 'test', columnList: {}}]))
 		promiseList.push((require('../config/migration')).run([{name: 'test', columnList: 'aaa'}]))
 		promiseList.push((require('../config/migration')).run([{columnList: 'aaa'}]))
-		Promise.all(promiseList).then(function() {
+		Promise.all(promiseList).then(() => {
 			done()
 		})
 	})
@@ -100,9 +102,9 @@ describe('Database Migration', function() {
 	it('Create a new table', function(done) {
 		const Migration = (require('../config/migration'))
 		// Running migration
-		Promise.all([Migration.run(tables.fullTableSchema)]).then(function() {
+		Promise.all([Migration.run(tables.fullTableSchema)]).then(() => {
 			// Get columns info and check format
-			Migration.getColumnInfo(tables.fullTableSchema.name).then(function(columns) {
+			Migration.getColumnInfo(tables.fullTableSchema.name).then((columns) => {
 				checkColumns(tables.fullTableSchema.columnList, columns)
 				done()
 			})
@@ -110,21 +112,21 @@ describe('Database Migration', function() {
 	})
 
 	it('Checking default value', function(done) {
-		var Migration = (require('../config/migration'))
-		var result = Migration.listData(tables.fullTableSchema.name)
+		const Migration = (require('../config/migration'))
+		const result = Migration.listData(tables.fullTableSchema.name)
 		should.exist(result)
-		result.then(function(rows) {
+		result.then(rows => {
 			rows.length.should.equal(1)
 			done()
 		})
 	})
 
 	it('Add column', function(done) {
-		var Migration = (require('../config/migration'))
+		const Migration = (require('../config/migration'))
 		// Running migration
-		Promise.all([Migration.run(tables.addTableSchema)]).then(function() {
+		Promise.all([Migration.run(tables.addTableSchema)]).then(() => {
 			// Get columns info and check format
-			Migration.getColumnInfo(tables.addTableSchema.name).then(function(columns) {
+			Migration.getColumnInfo(tables.addTableSchema.name).then((columns) => {
 				checkColumns(tables.addTableSchema.columnList, columns)
 				done()
 			})
@@ -132,11 +134,11 @@ describe('Database Migration', function() {
 	})
 
 	it('Rename column', function(done) {
-		var Migration = (require('../config/migration'))
+		const Migration = (require('../config/migration'))
 		// Running migration
-		Promise.all([Migration.run(tables.renameTableSchema)]).then(function() {
+		Promise.all([Migration.run(tables.renameTableSchema)]).then(() => {
 			// Get columns info and check format
-			Migration.getColumnInfo(tables.renameTableSchema.name).then(function(columns) {
+			Migration.getColumnInfo(tables.renameTableSchema.name).then((columns) => {
 				checkColumns(tables.renameTableSchema.columnList, columns)
 				done()
 			})
@@ -144,11 +146,11 @@ describe('Database Migration', function() {
 	})
 
 	it('Remove column', function(done) {
-		var Migration = (require('../config/migration'))
+		const Migration = (require('../config/migration'))
 		// Running migration
-		Promise.all([Migration.run(tables.removeTableSchema)]).then(function() {
+		Promise.all([Migration.run(tables.removeTableSchema)]).then(() => {
 			// Get columns info and check format
-			Migration.getColumnInfo(tables.removeTableSchema.name).then(function(columns) {
+			Migration.getColumnInfo(tables.removeTableSchema.name).then((columns) => {
 				checkColumns(tables.removeTableSchema.columnList, columns)
 				done()
 			})
