@@ -15,7 +15,8 @@ module.exports = function (db) {
 				client: db.client,
 				connection: {
 					filename: db.database
-				}
+				},
+				useNullAsDefault: true
 			}
 			normalDB = require('knex')(sqliteConfig)
 			adminDB = require('knex')(sqliteConfig)

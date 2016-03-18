@@ -13,16 +13,19 @@ const PASSPORT_PATH = './app/passports'
 const PUBLIC_DIRECTORY_PATH = 'public'
 const TABLES_SCHEMA_PATH = './config/tables'
 
-// Get all table schema
+// Get all table schema and run migration
+const migration = new (require('./config/migration'))()
 let tableSchemaList = []
 fs.readdirSync(TABLES_SCHEMA_PATH).forEach(file => {
 	if (file.endsWith('.js')) {
-		tableSchemaList.push(require(TABLES_SCHEMA_PATH + '/' + file))
+		const result = migration.run(require(TABLES_SCHEMA_PATH + '/' + file))
+		if (result) {
+			result.then(() => {
+				console.log('successful')
+			})
+		}
 	}
 })
-
-// Run database migration
-new (require('./config/migration'))().run(tableSchemaList)
 
 // Auto include the third-party middlewares
 fs.readdirSync(MIDDLEWARE_PATH).forEach(file => {

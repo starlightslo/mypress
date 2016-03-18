@@ -10,11 +10,15 @@
   "author": "Tony Huang <tony@huang.ninja> (http://huang.ninja)",
   "license": "ISC",
   "devDependencies": {
+    "chai": "^3.5.0",
     "mocha": "^2.4.5",
-    "nodemon": "^1.9.1"
+    "nodemon": "^1.9.1",
+    "proxyquire": "^1.7.4",
+    "sqlite3": "^3.1.1"
   },
   "dependencies": {
     "bcryptjs": "^2.3.0",
+    "bluebird": "^3.3.4",
     "body-parser": "^1.15.0",
     "connect-flash": "^0.1.1",
     "errorhandler": "^1.4.3",

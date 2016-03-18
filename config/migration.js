@@ -1,28 +1,32 @@
 'use strict'
 
+const Promise = require("bluebird")
+
 // Get config
 const config = require('./config')
-
-// Loading database
-const db = require('./database')(config.db)
-
 
 class Migration {
 	constructor() {
 
 	}
 
-	run(tableSchemaList) {
-		// Check the database instance
-		if (db.rootDB) {
-			tableSchemaList.forEach(tableSchema => {
-				this.runMigrate(tableSchema)
-			})
-		}
+	run(tableSchema) {
+		// Loading database
+		const database = require('./database')(config.db)
 
 		// Closing others database connection
-		db.normalDB.destroy().then(() => {})
-		db.adminDB.destroy().then(() => {})
+		if (database.normalDB) {
+			database.normalDB.destroy().then(() => {})
+		}
+		if (database.adminDB) {
+			database.adminDB.destroy().then(() => {})
+		}
+
+		// Check the database instance
+		if (database.rootDB) {
+			return this.runMigrate(database.rootDB, tableSchema)
+		}
+		return
 	}
 
 	// Set column function
@@ -112,8 +116,10 @@ class Migration {
 				c = table.uuid(column.name)
 				break
 			case 'rename':
-				c = table.renameColumn(column.name, column.newName)
-				break
+				if ('newName' in column) {
+					table.renameColumn(column.name, column.newName)
+				}
+				return
 			case 'remove':
 				table.dropColumn(column.name)
 				return
@@ -121,36 +127,43 @@ class Migration {
 
 		// Set primary
 		if (('primary' in column) && (column.primary === true)) {
-			c.primary()
+			 if (c) c.primary()
 		}
 
 		// Set default value
 		if (('default' in column)) {
-			c.defaultTo(column.default)
+			if (c) c.defaultTo(column.default)
 		}
 		
 		// Set not null
 		if (('notNull' in column) && (column.notNull === true)) {
-			c.notNullable()
+			if (c) c.notNullable()
 		} else {
-			c.nullable()
+			if (c) c.nullable()
 		}
 	}
 
 	// Insert data
-	insertData(table, dataList) {
+	insertData(db, table, dataList) {
 		dataList.forEach(data => {
-			db.rootDB(table).insert(data).then(() => {})
+			db(table).insert(data).then(() => {})
 		})
 	}
 
 	// Migrate function
-	runMigrate(tableSchema) {
+	runMigrate(db, tableSchema) {
+		const deferred = Promise.defer()
+
+		// Check columns
+		if ((!'columnList' in tableSchema) || !Array.isArray(tableSchema.columnList)) {
+			return
+		}
+
 		// Check the table is existing or not
-		db.rootDB.schema.hasTable(tableSchema.name).then(exists => {
+		db.schema.hasTable(tableSchema.name).then(exists => {
 			if (!exists) {
 				// Creating new table
-				db.rootDB.schema.createTable(tableSchema.name, table => {
+				db.schema.createTable(tableSchema.name, table => {
 					tableSchema.columnList.forEach(column => {
 						this.setColumn(table, column)
 					})
@@ -159,17 +172,18 @@ class Migration {
 
 					// Insert default value
 					if (('defaultDataList' in tableSchema) && (Array.isArray(tableSchema.defaultDataList))) {
-						this.insertData(tableSchema.name, tableSchema.defaultDataList)
+						this.insertData(db, tableSchema.name, tableSchema.defaultDataList)
 					}
 
 					// Closing connection
-					return db.rootDB.destroy()
+					return db.destroy()
 				}).then(() => {
 					console.log('Closing connection.')
+					return deferred.resolve()
 				})
 			} else {
 				// List all column info
-				db.rootDB(tableSchema.name).columnInfo().then(currentColumns => {
+				db(tableSchema.name).columnInfo().then(currentColumns => {
 					// Check the column is existing or not
 					Object.keys(currentColumns).forEach(key => {
 						tableSchema.columnList.forEach(column => {
@@ -180,10 +194,10 @@ class Migration {
 					})
 
 					// Starting migration
-					return db.rootDB.schema.table(tableSchema.name, table => {
+					return db.schema.table(tableSchema.name, table => {
 						tableSchema.columnList.forEach(column => {
 							if (('exists' in column) && (column.exists === true)) {
-								if (column.type === 'remove') {
+								if (column.type === 'remove' || column.type === 'rename') {
 									this.setColumn(table, column)
 								}
 							} else {
@@ -196,12 +210,73 @@ class Migration {
 				}).then(() => {
 					console.log('Migrating successed.')
 					// Closing connection
-					return db.rootDB.destroy()
+					return db.destroy()
 				}).then(() => {
 					console.log('Closing connection.')
+					return deferred.resolve()
 				})
 			}
+		}).catch(err => {
+			console.log(err)
+			return deferred.reject(err)
 		})
+		return deferred.promise
+	}
+
+	getColumnInfo(table) {
+		const deferred = Promise.defer()
+
+		// Loading database
+		const database = require('./database')(config.db)
+
+		// Closing others database connection
+		if (database.normalDB) {
+			database.normalDB.destroy().then(() => {})
+		}
+		if (database.adminDB) {
+			database.adminDB.destroy().then(() => {})
+		}
+
+		// Check the database instance
+		if (database.rootDB) {
+			database.rootDB(table).columnInfo().then(columns => {
+				return deferred.resolve(columns)
+			})
+			return deferred.promise
+		} else {
+			return
+		}
+	}
+
+	dropAll(tableSchemaList) {
+		// Loading database
+		const database = require('./database')(config.db)
+
+		// Closing others database connection
+		if (database.normalDB) {
+			database.normalDB.destroy().then(() => {})
+		}
+		if (database.adminDB) {
+			database.adminDB.destroy().then(() => {})
+		}
+
+		// Check the input format
+		if (!Array.isArray(tableSchemaList)) {
+			if (database.rootDB) {
+				database.rootDB.destroy().then(() => {})
+			}
+		} else {
+			// Check the database instance
+			if (database.rootDB) {
+				tableSchemaList.forEach(tableSchema => {
+					database.rootDB.schema.hasTable(tableSchema.name).then(exists => {
+						if (exists) {
+							return database.rootDB.schema.dropTable(tableSchema.name)
+						}
+					}).then(() => {})
+				})
+			}
+		}
 	}
 }
 
