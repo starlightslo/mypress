@@ -11,10 +11,19 @@ const myServer = new server(config)
 const MIDDLEWARE_PATH = './app/middlewares'
 const PASSPORT_PATH = './app/passports'
 const PUBLIC_DIRECTORY_PATH = 'public'
+const TABLES_SCHEMA_PATH = './config/tables'
 
-
-// Loading the routes
-require('./config/routes')(myServer.app)
+// Get all table schema and run migration
+const Migration = (require('./config/migration'))
+let promiseList = []
+fs.readdirSync(TABLES_SCHEMA_PATH).forEach(file => {
+	if (file.endsWith('.js')) {
+		promiseList.push(Migration.run(require(TABLES_SCHEMA_PATH + '/' + file)))
+	}
+})
+Promise.all(promiseList).then(() => {
+	console.log('successful')
+})
 
 // Auto include the third-party middlewares
 fs.readdirSync(MIDDLEWARE_PATH).forEach(file => {
@@ -29,6 +38,9 @@ fs.readdirSync(PASSPORT_PATH).forEach(file => {
 		myServer.setPassport(require(PASSPORT_PATH + '/' + file))
 	}
 })
+
+// Loading the routes
+require('./config/routes')(myServer.app)
 
 // Set the public directory
 myServer.setPublicDirectory(path.join(config.root, PUBLIC_DIRECTORY_PATH))
