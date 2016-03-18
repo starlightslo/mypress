@@ -1,15 +1,13 @@
-'use strict'
+var chai = require('chai')
+var should = chai.should()
 
-const chai = require('chai')
-const should = chai.should()
+var tables = require('./data/tables')
 
-const tables = require('./data/tables')
-
-const checkColumns = (originalList, checkList) => {
+var checkColumns = (originalList, checkList) => {
 	originalList.forEach(column => {
-		let checked = false
-		let exist = false
-		let name = column.name
+		var checked = false
+		var exist = false
+		var name = column.name
 		// Check rename
 		if (column.type === 'rename') {
 			name = column.newName
@@ -88,7 +86,7 @@ describe('Database Migration', function() {
 	})
 
 	it('Test null table schema', function(done) {
-		let promiseList = []
+		var promiseList = []
 		promiseList.push((require('../config/migration')).run([{}]))
 		promiseList.push((require('../config/migration')).run([{name: 'test'}]))
 		promiseList.push((require('../config/migration')).run([{name: 'test', columnList: {}}]))
@@ -112,8 +110,8 @@ describe('Database Migration', function() {
 	})
 
 	it('Checking default value', function(done) {
-		const Migration = (require('../config/migration'))
-		const result = Migration.listData(tables.fullTableSchema.name)
+		var Migration = (require('../config/migration'))
+		var result = Migration.listData(tables.fullTableSchema.name)
 		should.exist(result)
 		result.then(rows => {
 			rows.length.should.equal(1)
@@ -122,7 +120,7 @@ describe('Database Migration', function() {
 	})
 
 	it('Add column', function(done) {
-		const Migration = (require('../config/migration'))
+		var Migration = (require('../config/migration'))
 		// Running migration
 		Promise.all([Migration.run(tables.addTableSchema)]).then(() => {
 			// Get columns info and check format
@@ -134,7 +132,7 @@ describe('Database Migration', function() {
 	})
 
 	it('Rename column', function(done) {
-		const Migration = (require('../config/migration'))
+		var Migration = (require('../config/migration'))
 		// Running migration
 		Promise.all([Migration.run(tables.renameTableSchema)]).then(() => {
 			// Get columns info and check format
@@ -146,7 +144,7 @@ describe('Database Migration', function() {
 	})
 
 	it('Remove column', function(done) {
-		const Migration = (require('../config/migration'))
+		var Migration = (require('../config/migration'))
 		// Running migration
 		Promise.all([Migration.run(tables.removeTableSchema)]).then(() => {
 			// Get columns info and check format
