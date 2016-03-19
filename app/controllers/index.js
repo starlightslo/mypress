@@ -2,6 +2,7 @@
 
 const Menu = require('../models/menu')
 const User = require('../models/user')
+const Skill = require('../models/skill')
 
 exports.index = function (req, res, next) {
 	const websiteName = req.app.get('websiteName')
@@ -19,8 +20,10 @@ exports.index = function (req, res, next) {
 	// Define
 	const MenuModel = Menu.bindKnex(req.app.get('db').normalDB)
 	const UserModel = User.bindKnex(req.app.get('db').normalDB)
+	const SkillModel = Skill.bindKnex(req.app.get('db').normalDB)
 	let userList = []
 	let menuList = []
+	let skillList = []
 
 	// Getting menu data
 	MenuModel.query()
@@ -54,6 +57,18 @@ exports.index = function (req, res, next) {
 				flickr: user.flickr
 			})
 		})
+		return SkillModel.query().orderBy('order')
+	})
+	.then(skills => {
+		console.log('in skill')
+		skills.forEach(skill => {
+			skillList.push({
+				name: skill.name,
+				percent: skill.percent,
+				color: skill.color,
+				animateTime: skill.animate_time
+			})
+		})
 	})
 	.catch(err => {
 		next(err)
@@ -72,7 +87,8 @@ exports.index = function (req, res, next) {
 			mainButtonTarget: mainButtonTarget,
 			template: template,
 			menuList: menuList,
-			userList: userList
+			userList: userList,
+			skillList: skillList
 		}
 		res.render(templateFile, resp)
 	})
