@@ -2,6 +2,7 @@
 
 const Menu = require('../models/menu')
 const User = require('../models/user')
+const Portfolio = require('../models/portfolio')
 
 exports.index = function (req, res, next) {
 	const websiteName = req.app.get('websiteName')
@@ -19,8 +20,10 @@ exports.index = function (req, res, next) {
 	// Define
 	const MenuModel = Menu.bindKnex(req.app.get('db').normalDB)
 	const UserModel = User.bindKnex(req.app.get('db').normalDB)
+	const PortfolioModel = Portfolio.bindKnex(req.app.get('db').normalDB)
 	let userList = []
 	let menuList = []
+	let portfolioList = []
 
 	// Getting menu data
 	MenuModel.query()
@@ -36,6 +39,7 @@ exports.index = function (req, res, next) {
 		})
 		return UserModel.query().orderBy('first_name').orderBy('last_name')
 	})
+	// Getting user data
 	.then(users => {
 		console.log('in user')
 		users.forEach(user => {
@@ -52,6 +56,23 @@ exports.index = function (req, res, next) {
 				twitter: user.twitter,
 				google: user.google,
 				flickr: user.flickr
+			})
+		})
+		return PortfolioModel.query().orderBy('name')
+	})
+	// Getting portfolio data
+	.then(portfolios => {
+		console.log('in portfolio')
+		portfolios.forEach(portfolio => {
+			portfolioList.push({
+				name: portfolio.name,
+				client: portfolio.client,
+				role: portfolio.role,
+				description: portfolio.description,
+				link: portfolio.link,
+				target: portfolio.target,
+				picture: portfolio.picture,
+				pictureAlt: portfolio.picture_alt
 			})
 		})
 	})
@@ -72,7 +93,8 @@ exports.index = function (req, res, next) {
 			mainButtonTarget: mainButtonTarget,
 			template: template,
 			menuList: menuList,
-			userList: userList
+			userList: userList,
+			portfolioList: portfolioList
 		}
 		res.render(templateFile, resp)
 	})
