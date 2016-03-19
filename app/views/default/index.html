@@ -7,7 +7,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>{{ title }}</title>
+		<title>{{ websiteName }}</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600' rel='stylesheet' type='text/css'>
@@ -21,15 +21,18 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				<div class="header_style1">
 					<!-- start h_logo -->
 					<div class="logo">
-						<h1><a href="#">MyPress</a></h1>
+						<h1><a href="{{ logoLink }}">{{ logoString }}</a></h1>
 					</div>
 					<!-- start h_menu -->
 					<div class="h_menu">
 						<ul class="flexy-menu thick orange">
-							<li><a href="#About" class="scroll">About</a></li>
-							<li><a href="#Portfolio" class="scroll">Portfolio</a></li>
-							<li><a href="#skills" class="scroll">Skills</a> </li>
-							<li><a href="#Experience" class="scroll">Experience</a></li>
+							{% for menu in menuList %}
+								<li>
+									<a href="{{ menu.link }}" {% if menu.target.length > 0 %} target="{{ menu.target }}" {% endif %} class="scroll">
+										{{ menu.name }}
+									</a>
+								</li>
+							{% endfor %}
 						</ul>
 					</div>
 					<!-- end h_menu -->
@@ -49,9 +52,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					<!---start-da-slider-->
 					<div id="da-slider" class="da-slider">
 						<div class="da-slide da-slide-fromright da-slide-current">
-							<h2>Personal & Company</h2>
-							<p>MyPress is simply create a website to introduce yourself</p>
-							<a href="https://github.com/starlightslo/mypress" class="da-link"><span>DOWNLOAD</span></a>
+							<h2>{{ webTitle }}</h2>
+							<p>{{ webSubtitle }}</p>
+							<a href="{{ mainButtonLink }}" {% if mainButtonTarget.length > 0 %} target="{{ mainButtonTarget }}" {% endif %} class="da-link"><span>{{ mainButtonString }}</span></a>
 						</div>
 					</div>
 					<div class="down-arrow">
