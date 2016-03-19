@@ -9,6 +9,7 @@ const app = express()
 const bodyParser = require('body-parser')
 const passport = require('passport')
 const flash = require('connect-flash')
+const swig = require('swig')
 
 const DEFAULT_PUBLIC_DIRECTORY = 'public'
 
@@ -22,6 +23,11 @@ class Server {
 
 		// Set default public directory
 		app.use(express.static(DEFAULT_PUBLIC_DIRECTORY))
+
+		// Set views and engine
+		app.engine('html', swig.renderFile)
+		app.set('views', config.root + '/app/views')
+		app.set('view engine', 'html')
 
 		this.initMiddleware()
 		this.initPassport()
