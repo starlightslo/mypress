@@ -1,6 +1,7 @@
 'use strict'
 
 const Menu = require('../models/menu')
+const User = require('../models/user')
 
 exports.index = function (req, res, next) {
 	const websiteName = req.app.get('websiteName')
@@ -16,10 +17,12 @@ exports.index = function (req, res, next) {
 	const templateFile = template + '/index'
 
 	// Define
+	const MenuModel = Menu.bindKnex(req.app.get('db').normalDB)
+	const UserModel = User.bindKnex(req.app.get('db').normalDB)
+	let userList = []
 	let menuList = []
 
 	// Getting menu data
-	const MenuModel = Menu.bindKnex(req.app.get('db').normalDB)
 	MenuModel.query()
 	.orderBy('order')
 	.then(menus => {
@@ -29,6 +32,26 @@ exports.index = function (req, res, next) {
 				name: menu.name,
 				link: menu.link,
 				target: menu.target,
+			})
+		})
+		return UserModel.query().orderBy('first_name').orderBy('last_name')
+	})
+	.then(users => {
+		console.log('in user')
+		users.forEach(user => {
+			userList.push({
+				username: user.username,
+				privilege: user.privilege,
+				firstName: user.first_name,
+				lastName: user.last_name,
+				picture: user.picture,
+				email: user.email,
+				introduction: user.introduction,
+				facebook: user.facebook,
+				linkedin: user.linkedin,
+				twitter: user.twitter,
+				google: user.google,
+				flickr: user.flickr
 			})
 		})
 	})
@@ -48,7 +71,8 @@ exports.index = function (req, res, next) {
 			mainButtonLink: mainButtonLink,
 			mainButtonTarget: mainButtonTarget,
 			template: template,
-			menuList: menuList
+			menuList: menuList,
+			userList: userList
 		}
 		res.render(templateFile, resp)
 	})

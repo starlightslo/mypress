@@ -69,18 +69,22 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<div class="group_3-items">
 				<div class="wrap">
 					<div id="owl-demo2" class="owl-carousel">
-						<div class="item" >
-							<div class="carousel">
-								<div class="group_3_img">
-									<img src="images/img.png" alt="">
+						{% for user in userList %}
+							{% if user.privilege > 90 %}
+								<div class="item" >
+									<div class="carousel">
+										<div class="group_3_img">
+											<img src="{{ user.picture }}" alt="">
+										</div>
+										<div class="group_1_text group_3_text">
+											<h3>{{ user.firstName }} {{ user.lastName }}</h3>
+											<p>{{ user.introduction }}</p>
+										</div>
+										<div class="clear"> </div>
+									 </div>
 								</div>
-								<div class="group_1_text group_3_text">
-									<h3>MyPress</h3>
-									<p>MyPress is simply create a website to introduce yourself.</p>
-								</div>
-								<div class="clear"> </div>
-							 </div>
-						</div>
+							{% endif %}
+						{{ endfor }}
 					</div>
 				</div>
 			</div>
