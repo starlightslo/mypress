@@ -4,7 +4,7 @@ const config = require('../../config/config')
 
 const fs = require('fs')
 const express = require('express')
-const router = express.Router()
+const router = express.Router({mergeParams: true})
 const controller = require('../controllers/index')
 
 const PRELOAD_PATH = './app/routes/preloads'

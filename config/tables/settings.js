@@ -17,6 +17,10 @@ module.exports = {
 		type: 'string',
 		length: 64
 	},{
+		name: 'default_language',
+		type: 'string',
+		length: 16
+	},{
 		name: 'logo_string',
 		type: 'string',
 		length: 128
@@ -52,6 +56,7 @@ module.exports = {
 	defaultDataList: [{
 		website_name: 'MyPress',
 		template: 'default',
+		default_language: config.language,
 		logo_string: 'MyPress',
 		logo_image: '',
 		logo_link: '#',

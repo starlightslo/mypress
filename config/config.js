@@ -13,6 +13,7 @@ const production = require('./env/production')
  */
 const defaults = {
 	appName: 'MyPress',
+	language: 'en',
 	saltLength: 10,
 	root: path.join(__dirname, '..'),
 	env: process.env.NODE_ENV || 'development'

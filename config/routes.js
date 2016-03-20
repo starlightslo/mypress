@@ -17,7 +17,7 @@ const changeStaticPathForTemplate = (req, res, next) => {
  */
 module.exports = function (app) {
 	app.use('/', indexRouter)
-
+	app.use('/:language', indexRouter)
 
 	/**
 	 * Change the request path for template
