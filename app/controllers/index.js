@@ -1,5 +1,6 @@
 'use strict'
 
+const Language = require('../modules/language')
 const Menu = require('../models/menu')
 const User = require('../models/user')
 const Portfolio = require('../models/portfolio')
@@ -19,6 +20,9 @@ exports.index = function (req, res, next) {
 	const language = req.app.get('language')
 	const template = req.app.get('template')
 	const templateFile = template + '/index'
+
+	// Get template language data
+	const T = Language.getTemplateLanguage(template, language)
 
 	// Define
 	const MenuModel = Menu.bindKnex(req.app.get('db').normalDB)
@@ -131,6 +135,7 @@ exports.index = function (req, res, next) {
 		})
 
 		const resp = {
+			T: T,
 			language: language,
 			websiteName: websiteName,
 			logoString: logoString,

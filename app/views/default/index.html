@@ -90,7 +90,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			</div>
 		</div>
 		<div class="group_2" id="Portfolio">
-			<h3 class="heading">Portfolio</h3>
+			<h3 class="heading">{{ T.portfolio }}</h3>
 			<div class="group_2_items">
 				<div class="wrap">
 					<div id="owl-demo1" class="owl-carousel">
@@ -102,25 +102,25 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 									</div>
 									<div class="group_2_text2">
 										<div class="desc">
-											<h3>Project Name</h3>
+											<h3>{{ T.projectName }}</h3>
 											<h4>{{ portfolio.name }}</h4>
 										</div>
 										<div class="desc">
-											<h3>Client</h3>
+											<h3>{{ T.client }}</h3>
 											<h4>{{ portfolio.client }}</h4>
 										</div>
 										<div class="desc">
-											<h3>Role in project</h3>
+											<h3>{{ T.roleInProject }}</h3>
 											<h4>{{ portfolio.role }}</h4>
 										</div>
 										<div class="desc">
-											<h3>project description</h3>
+											<h3>{{ T.projectDescription }}</h3>
 											<h4>{{ portfolio.description }}</h4>
 										</div>
 									</div>
 									<div class="clear"> </div>
 									<div class="brows_button_3">
-										<a href="{{ portfolio.link }}" {% if portfolio.target.length > 0 %} target="{{ portfolio.target }}" {% endif %}>Browser portfolio</a>
+										<a href="{{ portfolio.link }}" {% if portfolio.target.length > 0 %} target="{{ portfolio.target }}" {% endif %}>{{ T.browserPortfolio }}</a>
 									</div>
 								 </div>
 							</div>
@@ -180,7 +180,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<section class="text-light">
 				<div  class="wrap">
 					<div class="row-content1">
-						<h3 class="heading">Skills</h3>
+						<h3 class="heading">{{ T.skills }}</h3>
 						{% for skill in skillList %}
 							<div class="chart" data-percent="{{ skill.percent }}" data-bar-color="{{ skill.color }}" data-animate="{{ skill.animateTime }}">
 								<div class="chart-content">
@@ -198,7 +198,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		</div>
 		<div class="exper" id="Experience">
 			<div class="wrap">
-				<h3 class="heading">Experience</h3>
+				<h3 class="heading">{{ T.experience }}</h3>
 				<section class="row section">
 					<div class="row-content2">
 						<!-- timeline-label -->		
