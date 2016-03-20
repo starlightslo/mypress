@@ -2,6 +2,7 @@
 
 const Menu = require('../models/menu')
 const User = require('../models/user')
+const Experience = require('../models/experience')
 
 exports.index = function (req, res, next) {
 	const websiteName = req.app.get('websiteName')
@@ -19,8 +20,10 @@ exports.index = function (req, res, next) {
 	// Define
 	const MenuModel = Menu.bindKnex(req.app.get('db').normalDB)
 	const UserModel = User.bindKnex(req.app.get('db').normalDB)
+	const ExperienceModel = Experience.bindKnex(req.app.get('db').normalDB)
 	let userList = []
 	let menuList = []
+	let experienceMap = new Map()
 
 	// Getting menu data
 	MenuModel.query()
@@ -54,12 +57,50 @@ exports.index = function (req, res, next) {
 				flickr: user.flickr
 			})
 		})
+		return ExperienceModel.query().orderBy('start_working_date', 'desc').orderBy('end_working_date', 'desc')
+	})
+	.then(experiences => {
+		console.log('in experience')
+		experiences.forEach(experience => {
+			// Getting the year of experience
+			let year = (new Date()).getFullYear()
+			if (!experience.still_here) {
+				year = experience.end_working_date.getFullYear()
+			}
+			
+			// Getting experiences from the list
+			let experienceList = []
+			if (experienceMap.has(year)) {
+				experienceList = experienceMap.get(year)
+			}
+
+			// Adding a new experience
+			experienceList.push({
+				companyName: experience.company_name,
+				companyLogo: experience.company_logo,
+				role: experience.role,
+				description: experience.description,
+				startWorkingDate: experience.start_working_date,
+				endWorkingDate: experience.end_working_date,
+				stillHere: experience.still_here
+			})
+
+			// Writing to the experience map
+			experienceMap.set(year, experienceList)
+		})
 	})
 	.catch(err => {
 		next(err)
 	})
 	.finally(() => {
 		console.log('in finally')
+		
+		// Transfer map to the object, because swig dese not support map
+		let experiences = {}
+		experienceMap.forEach((value, key) => {
+			experiences[key] = value
+		})
+
 		const resp = {
 			websiteName: websiteName,
 			logoString: logoString,
@@ -72,7 +113,8 @@ exports.index = function (req, res, next) {
 			mainButtonTarget: mainButtonTarget,
 			template: template,
 			menuList: menuList,
-			userList: userList
+			userList: userList,
+			experiences: experiences
 		}
 		res.render(templateFile, resp)
 	})
