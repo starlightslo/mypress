@@ -257,10 +257,11 @@ float: left;
 min-height: 1px;
 }
 .column.six, .column.half, .column.threesixths, .column.twofourths {
-width: 48%;
+width: 60%;
 }
 .column.last, .column.reset {
 margin-right: 0 !important;
+padding-left: 25%;
 }
 .column {
 margin-left: 0;
