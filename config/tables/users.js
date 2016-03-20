@@ -71,7 +71,7 @@ module.exports = {
 		last_name: '',
 		picture: 'images/img.png',
 		email: '',
-		introduction: 'MyPress is simply create a website to introduce yourself.',
+		introduction: 'MyPress is simply to create a website to introduce yourself.',
 		facebook: '',
 		linkedin: '',
 		twitter: '',

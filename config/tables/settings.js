@@ -56,7 +56,7 @@ module.exports = {
 		logo_image: '',
 		logo_link: '#',
 		web_title: 'PERSONAL & COMPANY',
-		web_subtitle: 'MyPress is simply create a website to introduce yourself',
+		web_subtitle: 'MyPress is simply to create a website to introduce yourself',
 		main_button_string: 'DOWNLOAD',
 		main_button_link: 'https://github.com/starlightslo/mypress',
 		main_button_target: ''
