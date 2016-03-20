@@ -16,6 +16,7 @@ exports.index = function (req, res, next) {
 	const mainButtonString = req.app.get('mainButtonString')
 	const mainButtonLink = req.app.get('mainButtonLink')
 	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const language = req.app.get('language')
 	const template = req.app.get('template')
 	const templateFile = template + '/index'
 
@@ -32,10 +33,8 @@ exports.index = function (req, res, next) {
 	let experienceMap = new Map()
 
 	// Getting menu data
-	MenuModel.query()
-	.orderBy('order')
+	MenuModel.query().where('language', language).orderBy('order')
 	.then(menus => {
-		console.log('in menu')
 		menus.forEach(menu => {
 			menuList.push({
 				name: menu.name,
@@ -43,11 +42,10 @@ exports.index = function (req, res, next) {
 				target: menu.target,
 			})
 		})
-		return UserModel.query().orderBy('first_name').orderBy('last_name')
+		return UserModel.query().innerJoin('user_profiles', 'user_profiles.user_id', 'users.id').where('user_profiles.language', language).orderBy('first_name').orderBy('last_name')
 	})
 	// Getting user data
 	.then(users => {
-		console.log('in user')
 		users.forEach(user => {
 			userList.push({
 				username: user.username,
@@ -64,11 +62,10 @@ exports.index = function (req, res, next) {
 				flickr: user.flickr
 			})
 		})
-		return PortfolioModel.query().orderBy('name')
+		return PortfolioModel.query().where('language', language).orderBy('name')
 	})
 	// Getting portfolio data
 	.then(portfolios => {
-		console.log('in portfolio')
 		portfolios.forEach(portfolio => {
 			portfolioList.push({
 				name: portfolio.name,
@@ -81,10 +78,9 @@ exports.index = function (req, res, next) {
 				pictureAlt: portfolio.picture_alt
 			})
 		})
-		return SkillModel.query().orderBy('order')
+		return SkillModel.query().where('language', language).orderBy('order')
 	})
 	.then(skills => {
-		console.log('in skill')
 		skills.forEach(skill => {
 			skillList.push({
 				name: skill.name,
@@ -93,10 +89,9 @@ exports.index = function (req, res, next) {
 				animateTime: skill.animate_time
 			})
 		})
-		return ExperienceModel.query().orderBy('start_working_date', 'desc').orderBy('end_working_date', 'desc')
+		return ExperienceModel.query().where('language', language).orderBy('start_working_date', 'desc').orderBy('end_working_date', 'desc')
 	})
 	.then(experiences => {
-		console.log('in experience')
 		experiences.forEach(experience => {
 			// Getting the year of experience
 			let year = (new Date()).getFullYear()
@@ -129,8 +124,6 @@ exports.index = function (req, res, next) {
 		next(err)
 	})
 	.finally(() => {
-		console.log('in finally')
-		
 		// Transfer map to the object, because swig dese not support map
 		let experiences = {}
 		experienceMap.forEach((value, key) => {
@@ -138,6 +131,7 @@ exports.index = function (req, res, next) {
 		})
 
 		const resp = {
+			language: language,
 			websiteName: websiteName,
 			logoString: logoString,
 			logoImage: logoImage,

@@ -9,6 +9,10 @@ module.exports = {
 		type: 'increments',
 		primary: true
 	},{
+		name: 'language',
+		type: 'string',
+		length: 16
+	},{
 		name: 'name',
 		type: 'string',
 		length: 128
@@ -42,6 +46,7 @@ module.exports = {
 		length: 128
 	}],
 	defaultDataList: [{
+		language: 'en',
 		name: 'MyPress',
 		client: 'MyPress',
 		role: 'Creator',
@@ -51,6 +56,7 @@ module.exports = {
 		picture: 'images/img1.png',
 		picture_alt: ''
 	},{
+		language: 'en',
 		name: 'MyPress',
 		client: 'MyPress',
 		role: 'Creator',
@@ -60,10 +66,41 @@ module.exports = {
 		picture: 'images/img2.jpg',
 		picture_alt: ''
 	},{
+		language: 'en',
 		name: 'MyPress',
 		client: 'MyPress',
 		role: 'Creator',
 		description: 'MyPress is simply to create a website to introduce yourself',
+		link: 'https://github.com/starlightslo/mypress',
+		target: '_blank',
+		picture: 'images/img3.jpg',
+		picture_alt: ''
+	},{
+		language: 'tw',
+		name: 'MyPress',
+		client: 'MyPress',
+		role: '創作者',
+		description: 'MyPress 讓你簡單的創建網站來介紹您自己',
+		link: 'https://github.com/starlightslo/mypress',
+		target: '_blank',
+		picture: 'images/img1.png',
+		picture_alt: ''
+	},{
+		language: 'tw',
+		name: 'MyPress',
+		client: 'MyPress',
+		role: '創作者',
+		description: 'MyPress 讓你簡單的創建網站來介紹您自己',
+		link: 'https://github.com/starlightslo/mypress',
+		target: '_blank',
+		picture: 'images/img2.jpg',
+		picture_alt: ''
+	},{
+		language: 'tw',
+		name: 'MyPress',
+		client: 'MyPress',
+		role: '創作者',
+		description: 'MyPress 讓你簡單的創建網站來介紹您自己',
 		link: 'https://github.com/starlightslo/mypress',
 		target: '_blank',
 		picture: 'images/img3.jpg',

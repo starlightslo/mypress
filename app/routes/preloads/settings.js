@@ -1,5 +1,6 @@
 'use strict'
 
+const Config = require('../../../config/config')
 const Settings = require('../../models/settings')
 const Language = require('../../models/language')
 
@@ -8,15 +9,33 @@ const Language = require('../../models/language')
  */
 module.exports = function(req, res, next) {
 	// Getting language
-	const language = req.params.language
+	const language = req.params.language || req.app.get('defaultLanguage') || Config.language
 
 	// Set table model
 	const SettingsModel = Settings.bindKnex(req.app.get('db').normalDB)
 	const LanguageModel = Language.bindKnex(req.app.get('db').normalDB)
 
-	// Getting settings data
-	SettingsModel.query()
-	.first()
+	// Getting language
+	LanguageModel.query().select('name')
+	.then(languages => {
+		// Setting the language if the language is in the support list
+		let hasLanguage = false
+		languages.forEach(lang => {
+			if (language === lang.name) {
+				req.app.set('language', language)
+				hasLanguage = true
+			}
+		})
+
+		// set to the default language if there is no support language
+		if (!hasLanguage) {
+			req.app.set('language', req.app.get('defaultLanguage') || Config.language)
+		}
+
+		console.log('language: ' + req.app.get('language'))
+		// Getting settings data according language
+		return SettingsModel.query().where('language', req.app.get('language')).first()
+	})
 	.then(settings => {
 		req.app.set('websiteName', settings.website_name)
 		req.app.set('template', settings.template)
@@ -29,23 +48,8 @@ module.exports = function(req, res, next) {
 		req.app.set('mainButtonString', settings.main_button_string)
 		req.app.set('mainButtonLink', settings.main_button_link)
 		req.app.set('mainButtonTarget', settings.main_button_target)
-		req.app.set('language', settings.default_language)
-		if (language) {
-			return LanguageModel.query().select('name')
-		}
-	})
-	.then(languages => {
-		// Setting the language if the language is in the support list
-		if (language) {
-			languages.forEach(lang => {
-				if (language === lang.name) {
-					req.app.set('language', language)
-				}
-			})
-		}
 	})
 	.finally(() => {
-		console.log('language: ' + req.app.get('language'))
 		next()
 	})
 }

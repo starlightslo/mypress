@@ -9,6 +9,10 @@ module.exports = {
 		type: 'increments',
 		primary: true
 	},{
+		name: 'language',
+		type: 'string',
+		length: 16
+	},{
 		name: 'website_name',
 		type: 'string',
 		length: 128
@@ -54,6 +58,7 @@ module.exports = {
 		length: 32
 	}],
 	defaultDataList: [{
+		language: 'en',
 		website_name: 'MyPress',
 		template: 'default',
 		default_language: config.language,
@@ -63,6 +68,19 @@ module.exports = {
 		web_title: 'PERSONAL & COMPANY',
 		web_subtitle: 'MyPress is simply to create a website to introduce yourself',
 		main_button_string: 'DOWNLOAD',
+		main_button_link: 'https://github.com/starlightslo/mypress',
+		main_button_target: ''
+	},{
+		language: 'tw',
+		website_name: 'MyPress',
+		template: 'default',
+		default_language: config.language,
+		logo_string: 'MyPress',
+		logo_image: '',
+		logo_link: '#',
+		web_title: '個人 & 公司',
+		web_subtitle: 'MyPress 讓你簡單的創建網站來介紹您自己',
+		main_button_string: '快速下載',
 		main_button_link: 'https://github.com/starlightslo/mypress',
 		main_button_target: ''
 	}]

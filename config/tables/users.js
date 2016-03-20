@@ -23,14 +23,6 @@ module.exports = {
 		name: 'privilege',
 		type: 'integer'
 	},{
-		name: 'first_name',
-		type: 'string',
-		length: 128
-	},{
-		name: 'last_name',
-		type: 'string',
-		length: 128
-	},{
 		name: 'picture',
 		type: 'string',
 		length: 256
@@ -38,10 +30,6 @@ module.exports = {
 		name: 'email',
 		type: 'string',
 		length: 256
-	},{
-		name: 'introduction',
-		type: 'text',
-		textType: 'longtext'
 	},{
 		name: 'facebook',
 		type: 'string',
@@ -67,11 +55,8 @@ module.exports = {
 		username: 'admin',
 		password: bcrypt.hashSync('admin', salt),
 		privilege: 99,
-		first_name: 'MyPress',
-		last_name: '',
 		picture: 'images/img.png',
 		email: '',
-		introduction: 'MyPress is simply to create a website to introduce yourself.',
 		facebook: '',
 		linkedin: '',
 		twitter: '',
