@@ -45,6 +45,7 @@ module.exports = function(req, res, next) {
 		req.app.set('logoLink', settings.logo_link)
 		req.app.set('webTitle', settings.web_title)
 		req.app.set('webSubtitle', settings.web_subtitle)
+		req.app.set('backgroundImage', settings.background_image)
 		req.app.set('mainButtonString', settings.main_button_string)
 		req.app.set('mainButtonLink', settings.main_button_link)
 		req.app.set('mainButtonTarget', settings.main_button_target)

@@ -14,6 +14,7 @@ exports.index = function (req, res, next) {
 	const logoLink = req.app.get('logoLink')
 	const webTitle = req.app.get('webTitle')
 	const webSubtitle = req.app.get('webSubtitle')
+	const backgroundImage = req.app.get('backgroundImage')
 	const mainButtonString = req.app.get('mainButtonString')
 	const mainButtonLink = req.app.get('mainButtonLink')
 	const mainButtonTarget = req.app.get('mainButtonTarget')
@@ -143,6 +144,7 @@ exports.index = function (req, res, next) {
 			logoLink: logoLink,
 			webTitle: webTitle,
 			webSubtitle: webSubtitle,
+			backgroundImage: backgroundImage,
 			mainButtonString: mainButtonString,
 			mainButtonLink: mainButtonLink,
 			mainButtonTarget: mainButtonTarget,

@@ -45,6 +45,10 @@ module.exports = {
 		type: 'string',
 		length: 512
 	},{
+		name: 'background_image',
+		type: 'string',
+		length: 256
+	},{
 		name: 'main_button_string',
 		type: 'string',
 		length: 32
@@ -67,6 +71,7 @@ module.exports = {
 		logo_link: '#',
 		web_title: 'PERSONAL & COMPANY',
 		web_subtitle: 'MyPress is simply to create a website to introduce yourself',
+		background_image: 'images/slider.jpg',
 		main_button_string: 'DOWNLOAD',
 		main_button_link: 'https://github.com/starlightslo/mypress',
 		main_button_target: ''
@@ -80,6 +85,7 @@ module.exports = {
 		logo_link: '#',
 		web_title: '個人 & 公司',
 		web_subtitle: 'MyPress 讓你簡單的創建網站來介紹您自己',
+		background_image: 'images/slider.jpg',
 		main_button_string: '快速下載',
 		main_button_link: 'https://github.com/starlightslo/mypress',
 		main_button_target: ''
