@@ -1,0 +1,40 @@
+<!--Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>{{ websiteName }} | {{ T.login }}</title>
+		<link href="../css/login_style.css" rel="stylesheet" type="text/css" media="all"/>
+		<!-- Custom Theme files -->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<!--web-fonts-->
+		<link href='//fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700' rel='stylesheet' type='text/css'>
+		<!--web-fonts-->
+	</head>
+	<body>
+		<div class="main">
+			<div class="login">
+				<div class="login-top">
+					<img src="../images/p.png">
+				</div>
+				<h1>{{ T.portalLogin }}</h1>
+				<div class="login-bottom">
+					<form method="post" action="login">
+						<input type="text" name="username" placeholder="{{ T.username }}" required=" ">
+						<input type="password" name="password" class="password" placeholder="{{ T.password }}" required=" ">
+						<input type="submit" value="{{ T.login }}">
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="footer">
+			<p>
+				© 2016 Power by <a href="https://github.com/starlightslo/mypress" target="_blank">MyPress</a>, Template by <a href="http://w3layouts.com" target="_blank">w3layouts</a>
+			</p>
+		</div>
+	</body>
+</html>

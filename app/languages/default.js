@@ -6,5 +6,10 @@ module.exports = {
 	projectDescription: 'Project Description',
 	browserPortfolio: 'Browser Portfolio',
 	skills: 'SKILLS',
-	experience: 'EXPERIENCE'
+	experience: 'EXPERIENCE',
+	backendManagement: 'Login Management',
+	login: 'Login',
+	username: 'Username',
+	password: 'Password',
+	portalLogin: 'Portal Login'
 }
