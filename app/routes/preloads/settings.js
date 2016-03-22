@@ -1,41 +1,23 @@
 'use strict'
 
-const Config = require('../../../config/config')
+const config = require('../../../config/config')
 const Settings = require('../../models/settings')
-const Language = require('../../models/language')
 
 /**
  * This module will load app's settings from `settings` table and pass to the controllers.
  */
 module.exports = function(req, res, next) {
 	// Getting language
-	const language = req.params.language || req.app.get('defaultLanguage') || Config.language
+	const language = req.app.get('language')
+	if (!language) {
+		req.app.set('language', req.app.get('defaultLanguage') || config.language)
+	}
 
 	// Set table model
 	const SettingsModel = Settings.bindKnex(req.app.get('db').normalDB)
-	const LanguageModel = Language.bindKnex(req.app.get('db').normalDB)
 
 	// Getting language
-	LanguageModel.query().select('name')
-	.then(languages => {
-		// Setting the language if the language is in the support list
-		let hasLanguage = false
-		languages.forEach(lang => {
-			if (language === lang.name) {
-				req.app.set('language', language)
-				hasLanguage = true
-			}
-		})
-
-		// set to the default language if there is no support language
-		if (!hasLanguage) {
-			req.app.set('language', req.app.get('defaultLanguage') || Config.language)
-		}
-
-		console.log('language: ' + req.app.get('language'))
-		// Getting settings data according language
-		return SettingsModel.query().where('language', req.app.get('language')).first()
-	})
+	SettingsModel.query().where('language', req.app.get('language')).first()
 	.then(settings => {
 		req.app.set('websiteName', settings.website_name)
 		req.app.set('template', settings.template)

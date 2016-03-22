@@ -24,8 +24,11 @@
     "errorhandler": "^1.4.3",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
+    "jsonwebtoken": "^5.7.0",
     "knex": "^0.10.0",
+    "objection": "^0.4.0",
     "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
     "swig": "^1.4.2"
   }
 }
