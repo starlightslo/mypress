@@ -2,9 +2,9 @@
 
 const config = require('../../config/config')
 const Language = require('../modules/language')
+const ParallelLogin = require('../modules/parallel_login')
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
-
 
 exports.login = function (req, res, next) {
 	const websiteName = req.app.get('websiteName')
@@ -63,19 +63,33 @@ exports.loginSuccess = function(req, res, next) {
 }
 
 exports.localAuthenticate = function(req, res, next) {
+	const remoteIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+
+	// Prevent parallel login
+	if (!ParallelLogin.attemptLogin(remoteIP)) {
+		return res.redirect('login')
+	}
+
 	passport.authenticate('local', function(err, user, info) {
-		if (err) {
-			return next(err)
-		}
-		if (!user) {
-			return res.redirect('login')
-		}
-		req.logIn(user, function(err) {
+		// Delay response for prevent parallel login
+		setTimeout(() => {
 			if (err) {
+				ParallelLogin.attemptFailedLogin(remoteIP)
 				return next(err)
 			}
-			return next()
-		})
+			if (!user) {
+				ParallelLogin.attemptFailedLogin(remoteIP)
+				return res.redirect('login')
+			}
+			req.logIn(user, function(err) {
+				if (err) {
+					ParallelLogin.attemptFailedLogin(remoteIP)
+					return next(err)
+				}
+				ParallelLogin.loginSuccessful(remoteIP)
+				return next()
+			})
+		}, config.delayResponse)
 	})(req, res, next)
 }
 

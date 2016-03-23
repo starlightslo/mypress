@@ -16,6 +16,9 @@ const defaults = {
 	language: 'en',
 	saltLength: 10,
 	tokenExpiryTime: 10*60,
+	delayResponse: 3000,
+	maxFailedCount: 5,
+	blockTime: 15*60*1000,
 	root: path.join(__dirname, '..'),
 	env: process.env.NODE_ENV || 'development'
 }
