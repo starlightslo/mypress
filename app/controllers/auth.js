@@ -2,10 +2,9 @@
 
 const config = require('../../config/config')
 const Language = require('../modules/language')
+const ParallelLogin = require('../modules/parallel_login')
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
-
-let inProgress = {}
 
 exports.login = function (req, res, next) {
 	const websiteName = req.app.get('websiteName')
@@ -66,32 +65,28 @@ exports.loginSuccess = function(req, res, next) {
 exports.localAuthenticate = function(req, res, next) {
 	const remoteIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress
 
-	/**
-	 * This prevent parallel login mechanism should be changed to use Redis database on the production server.
-	 * Otherwise, this mechanism can not handled if the process is forked.
-	 */
 	// Prevent parallel login
-	if (inProgress[remoteIP]) {
+	if (!ParallelLogin.attemptLogin(remoteIP)) {
 		return res.redirect('login')
 	}
-
-	// Setting this ip is in progress
-	inProgress[remoteIP] = true
 
 	passport.authenticate('local', function(err, user, info) {
 		// Delay response for prevent parallel login
 		setTimeout(() => {
-			delete inProgress[remoteIP];
 			if (err) {
+				ParallelLogin.attemptFailedLogin(remoteIP)
 				return next(err)
 			}
 			if (!user) {
+				ParallelLogin.attemptFailedLogin(remoteIP)
 				return res.redirect('login')
 			}
 			req.logIn(user, function(err) {
 				if (err) {
+					ParallelLogin.attemptFailedLogin(remoteIP)
 					return next(err)
 				}
+				ParallelLogin.loginSuccessful(remoteIP)
 				return next()
 			})
 		}, config.delayResponse)
