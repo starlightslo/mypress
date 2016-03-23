@@ -13,8 +13,14 @@ const changeTemplatePath = (req, res, next) => {
 	// Getting the template and language
 	const template = req.app.get('template')
 
+	// Remove the parameters
+	let fileUrl = req.url
+	if (fileUrl.includes('?')) {
+		fileUrl = fileUrl.substring(0, fileUrl.indexOf('?'))
+	}
+
 	// If can not find the file
-	fs.stat(config.root + '/public' + req.url, (err, stat) => {
+	fs.stat(config.root + '/public' + fileUrl, (err, stat) => {
 		if (err && template) {
 			// Modifing the request url
 			req.url = '/' + template + req.url

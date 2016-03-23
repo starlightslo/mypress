@@ -7,9 +7,5 @@ module.exports = {
 	browserPortfolio: 'Browser Portfolio',
 	skills: 'SKILLS',
 	experience: 'EXPERIENCE',
-	backendManagement: 'Login Management',
-	login: 'Login',
-	username: 'Username',
-	password: 'Password',
-	portalLogin: 'Portal Login'
+	backendManagement: 'Login Management'
 }

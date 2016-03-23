@@ -6,6 +6,9 @@ const ParallelLogin = require('../modules/parallel_login')
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
 
+const SYSTEM = 'system'
+const ADMIN_PRIVILEGE = 90
+
 exports.login = function (req, res, next) {
 	const websiteName = req.app.get('websiteName')
 	const logoString = req.app.get('logoString')
@@ -18,10 +21,10 @@ exports.login = function (req, res, next) {
 	const mainButtonTarget = req.app.get('mainButtonTarget')
 	const language = req.app.get('language')
 	const template = req.app.get('template')
-	const templateFile = template + '/login'
+	const templateFile = 'login'
 
 	// Get template language data
-	const T = Language.getTemplateLanguage(template, language)
+	const T = Language.getTemplateLanguage(SYSTEM, language)
 
 	const resp = {
 		T: T,
@@ -44,8 +47,11 @@ exports.loginSuccess = function(req, res, next) {
 	const language = req.app.get('language')
 	const user = req.user
 	const remoteIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress
-	console.log(user)
-	console.log(remoteIP)
+
+	// Checking user privilege
+	if (user.privilege < ADMIN_PRIVILEGE) {
+		return res.redirect('login')
+	}
 
 	// Create user data
 	const userData = {
@@ -113,6 +119,7 @@ exports.checkAuth = function(req, res, next) {
 			res.redirect('/')
 			return
 		}
+
 		next()
 	})
 }

@@ -29,7 +29,7 @@ img{max-width:100%;}
 /*end reset*/
 body{
 	font-family: 'PT Sans Narrow', sans-serif;
-	 background: url(../images/banner1.jpg) no-repeat;
+	 background: url(../images/login.background.jpg) no-repeat;
     background-size: cover;
     -webkit-background-size: cover;
     -moz-background-size: cover;
