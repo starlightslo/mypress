@@ -59,10 +59,10 @@ class Language {
 			// Remove the language from path
 			if (req.url.startsWith(language)) {
 				req.url = req.url.substring(language.length)
-				if (req.url.length === 0) {
-					req.url = '/'
-				}
 			}
+		}
+		if (req.url.length === 0) {
+			req.url = '/'
 		}
 		next()
 	}
