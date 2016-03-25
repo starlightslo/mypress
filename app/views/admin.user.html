@@ -1,0 +1,62 @@
+<div class="content-top">
+	<div class="col-md-12">
+		<div class="tab-pane active text-style" id="tab1">
+			<div class="inbox-right">
+				<div class="mailbox-content">
+					<div class="mail-toolbar clearfix">
+						<div class="float-left">
+							<div class="btn-group">
+								<a class="btn btn-default" href="user/add">New</a>
+							</div>
+						</div>
+						<div class="float-right">
+							<div class="btn-group">
+								<a class="btn btn-default" href="#"><i class="fa fa-angle-left"></i></a>
+								<a class="btn btn-default" href="#"><i class="fa fa-angle-right"></i></a>
+							</div>
+						</div>
+					</div>
+					<table class="table">
+						<tbody>
+							{% for user in userList %}
+								<tr class="table-row">
+									<td class="table-img">
+										<img src="{{ server }}/{{ user.picture }}" alt="" style="width: 60px; height: 60px;" />
+									</td>
+									<td class="table-text">
+										<a href="#"><h6>{{ user.firstName }} {{ user.lastName }}</h6></a>
+										<p>{{ user.introduction }}</p>
+									</td>
+									<td>
+										<span class="fam">{{ user.privilege }}</span>
+									</td>
+									<td class="social">
+										{% if user.facebook.length > 0 %}
+											<a class="social facebook_icon" href="{{ user.facebook }}" target="_blank"></a>
+										{% endif %}
+										{% if user.twitter.length > 0 %}
+											<a class="social twitter_icon" href="{{ user.twitter }}" target="_blank"></a>
+										{% endif %}
+										{% if user.google.length > 0 %}
+											<a class="social google_icon" href="{{ user.google }}" target="_blank"></a>
+										{% endif %}
+										{% if user.linkedin.length > 0 %}
+											<a class="social linkedin_icon" href="{{ user.linkedin }}" target="_blank"></a>
+										{% endif %}
+										{% if user.flickr.length > 0 %}
+											<a class="social flickr_icon" href="{{ user.flickr }}" target="_blank"></a>
+										{% endif %}
+									</td>
+									<td >
+										<a href="#"><i class="fa delete fa-trash-o"></i></a>
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="clearfix"> </div>
+</div>

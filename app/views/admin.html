@@ -13,18 +13,18 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		<meta name="keywords" content="Minimal Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
 		Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
 		<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-		<link href="css/system.bootstrap.min.css" rel='stylesheet' type='text/css' />
+		<link href="{{ server }}/css/system.bootstrap.min.css" rel='stylesheet' type='text/css' />
 		<!-- Custom Theme files -->
-		<link href="css/system.style.css" rel='stylesheet' type='text/css' />
-		<link href="css/system.font-awesome.css" rel="stylesheet"> 
-		<script src="js/system.jquery.min.js"> </script>
+		<link href="{{ server }}/css/system.style.css" rel='stylesheet' type='text/css' />
+		<link href="{{ server }}/css/system.font-awesome.css" rel="stylesheet"> 
+		<script src="{{ server }}/js/system.jquery.min.js"> </script>
 		<!-- Mainly scripts -->
-		<script src="js/system.jquery.metisMenu.js"></script>
-		<script src="js/system.jquery.slimscroll.min.js"></script>
+		<script src="{{ server }}/js/system.jquery.metisMenu.js"></script>
+		<script src="{{ server }}/js/system.jquery.slimscroll.min.js"></script>
 		<!-- Custom and plugin javascript -->
-		<link href="css/system.custom.css" rel="stylesheet">
-		<script src="js/system.custom.js"></script>
-		<script src="js/system.screenfull.js"></script>
+		<link href="{{ server }}/css/system.custom.css" rel="stylesheet">
+		<script src="{{ server }}/js/system.custom.js"></script>
+		<script src="{{ server }}/js/system.screenfull.js"></script>
 		<script>
 			$(function () {
 				$('#supported').text('Supported/allowed: ' + !!screenfull.enabled);
@@ -39,7 +39,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			});
 		</script>
 		<!--pie-chart-->
-		<script src="js/system.pie-chart.js" type="text/javascript"></script>
+		<script src="{{ server }}/js/system.pie-chart.js" type="text/javascript"></script>
 		<script type="text/javascript">
 			$(document).ready(function () {
 				$('#demo-pie-1').pieChart({
@@ -74,7 +74,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			});
 		</script>
 		<!--skycons-icons-->
-		<script src="js/system.skycons.js"></script>
+		<script src="{{ server }}/js/system.skycons.js"></script>
 		<!--//skycons-icons-->
 	</head>
 	<body>
@@ -83,7 +83,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<div id="page-wrapper" class="gray-bg dashbard-1">
 				<div class="content-main">
 					{% include './admin.banner.html' %}
-					{% include './admin.dashboards.html' %}
+					{% include contentPage %}
 					{% include 'admin.copy.html' %}
 				</div>
 				<div class="clearfix"> </div>
@@ -91,9 +91,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		</div>
 
 		<!--scrolling js-->
-		<script src="js/system.jquery.nicescroll.js"></script>
-		<script src="js/system.scripts.js"></script>
+		<script src="{{ server }}/js/system.jquery.nicescroll.js"></script>
+		<script src="{{ server }}/js/system.scripts.js"></script>
 		<!--//scrolling js-->
-		<script src="js/system.bootstrap.min.js"> </script>
+		<script src="{{ server }}/js/system.bootstrap.min.js"> </script>
 	</body>
 </html>

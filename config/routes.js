@@ -8,7 +8,14 @@ const adminRouter = require('../app/routes/admin')
 
 const Language = require('../app/modules/language')
 
-
+const removeLastSlash = (req, res, next) => {
+	// Removing the last slash and redirect to the new path to prevent the unexpected url link
+	if ((req.url.length > 1) && (req.url.endsWith('/'))) {
+		req.url = req.url.substring(0, req.url.length-1)
+		return res.redirect(req.url)
+	}
+	next()
+}
 const changeTemplatePath = (req, res, next) => {
 	// Getting the template and language
 	const template = req.app.get('template')
@@ -33,6 +40,8 @@ const changeTemplatePath = (req, res, next) => {
  * Expose routes
  */
 module.exports = function (app) {
+	app.use(removeLastSlash)
+
 	/**
 	 * Handling the multiple language
 	 * IMPORTANT: This should be before all process of routes!!!

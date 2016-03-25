@@ -33,6 +33,30 @@ body a{
 div#wrapper {
     background-color: #fff;
 }
+/*-- social icon --*/
+a.social {
+  opacity: 0.8;
+  width: 24px;
+  height: 24px;
+  padding: 10px;
+  border-radius: 26px;
+  display: inline-flex;
+}
+a.facebook_icon {
+  background: #39579D url('../images/facebook.png') no-repeat 8px 3px;
+}
+a.twitter_icon {
+  background: #02B3E9 url('../images/twitter.png') no-repeat 2px 5px;
+}
+a.google_icon {
+  background: #D95333 url('../images/google.png') no-repeat 4px 5px;
+}
+a.linkedin_icon {
+  background: #007BB6 url('../images/linkedin.png') no-repeat 4px 2px;
+}
+a.flickr_icon {
+  background: #FF0084 url('../images/flickr.png') no-repeat 2px 9px;
+}
 /*-- header --*/
 .navbar .navbar-nav li a {
   padding: 0 10px;
@@ -323,6 +347,9 @@ i.nav_icon {
     padding: 15px;
     width: 44px;
     height: 44px;
+}
+i.delete {
+  font-size: 20px;
 }
 span.fa.arrow {
     margin-top: 17px;
@@ -1774,6 +1801,9 @@ td.table-text p{
 	line-height: 1.5em;
 	font-family: 'Muli-Regular';
 	color:#999;
+}
+td.social {
+  width: 165px;
 }
 td i{
 	color:#999;
