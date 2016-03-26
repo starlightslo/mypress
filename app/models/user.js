@@ -14,7 +14,7 @@ class User extends Model {
 				modelClass: __dirname + '/user_profile',
 				join: {
 					from: 'users.id',
-					to: 'user_profile.user_id'
+					to: 'user_profiles.user_id'
 				}
 			}
 		}

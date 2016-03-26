@@ -21,7 +21,9 @@
 							{% for user in userList %}
 								<tr class="table-row">
 									<td class="table-img">
-										<img src="{{ server }}/{{ user.picture }}" alt="" style="width: 60px; height: 60px;" />
+										{% if user.picture.length > 0 %}
+											<img class="sm-head-pic" src="{{ server }}/{{ user.picture }}" alt="" />
+										{% endif %}
 									</td>
 									<td class="table-text">
 										<a href="user/view/{{ user.username }}"><h6>{{ user.firstName }} {{ user.lastName }}</h6></a>

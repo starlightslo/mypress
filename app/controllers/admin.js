@@ -1,7 +1,12 @@
 'use strict'
 
+const bcrypt = require('bcryptjs')
+const config = require('../../config/config')
+const salt = bcrypt.genSaltSync(config.saltLength)
+
 const Language = require('../modules/language')
 const User = require('../models/user')
+const UserProfile = require('../models/user_profile')
 
 const SYSTEM = 'system'
 
@@ -236,8 +241,66 @@ exports.view = function (req, res, next) {
 }
 
 exports.addUser = function (req, res, next) {
+	const languageList = req.app.get('languageList')
+	const language = req.app.get('language')
 
-	res.send('add user')
+	// Getting user data from the input
+	const username = req.body.username || ''
+	const password = req.body.password || ''
+	const privilege = req.body.privilege || 1
+	const firstName = req.body.first_name || ''
+	const lastName = req.body.last_name || ''
+	const email = req.body.email || ''
+	const introduction = req.body.introduction || ''
+	const facebook = req.body.facebook || ''
+	const twitter = req.body.twitter || ''
+	const google = req.body.google || ''
+	const linkedin = req.body.linkedin || ''
+	const flickr = req.body.flickr || ''
+
+	// Checking user data
+
+
+	// Define
+	const UserModel = User.bindKnex(req.app.get('db').normalDB)
+	const UserProfileModel = UserProfile.bindKnex(req.app.get('db').normalDB)
+
+	// Insert data
+	UserModel.query().insert({
+		username: username,
+		password: bcrypt.hashSync('admin', salt),
+		privilege: privilege,
+		picture: '',
+		email: email,
+		facebook: facebook,
+		linkedin: linkedin,
+		twitter: twitter,
+		google: google,
+		flickr: flickr
+	})
+	.then(user => {
+		console.log(user.id)
+		let promiseList = []
+		languageList.forEach(lang => {
+			promiseList.push(UserProfileModel.query().insert({
+				language: lang,
+				user_id: user.id,
+				first_name: firstName,
+				last_name: lastName,
+				introduction: introduction
+			}))
+		})
+		return Promise.all(promiseList)
+	})
+	.then(() => {
+		
+	})
+	.catch(err => {
+		next(err)
+	})
+	.finally(() => {
+		res.redirect('/' + language + '/admin/user')
+	})
 }
 
 exports.editUser = function (req, res, next) {

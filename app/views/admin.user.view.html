@@ -4,7 +4,11 @@
 		<form class="form-horizontal" method="post" action="{{ server }}/admin/user/edit/{{ user.username }}">
 			<div class="form-group">
 				<div class="picture-group">
-					<img class="picture" src="{{ server }}/{{ user.picture }}" />
+					{% if user.picture.length > 0 %}
+						<img class="picture" src="{{ server }}/{{ user.picture }}" />
+					{% else %}
+						<img class="picture" />
+					{% endif %}
 				</div>
 				<div class="upload-block">
 					<a href="#" class="btn btn-sm btn-info btn-upload">

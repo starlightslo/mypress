@@ -2,11 +2,11 @@
 <div class="grid-form">
 	<div class="grid-form1">
 		<h3 id="forms-example">Add new user</h3>
-		<form class="form-horizontal" method="post" action="add">
+		<form class="form-horizontal" method="post" action="{{ server }}/{{ language }}/admin/user/add">
 			<div class="form-group">
 				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Privilege</label>
 				<div class="col-sm-10">
-					<select class="col-sm-2 control-label hor-form">
+					<select class="col-sm-2 control-label hor-form" id="privilege" name="privilege">
 						{% for i in Array(99) %}
 							<option value="{{loop.index}}">{{loop.index}}</option>
 						{% endfor %}
@@ -16,79 +16,73 @@
 			<div class="form-group">
 				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Username</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" id="username" placeholder="Username" required>
+					<input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Password</label>
 				<div class="col-sm-10">
-					<input type="password" class="form-control" id="password" placeholder="Password" required>
+					<input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Repeated Password</label>
 				<div class="col-sm-10">
-					<input type="password" class="form-control" id="repeatedPassword" placeholder="Repeated Password" required>
+					<input type="password" class="form-control" id="repeated_password" placeholder="Repeated Password" required>
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="inputEmail3" class="col-sm-2 control-label hor-form">First Name</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" id="first_name" placeholder="First Name">
+					<input type="text" class="form-control" id="first_name" name="first_name" placeholder="First Name">
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Last Name</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" id="last_name" placeholder="Last Name">
+					<input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last Name">
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Email</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" id="email" placeholder="Email">
+					<input type="text" class="form-control" id="email" name="email" placeholder="Email">
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Introduction</label>
 				<div class="col-sm-10">
-					<textarea id="introduction" class="form-control" placeholder="Introduce youself..."></textarea>
-				</div>
-			</div>
-			<div class="form-group">
-				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Email</label>
-				<div class="col-sm-10">
-					<input type="text" class="form-control" id="email" placeholder="Email">
+					<textarea class="form-control" id="introduction" name="introduction" placeholder="Introduce youself..."></textarea>
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Facebook</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" id="facebook" placeholder="Facebook">
+					<input type="text" class="form-control" id="facebook" name="facebook" placeholder="Facebook">
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Twitter</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" id="twitter" placeholder="Twitter">
+					<input type="text" class="form-control" id="twitter" name="twitter" placeholder="Twitter">
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Google</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" id="google" placeholder="Google">
+					<input type="text" class="form-control" id="google" name="google" placeholder="Google">
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="inputEmail3" class="col-sm-2 control-label hor-form">LinkedIn</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" id="linkedin" placeholder="LinkedIn">
+					<input type="text" class="form-control" id="linkedin" name="linkedin" placeholder="LinkedIn">
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Flickr</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" id="flickr" placeholder="Flickr">
+					<input type="text" class="form-control" id="flickr" name="flickr" placeholder="Flickr">
 				</div>
 			</div>
 			<div class="form-group">

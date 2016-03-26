@@ -23,6 +23,7 @@ class Language {
 	}
 
 	static handleLanguage(req, res, next) {
+		let languageList = []
 		// Getting language
 		const language = req.params.language
 		if (language) {
@@ -35,11 +36,15 @@ class Language {
 				// Setting the language if the language is in the support list
 				let hasLanguage = false
 				languages.forEach(lang => {
+					languageList.push(lang.name)
 					if (language === lang.name) {
 						req.app.set('language', language)
 						hasLanguage = true
 					}
 				})
+
+				// Store languages into language list
+				req.app.set('languageList', languageList)
 
 				// Setting to undefined if there is no support language
 				if (!hasLanguage) {
