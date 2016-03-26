@@ -33,6 +33,46 @@ body a{
 div#wrapper {
     background-color: #fff;
 }
+.sm-head-pic {
+  width: 60px;
+  height: 60px;
+}
+.head-pic {
+  width: 125px;
+  height: 125px;
+}
+.bg-head-pic {
+  width: 250px;
+  height: 250px;
+}
+.picture-group {
+  width: 16.66666667%;
+  text-align: right;
+  float: left;
+}
+.picture {
+  display: inline-block;
+  border: 5px dotted #eee;
+  padding: 3px;
+  margin-left: 15px;
+  width: 75px;
+  height: 75px;
+}
+.upload-block {
+  display: table-cell;
+  vertical-align: middle;
+  float: none;
+  height: 75px;
+  padding-left: 15px;
+}
+.btn-upload {
+  padding: 0;
+}
+label.upload {
+  position: relative;
+  padding: 5px;
+  margin: 0;
+}
 /*-- social icon --*/
 a.social {
   opacity: 0.8;
@@ -1248,6 +1288,13 @@ input.form-control.input-lg ,select.form-control.input-lg{
 }
 input.form-control.input-sm,select.form-control.input-sm {
     margin: 1.5em 0;
+}
+input.upload-picture {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.0001;
+  width: 100%;
 }
 input#disabledTextInput,select#disabledSelect {
     background-color: #FFF;

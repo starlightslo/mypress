@@ -28,8 +28,8 @@
 		 		{% include './admin.notification.html' %}
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle dropdown-at" data-toggle="dropdown">
-						<span class=" name-caret">{{ loginUser.username }}<i class="caret"></i></span>
-						<img src="{{ server }}/{{ loginUser.picture }}" style="width: 60px; height: 60px;">
+						<span class="name-caret">{{ loginUser.username }}<i class="caret"></i></span>
+						<img class="sm-head-pic" src="{{ server }}/{{ loginUser.picture }}">
 					</a>
 					<ul class="dropdown-menu " role="menu">
 						<li><a href="logout"><i class="fa fa-sign-in"></i>{{ T.logout }}</a></li>
