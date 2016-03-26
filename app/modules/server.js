@@ -3,6 +3,7 @@
 
 const express = require('express')
 const session = require('express-session')
+const RedisStore = require('connect-redis')(session)
 const errorhandler = require('errorhandler')
 const app = express()
 
@@ -72,7 +73,16 @@ class Server {
 		}
 
 		// Sessions
-		app.use(session({secret: app.get('secret')}))
+		if (this.config.redis) {
+			app.use(session({
+				store: new RedisStore(this.config.redis),
+				secret: app.get('secret'),
+				resave: false,
+				saveUninitialized: true
+			}))
+		} else {
+			app.use(session({secret: app.get('secret')}))
+		}
 
 		// bodyParser
 		app.use(bodyParser.urlencoded({ extended: false }))
