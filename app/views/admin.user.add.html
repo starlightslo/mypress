@@ -1,80 +1,101 @@
 
 <div class="grid-form">
 	<div class="grid-form1">
-		<h3 id="forms-example" class="">Add new user</h3>
-		<form method="post" action="add">
-			<div class="col-md-12 form-group1 group-mail">
-				<label class="control-label">Privilege</label>
-				<select>
-					{% for i in Array(99) %}
-						<option value="{{loop.index}}">{{loop.index}}</option>
-					{% endfor %}
-				</select>
+		<h3 id="forms-example">Add new user</h3>
+		<form class="form-horizontal" method="post" action="add">
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Privilege</label>
+				<div class="col-sm-10">
+					<select class="col-sm-2 control-label hor-form">
+						{% for i in Array(99) %}
+							<option value="{{loop.index}}">{{loop.index}}</option>
+						{% endfor %}
+					</select>
+				</div>
 			</div>
-			<div class="clearfix"> </div>
-			<div class="col-md-12 form-group1 group-mail">
-				<label class="control-label">Username</label>
-				<input type="text" placeholder="Username" required>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Username</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="username" placeholder="Username" required>
+				</div>
 			</div>
-			<div class="clearfix"> </div>
-			<div class="col-md-12 form-group1 group-mail">
-				<label class="control-label">Password</label>
-				<input type="password" placeholder="Password" required>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Password</label>
+				<div class="col-sm-10">
+					<input type="password" class="form-control" id="password" placeholder="Password" required>
+				</div>
 			</div>
-			<div class="clearfix"> </div>
-			<div class="col-md-12 form-group1 group-mail">
-				<label class="control-label">Repeated Password</label>
-				<input type="password" placeholder="Repeated Password" required>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Repeated Password</label>
+				<div class="col-sm-10">
+					<input type="password" class="form-control" id="repeatedPassword" placeholder="Repeated Password" required>
+				</div>
 			</div>
-			<div class="clearfix"> </div>
-			<div class="col-md-6 form-group1 group-mail">
-				<label class="control-label">Firstname</label>
-				<input type="text" placeholder="Firstname">
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">First Name</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="first_name" placeholder="First Name">
+				</div>
 			</div>
-			<div class="col-md-6 form-group1 group-mail form-last">
-				<label class="control-label">Lastname</label>
-				<input type="text" placeholder="Lastname">
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Last Name</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="last_name" placeholder="Last Name">
+				</div>
 			</div>
-			<div class="clearfix"> </div>
-			<div class="col-md-12 form-group1 group-mail">
-				<label class="control-label">Email</label>
-				<input type="text" placeholder="Email">
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Email</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="email" placeholder="Email">
+				</div>
 			</div>
-			<div class="clearfix"> </div>
-			<div class="col-md-12 form-group1 group-mail">
-				<label class="control-label">Introduction</label>
-				<textarea placeholder="Introduce youself..." required="">Introduce youself.....</textarea>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Introduction</label>
+				<div class="col-sm-10">
+					<textarea id="introduction" class="form-control" placeholder="Introduce youself..."></textarea>
+				</div>
 			</div>
-			<div class="clearfix"> </div>
-			<div class="col-md-12 form-group1 group-mail">
-				<label class="control-label">Facebook</label>
-				<input type="text" placeholder="Facebook">
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Email</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="email" placeholder="Email">
+				</div>
 			</div>
-			<div class="clearfix"> </div>
-			<div class="col-md-12 form-group1 group-mail">
-				<label class="control-label">Twitter</label>
-				<input type="text" placeholder="Twitter">
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Facebook</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="facebook" placeholder="Facebook">
+				</div>
 			</div>
-			<div class="clearfix"> </div>
-			<div class="col-md-12 form-group1 group-mail">
-				<label class="control-label">Google</label>
-				<input type="text" placeholder="Google">
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Twitter</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="twitter" placeholder="Twitter">
+				</div>
 			</div>
-			<div class="clearfix"> </div>
-			<div class="col-md-12 form-group1 group-mail">
-				<label class="control-label">LinkedIn</label>
-				<input type="text" placeholder="LinkedIn">
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Google</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="google" placeholder="Google">
+				</div>
 			</div>
-			<div class="clearfix"> </div>
-			<div class="col-md-12 form-group1 group-mail">
-				<label class="control-label">Flickr</label>
-				<input type="text" placeholder="Flickr">
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">LinkedIn</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="linkedin" placeholder="LinkedIn">
+				</div>
 			</div>
-			<div class="clearfix"> </div>
-			<div class="col-md-12 form-group1 group-mail" style="text-align: center;">
-				<button type="submit" class="btn btn-primary">Add</button>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Flickr</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="flickr" placeholder="Flickr">
+				</div>
 			</div>
-			<div class="clearfix"> </div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="submit" class="btn btn-primary">Add User</button>
+				</div>
+			</div>
 		</form>
 	</div>
 </div>
