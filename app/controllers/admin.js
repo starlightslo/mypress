@@ -240,6 +240,11 @@ exports.addUser = function (req, res, next) {
 	res.send('add user')
 }
 
+exports.editUser = function (req, res, next) {
+
+	res.send('edit user')
+}
+
 exports.deleteUser = function (req, res, next) {
 	res.send('delete user')
 }

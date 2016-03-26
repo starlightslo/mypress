@@ -30,6 +30,7 @@ router.get('/user/view/:username', authController.checkAuth, preloadList, contro
 router.get('/user/:page', authController.checkAuth, preloadList, controller.user)
 
 router.post('/user/add', authController.checkAuth, preloadList, controller.addUser)
+router.post('/user/edit/:username', authController.checkAuth, preloadList, controller.editUser)
 
 router.delete('/user/:username', authController.checkAuth, preloadList, controller.deleteUser)
 
