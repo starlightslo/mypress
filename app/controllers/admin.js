@@ -76,7 +76,6 @@ exports.user = function (req, res, next) {
 	.then(users => {
 		users.forEach(user => {
 			userList.push({
-				id: user.id,
 				username: user.username,
 				privilege: user.privilege,
 				firstName: user.first_name,
@@ -179,38 +178,68 @@ exports.view = function (req, res, next) {
 	const language = req.app.get('language')
 	const template = req.app.get('template')
 	const templateFile = 'admin'
+	const username = req.params.username
 
 	// Get template language data
 	const T = Language.getTemplateLanguage(SYSTEM, language)
 
-	const resp = {
-		T: T,
-		server: server,
-		language: language,
-		websiteName: websiteName,
-		logoString: logoString,
-		logoImage: logoImage,
-		logoLink: logoLink,
-		webTitle: webTitle,
-		webSubtitle: webSubtitle,
-		mainButtonString: mainButtonString,
-		mainButtonLink: mainButtonLink,
-		mainButtonTarget: mainButtonTarget,
-		template: template,
-		contentPage: 'admin.user.view.html',
-		loginUser: {
-			username: req.user.username,
-			privilege: req.user.privilege,
-			picture: req.user.picture
+	// Define
+	const UserModel = User.bindKnex(req.app.get('db').normalDB)
+	let user = {}
+
+	// Getting user data
+	UserModel.query().innerJoin('user_profiles', 'user_profiles.user_id', 'users.id').where('user_profiles.language', language).where('users.username', username).first()
+	.then(users => {
+		user = {
+			username: users.username,
+			privilege: users.privilege,
+			firstName: users.first_name,
+			lastName: users.last_name,
+			picture: users.picture,
+			email: users.email,
+			introduction: users.introduction,
+			facebook: users.facebook,
+			linkedin: users.linkedin,
+			twitter: users.twitter,
+			google: users.google,
+			flickr: users.flickr
 		}
-	}
-	res.render(templateFile, resp)
+	})
+	.catch(err => {
+		next(err)
+	})
+	.finally(() => {
+		const resp = {
+			T: T,
+			server: server,
+			language: language,
+			websiteName: websiteName,
+			logoString: logoString,
+			logoImage: logoImage,
+			logoLink: logoLink,
+			webTitle: webTitle,
+			webSubtitle: webSubtitle,
+			mainButtonString: mainButtonString,
+			mainButtonLink: mainButtonLink,
+			mainButtonTarget: mainButtonTarget,
+			template: template,
+			contentPage: 'admin.user.view.html',
+			loginUser: {
+				username: req.user.username,
+				privilege: req.user.privilege,
+				picture: req.user.picture
+			},
+			user: user
+		}
+		res.render(templateFile, resp)
+	})
 }
 
 exports.addUser = function (req, res, next) {
-	next()
+
+	res.send('add user')
 }
 
 exports.deleteUser = function (req, res, next) {
-	next()
+	res.send('delete user')
 }

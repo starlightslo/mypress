@@ -24,7 +24,7 @@
 										<img src="{{ server }}/{{ user.picture }}" alt="" style="width: 60px; height: 60px;" />
 									</td>
 									<td class="table-text">
-										<a href="#"><h6>{{ user.firstName }} {{ user.lastName }}</h6></a>
+										<a href="user/view/{{ user.username }}"><h6>{{ user.firstName }} {{ user.lastName }}</h6></a>
 										<p>{{ user.introduction }}</p>
 									</td>
 									<td>
@@ -49,7 +49,7 @@
 									</td>
 									<td >
 										{% if user.username !== loginUser.username %}
-											<a href="#"><i class="fa delete fa-trash-o"></i></a>
+											<a href="#" onclick="deleteUser({{ user.username }});"><i class="fa delete fa-trash-o"></i></a>
 										{% endif %}
 									</td>
 								</tr>
@@ -62,3 +62,8 @@
 	</div>
 	<div class="clearfix"> </div>
 </div>
+<script type="text/javascript">
+	function deleteUser(username) {
+		alert(username);
+	}
+</script>

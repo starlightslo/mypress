@@ -26,12 +26,12 @@ fs.readdirSync(PRELOAD_PATH).forEach(file => {
 router.get('/', authController.checkAuth, preloadList, controller.index)
 router.get('/user', authController.checkAuth, preloadList, controller.user)
 router.get('/user/add', authController.checkAuth, preloadList, controller.add)
-router.get('/user/view/:id', authController.checkAuth, preloadList, controller.view)
+router.get('/user/view/:username', authController.checkAuth, preloadList, controller.view)
 router.get('/user/:page', authController.checkAuth, preloadList, controller.user)
 
 router.post('/user/add', authController.checkAuth, preloadList, controller.addUser)
 
-router.delete('/user/:id', authController.checkAuth, preloadList, controller.deleteUser)
+router.delete('/user/:username', authController.checkAuth, preloadList, controller.deleteUser)
 
 
 module.exports = router
