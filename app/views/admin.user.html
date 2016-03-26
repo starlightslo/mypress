@@ -48,7 +48,9 @@
 										{% endif %}
 									</td>
 									<td >
-										<a href="#"><i class="fa delete fa-trash-o"></i></a>
+										{% if user.username !== loginUser.username %}
+											<a href="#"><i class="fa delete fa-trash-o"></i></a>
+										{% endif %}
 									</td>
 								</tr>
 							{% endfor %}
