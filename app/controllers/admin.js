@@ -5,6 +5,7 @@ const config = require('../../config/config')
 const salt = bcrypt.genSaltSync(config.saltLength)
 
 const Language = require('../modules/language')
+const verify = new (require('../modules/verify'))()
 const User = require('../models/user')
 const UserProfile = require('../models/user_profile')
 
@@ -259,7 +260,9 @@ exports.addUser = function (req, res, next) {
 	const flickr = req.body.flickr || ''
 
 	// Checking user data
-
+	if (!verify.username(username, 6, 16) || !verify.password(password) && !verify.inNumber(privilege, 1, 99)) {
+		res.status(400)
+	}
 
 	// Define
 	const UserModel = User.bindKnex(req.app.get('db').normalDB)
