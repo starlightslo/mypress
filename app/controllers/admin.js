@@ -183,8 +183,10 @@ exports.view = function (req, res, next) {
 	const mainButtonTarget = req.app.get('mainButtonTarget')
 	const language = req.app.get('language')
 	const template = req.app.get('template')
+	const languageList = req.app.get('languageList')
 	const templateFile = 'admin'
 	const username = req.params.username
+	const selectedLanguage = req.query.lang || language
 
 	// Get template language data
 	const T = Language.getTemplateLanguage(SYSTEM, language)
@@ -194,7 +196,7 @@ exports.view = function (req, res, next) {
 	let user = {}
 
 	// Getting user data
-	UserModel.query().innerJoin('user_profiles', 'user_profiles.user_id', 'users.id').where('user_profiles.language', language).where('users.username', username).first()
+	UserModel.query().innerJoin('user_profiles', 'user_profiles.user_id', 'users.id').where('user_profiles.language', selectedLanguage).where('users.username', username).first()
 	.then(users => {
 		user = {
 			username: users.username,
@@ -219,6 +221,8 @@ exports.view = function (req, res, next) {
 			T: T,
 			server: server,
 			language: language,
+			selectedLanguage: selectedLanguage,
+			languageList: languageList,
 			websiteName: websiteName,
 			logoString: logoString,
 			logoImage: logoImage,
