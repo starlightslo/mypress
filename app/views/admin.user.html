@@ -51,7 +51,7 @@
 									</td>
 									<td >
 										{% if user.username !== loginUser.username %}
-											<a href="#" onclick="deleteUser({{ user.username }});"><i class="fa delete fa-trash-o"></i></a>
+											<a href="#" onclick="deleteUser('{{ user.username }}');"><i class="fa delete fa-trash-o"></i></a>
 										{% endif %}
 									</td>
 								</tr>
@@ -65,7 +65,22 @@
 	<div class="clearfix"> </div>
 </div>
 <script type="text/javascript">
-	function deleteUser(username) {
-		alert(username);
+	function deleteUser(username){
+		if (confirm("Are you sure you want to delete?")) {
+			$.ajax({
+				url: '{{ server }}/admin/user/' + username,
+				type: 'DELETE',
+				success: function(data) {
+					// Delete success and reload
+					location.reload();
+				},
+				error: function() {
+					console.error('delete error');
+				},
+				cache: false,
+				contentType: false,
+				processData: false
+			}, 'json');
+		}
 	}
 </script>
