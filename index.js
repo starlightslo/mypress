@@ -3,6 +3,8 @@
 const fs = require('fs')
 const path = require('path')
 
+const Utils = require('./app/modules/utils')
+
 const config = require('./config/config')
 const server = require('./app/modules/server')
 const myServer = new server(config)
@@ -12,6 +14,9 @@ const MIDDLEWARE_PATH = './app/middlewares'
 const PASSPORT_PATH = './app/passports'
 const PUBLIC_DIRECTORY_PATH = 'public'
 const TABLES_SCHEMA_PATH = './config/tables'
+
+// Creating require directories
+Utils.ensureExists('public/uploads', () => {})
 
 // Get all table schema and run migration
 const Migration = (require('./config/migration'))

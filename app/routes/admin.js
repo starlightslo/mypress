@@ -8,6 +8,8 @@ const router = express.Router({mergeParams: true})
 const controller = require('../controllers/admin')
 const authController = require('../controllers/auth')
 
+const multipart = require('connect-multiparty')
+
 const PRELOAD_PATH = './app/routes/preloads'
 
 /**
@@ -31,6 +33,7 @@ router.get('/user/:page', authController.checkAuth, preloadList, controller.user
 
 router.post('/user/add', authController.checkAuth, preloadList, controller.addUser)
 router.post('/user/edit/:username', authController.checkAuth, preloadList, controller.editUser)
+router.post('/user/upload/:username', authController.checkAuth, preloadList, multipart(), controller.uploadPicture)
 
 router.delete('/user/:username', authController.checkAuth, preloadList, controller.deleteUser)
 

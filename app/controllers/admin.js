@@ -74,7 +74,7 @@ exports.user = function (req, res, next) {
 	const T = Language.getTemplateLanguage(SYSTEM, language)
 
 	// Define
-	const UserModel = User.bindKnex(req.app.get('db').normalDB)
+	const UserModel = User.bindKnex(req.app.get('db').adminDB)
 	let userList = []
 
 	// Getting user data
@@ -192,7 +192,7 @@ exports.view = function (req, res, next) {
 	const T = Language.getTemplateLanguage(SYSTEM, language)
 
 	// Define
-	const UserModel = User.bindKnex(req.app.get('db').normalDB)
+	const UserModel = User.bindKnex(req.app.get('db').adminDB)
 	let user = {}
 
 	// Getting user data
@@ -264,18 +264,19 @@ exports.addUser = function (req, res, next) {
 	const flickr = req.body.flickr || ''
 
 	// Checking user data
-	if (!verify.username(username, 6, 16) || !verify.password(password) && !verify.inNumber(privilege, 1, 99)) {
-		res.status(400)
+	if (!verify.username(username, 6, 16) || !verify.password(password) || !verify.inNumber(privilege, 1, 99)) {
+		res.status(400).send()
+		return
 	}
 
 	// Define
-	const UserModel = User.bindKnex(req.app.get('db').normalDB)
-	const UserProfileModel = UserProfile.bindKnex(req.app.get('db').normalDB)
+	const UserModel = User.bindKnex(req.app.get('db').adminDB)
+	const UserProfileModel = UserProfile.bindKnex(req.app.get('db').adminDB)
 
 	// Insert data
 	UserModel.query().insert({
 		username: username,
-		password: bcrypt.hashSync('admin', salt),
+		password: bcrypt.hashSync(password, salt),
 		privilege: privilege,
 		picture: '',
 		email: email,
@@ -313,6 +314,54 @@ exports.addUser = function (req, res, next) {
 exports.editUser = function (req, res, next) {
 
 	res.send('edit user')
+}
+
+exports.uploadPicture = function (req, res, next) {
+	const fs = require('fs')
+
+	const language = req.app.get('language')
+	const username = req.params.username
+	const selectedLanguage = req.query.lang || language
+
+	if (!req.files) {
+		res.status(400).send()
+		return
+	}
+
+	// Define
+	const UserModel = User.bindKnex(req.app.get('db').normalDB)
+	
+	fs.readFile(req.files.picture.path, function (err, data) {
+		const imageName = req.files.picture.name
+		// If there's an error
+		if(!imageName){
+			next('error')
+		} else {
+			const path = config.root + "/public/uploads/" + username
+			// write file to public/uploads folder
+			fs.writeFile(path, data, function (err) {
+				if (err) {
+					next(err)
+					return
+				}
+
+				// Update data
+				const updateStructure = {
+					picture: 'uploads/' + username
+				}
+				UserModel.query().where('users.username', username).update(updateStructure)
+				.then(data => {
+					
+				})
+				.catch(err => {
+					next(err)
+				})
+				.finally(() => {
+					res.status(204).send()
+				})
+			})
+		}
+	})
 }
 
 exports.deleteUser = function (req, res, next) {
