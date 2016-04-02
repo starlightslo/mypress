@@ -10,5 +10,9 @@ module.exports = {
 	portfolio: '作品',
 	skill: '技能',
 	experience: '經歷',
-	settings: '系統設定'
+	settings: '系統設定',
+	home: '首頁',
+	dashboard: '首頁',
+	addUser: '新增使用者',
+	editUser: '修改使用者'
 }

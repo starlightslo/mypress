@@ -27,6 +27,10 @@ exports.index = function (req, res, next) {
 	const template = req.app.get('template')
 	const templateFile = 'admin'
 
+	// Setting path
+	const pathList = []
+	const currentPath = 'dashboard'
+
 	// Get template language data
 	const T = Language.getTemplateLanguage(SYSTEM, language)
 
@@ -49,7 +53,9 @@ exports.index = function (req, res, next) {
 			username: req.user.username,
 			privilege: req.user.privilege,
 			picture: req.user.picture
-		}
+		},
+		pathList: pathList,
+		currentPath: currentPath
 	}
 	res.render(templateFile, resp)
 }
@@ -69,6 +75,10 @@ exports.user = function (req, res, next) {
 	const language = req.app.get('language')
 	const template = req.app.get('template')
 	const templateFile = 'admin'
+
+	// Setting path
+	const pathList = []
+	const currentPath = 'user'
 
 	// Get template language data
 	const T = Language.getTemplateLanguage(SYSTEM, language)
@@ -122,7 +132,9 @@ exports.user = function (req, res, next) {
 				privilege: req.user.privilege,
 				picture: req.user.picture
 			},
-			userList: userList
+			userList: userList,
+			pathList: pathList,
+			currentPath: currentPath
 		}
 		res.render(templateFile, resp)
 	})
@@ -142,6 +154,13 @@ exports.add = function (req, res, next) {
 	const language = req.app.get('language')
 	const template = req.app.get('template')
 	const templateFile = 'admin'
+
+	// Setting path
+	const pathList = [{
+		url: 'admin/user',
+		name: 'user'
+	}]
+	const currentPath = 'addUser'
 
 	// Get template language data
 	const T = Language.getTemplateLanguage(SYSTEM, language)
@@ -165,7 +184,9 @@ exports.add = function (req, res, next) {
 			username: req.user.username,
 			privilege: req.user.privilege,
 			picture: req.user.picture
-		}
+		},
+		pathList: pathList,
+		currentPath: currentPath
 	}
 	res.render(templateFile, resp)
 }
@@ -188,6 +209,13 @@ exports.view = function (req, res, next) {
 	const username = req.params.username
 	const selectedLanguage = req.query.lang || language
 
+	// Setting path
+	const pathList = [{
+		url: 'admin/user',
+		name: 'user'
+	}]
+	const currentPath = 'editUser'
+
 	// Get template language data
 	const T = Language.getTemplateLanguage(SYSTEM, language)
 
@@ -198,6 +226,11 @@ exports.view = function (req, res, next) {
 	// Getting user data
 	UserModel.query().innerJoin('user_profiles', 'user_profiles.user_id', 'users.id').where('user_profiles.language', selectedLanguage).where('users.username', username).first()
 	.then(users => {
+		if (!users) {
+			res.redirect('/' + language + '/admin/user')
+			return
+		}
+
 		user = {
 			username: users.username,
 			privilege: users.privilege,
@@ -239,7 +272,9 @@ exports.view = function (req, res, next) {
 				privilege: req.user.privilege,
 				picture: req.user.picture
 			},
-			user: user
+			user: user,
+			pathList: pathList,
+			currentPath: currentPath
 		}
 		res.render(templateFile, resp)
 	})

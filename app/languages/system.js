@@ -10,5 +10,9 @@ module.exports = {
 	portfolio: 'Portfolio',
 	skill: 'Skill',
 	experience: 'Experience',
-	settings: 'Settings'
+	settings: 'Settings',
+	home: 'Home',
+	dashboard: 'Dashboard',
+	addUser: 'Add User',
+	editUser: 'Edit User'
 }
