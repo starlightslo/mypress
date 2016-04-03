@@ -27,15 +27,18 @@ fs.readdirSync(PRELOAD_PATH).forEach(file => {
  */
 router.get('/', authController.checkAuth, preloadList, controller.index)
 router.get('/user', authController.checkAuth, preloadList, controller.user)
-router.get('/user/add', authController.checkAuth, preloadList, controller.add)
-router.get('/user/view/:username', authController.checkAuth, preloadList, controller.view)
-router.get('/user/:page', authController.checkAuth, preloadList, controller.user)
-
-router.post('/user/add', authController.checkAuth, preloadList, controller.addUser)
+router.get('/user/add', authController.checkAuth, preloadList, controller.addUser)
+router.get('/user/view/:username', authController.checkAuth, preloadList, controller.viewUser)
+router.post('/user/add', authController.checkAuth, preloadList, controller.insertUser)
 router.post('/user/edit/:username', authController.checkAuth, preloadList, controller.editUser)
 router.post('/user/upload/:username', authController.checkAuth, preloadList, multipart(), controller.uploadPicture)
-
 router.delete('/user/:username', authController.checkAuth, preloadList, controller.deleteUser)
 
+router.get('/menu', authController.checkAuth, preloadList, controller.menu)
+router.get('/menu/add', authController.checkAuth, preloadList, controller.addMenu)
+router.get('/menu/view/:key', authController.checkAuth, preloadList, controller.viewMenu)
+router.post('/menu/add', authController.checkAuth, preloadList, controller.insertMenu)
+router.post('/menu/edit/:key', authController.checkAuth, preloadList, controller.editMenu)
+router.delete('/menu/:key', authController.checkAuth, preloadList, controller.deleteMenu)
 
 module.exports = router

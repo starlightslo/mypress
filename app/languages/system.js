@@ -14,5 +14,9 @@ module.exports = {
 	home: 'Home',
 	dashboard: 'Dashboard',
 	addUser: 'Add User',
-	editUser: 'Edit User'
+	editUser: 'Edit User',
+	menu: 'Menu',
+	editMenu: 'Edit Menu',
+	addMenu: 'Add Menu',
+	addNewMenu: 'Add new menu'
 }
