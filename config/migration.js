@@ -145,9 +145,11 @@ class Migration {
 
 	// Insert data
 	static insertData(db, table, dataList) {
+		let promiseList = []
 		dataList.forEach(data => {
-			db(table).insert(data).then(() => {})
+			promiseList.push(db(table).insert(data))
 		})
+		return Promise.all(promiseList)
 	}
 
 	// Migrate function
@@ -173,10 +175,14 @@ class Migration {
 					// Insert default value
 					if (('defaultDataList' in tableSchema) && (Array.isArray(tableSchema.defaultDataList))) {
 						this.insertData(db, tableSchema.name, tableSchema.defaultDataList)
+						.then(() => {
+							// Closing connection
+							return db.destroy()
+						})
+					} else {
+						// Closing connection
+						return db.destroy()
 					}
-
-					// Closing connection
-					return db.destroy()
 				}).then(() => {
 					console.log('Closing connection.')
 					return deferred.resolve()
