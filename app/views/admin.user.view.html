@@ -20,7 +20,7 @@
 			</div>
 		</div>
 		<div class="clearfix"></div>
-		<form class="form-horizontal" enctype="multipart/form-data" method="post" action="{{ server }}/admin/user/upload/{{ user.username }}?lang={{ selectedLanguage }}" id="upload-picture-form" name="upload-picture-form">
+		<form class="form-horizontal" enctype="multipart/form-data" method="post" action="{{ server }}/{{ language }}/admin/user/upload/{{ user.username }}?lang={{ selectedLanguage }}" id="upload-picture-form" name="upload-picture-form">
 			<div class="form-group">
 				<div class="picture-group">
 					{% if user.picture.length > 0 %}
@@ -40,7 +40,7 @@
 				</div>
 			</div>
 		</form>
-		<form class="form-horizontal" method="post" action="{{ server }}/admin/user/edit/{{ user.username }}?lang={{ selectedLanguage }}">
+		<form class="form-horizontal" method="post" action="{{ server }}/{{ language }}/admin/user/edit/{{ user.username }}?lang={{ selectedLanguage }}">
 			<div class="form-group">
 				<label class="col-sm-2 control-label hor-form">Username</label>
 				<div class="col-sm-10">
