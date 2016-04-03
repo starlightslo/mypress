@@ -11,8 +11,26 @@
 						</div>
 						<div class="float-right">
 							<div class="btn-group">
-								<a class="btn btn-default" href="#"><i class="fa fa-angle-left"></i></a>
-								<a class="btn btn-default" href="#"><i class="fa fa-angle-right"></i></a>
+								<a class="btn btn-default {% if page == 1 %} disabled {% endif %}" href="?p={{ page-1 }}">
+									<i class="fa fa-angle-left"></i>
+								</a>
+								<a class="btn btn-default {% if page == totalPage %} disabled {% endif %}" href="?p={{ page+1 }}">
+									<i class="fa fa-angle-right"></i>
+								</a>
+							</div>
+							<div class="dropdown">
+								<a href="#" title="" class="btn btn-default" data-toggle="dropdown" aria-expanded="false">
+									{{ page }}
+									<i class="fa fa-chevron-down icon_8"></i>
+									<div class="ripple-wrapper"></div>
+								</a>
+								<ul class="dropdown-menu float-right">
+									{% for i in Array(totalPage) %}
+									<li>
+										<a href="?p={{ loop.index }}">{{ loop.index }}</a>
+									</li>
+									{% endfor %}
+								</ul>
 							</div>
 						</div>
 					</div>

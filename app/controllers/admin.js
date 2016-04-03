@@ -10,7 +10,7 @@ const User = require('../models/user')
 const UserProfile = require('../models/user_profile')
 
 const SYSTEM = 'system'
-
+const PAGE_COUNT = 10
 
 exports.index = function (req, res, next) {
 	const server = req.protocol + '://' + req.get('host')
@@ -76,6 +76,13 @@ exports.user = function (req, res, next) {
 	const template = req.app.get('template')
 	const templateFile = 'admin'
 
+	// Page
+	let totalPage = 1
+	let page = req.query.p || 1
+	if (!verify.isNumber(page)) page = 1
+	page = Number(page)
+	if (page < 1) page = 1
+
 	// Setting path
 	const pathList = []
 	const currentPath = 'user'
@@ -87,8 +94,22 @@ exports.user = function (req, res, next) {
 	const UserModel = User.bindKnex(req.app.get('db').adminDB)
 	let userList = []
 
-	// Getting user data
-	UserModel.query().innerJoin('user_profiles', 'user_profiles.user_id', 'users.id').where('user_profiles.language', language).orderBy('first_name').orderBy('last_name')
+	// Getting total count of user data
+	UserModel.query().count('*').first()
+	.then((data) => {
+		// Find the total page
+		const totalCount = data.count
+		totalPage = Math.ceil(totalCount / PAGE_COUNT)
+
+		// Check the current page
+		if (page > totalPage) page = totalPage
+
+		// Getting the offset
+		const offset = (page - 1) * PAGE_COUNT
+
+		// Getting user data with limit and offset
+		return UserModel.query().innerJoin('user_profiles', 'user_profiles.user_id', 'users.id').where('user_profiles.language', language).orderBy('first_name').orderBy('last_name').limit(PAGE_COUNT).offset(offset)
+	})
 	.then(users => {
 		users.forEach(user => {
 			userList.push({
@@ -134,7 +155,9 @@ exports.user = function (req, res, next) {
 			},
 			userList: userList,
 			pathList: pathList,
-			currentPath: currentPath
+			currentPath: currentPath,
+			page: page,
+			totalPage: totalPage
 		}
 		res.render(templateFile, resp)
 	})
