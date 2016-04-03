@@ -6,8 +6,14 @@ const salt = bcrypt.genSaltSync(config.saltLength)
 
 const Language = require('../modules/language')
 const verify = new (require('../modules/verify'))()
+
 const User = require('../models/user')
 const UserProfile = require('../models/user_profile')
+const Menu = require('../models/menu')
+const Experience = require('../models/experience')
+const Portfolio = require('../models/portfolio')
+const Skill = require('../models/skill')
+const Settings = require('../models/settings')
 
 const SYSTEM = 'system'
 const PAGE_COUNT = 10
@@ -163,7 +169,7 @@ exports.user = function (req, res, next) {
 	})
 }
 
-exports.add = function (req, res, next) {
+exports.addUser = function (req, res, next) {
 	const server = req.protocol + '://' + req.get('host')
 	const websiteName = req.app.get('websiteName')
 	const logoString = req.app.get('logoString')
@@ -214,7 +220,7 @@ exports.add = function (req, res, next) {
 	res.render(templateFile, resp)
 }
 
-exports.view = function (req, res, next) {
+exports.viewUser = function (req, res, next) {
 	const server = req.protocol + '://' + req.get('host')
 	const websiteName = req.app.get('websiteName')
 	const logoString = req.app.get('logoString')
@@ -231,6 +237,12 @@ exports.view = function (req, res, next) {
 	const templateFile = 'admin'
 	const username = req.params.username
 	const selectedLanguage = req.query.lang || language
+
+	// Checking user data
+	if (!verify.username(username, 6, 16)) {
+		res.status(400).send()
+		return
+	}
 
 	// Setting path
 	const pathList = [{
@@ -303,7 +315,7 @@ exports.view = function (req, res, next) {
 	})
 }
 
-exports.addUser = function (req, res, next) {
+exports.insertUser = function (req, res, next) {
 	const languageList = req.app.get('languageList')
 	const language = req.app.get('language')
 
@@ -387,6 +399,12 @@ exports.editUser = function (req, res, next) {
 	const flickr = req.body.flickr || ''
 
 	// Checking user data
+	if (!verify.username(username, 6, 16)) {
+		res.status(400).send()
+		return
+	}
+
+	// Checking user data
 	if ((newPassword && !verify.password(newPassword)) || !verify.inNumber(privilege, 1, 99)) {
 		res.status(400).send()
 		return
@@ -445,6 +463,13 @@ exports.uploadPicture = function (req, res, next) {
 	const username = req.params.username
 	const selectedLanguage = req.query.lang || language
 
+	// Checking user data
+	if (!verify.username(username, 6, 16)) {
+		res.status(400).send()
+		return
+	}
+
+	// Checking files data
 	if (!req.files) {
 		res.status(400).send()
 		return
@@ -514,6 +539,347 @@ exports.deleteUser = function (req, res, next) {
 			promiseList.push(UserProfileModel.query().delete().where('user_id', uid))
 			return Promise.all(promiseList)
 		}
+	})
+	.then(() => {
+
+	})
+	.catch(err => {
+		next(err)
+	})
+	.finally(() => {
+		res.status(204).send()
+	})
+}
+
+
+exports.menu = function (req, res, next) {
+	const server = req.protocol + '://' + req.get('host')
+	const websiteName = req.app.get('websiteName')
+	const logoString = req.app.get('logoString')
+	const logoImage = req.app.get('logoImage')
+	const logoLink = req.app.get('logoLink')
+	const webTitle = req.app.get('webTitle')
+	const webSubtitle = req.app.get('webSubtitle')
+	const mainButtonString = req.app.get('mainButtonString')
+	const mainButtonLink = req.app.get('mainButtonLink')
+	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const language = req.app.get('language')
+	const template = req.app.get('template')
+	const languageList = req.app.get('languageList')
+	const templateFile = 'admin'
+	const selectedLanguage = req.query.lang || language
+
+	// Setting path
+	const pathList = []
+	const currentPath = 'menu'
+
+	// Get template language data
+	const T = Language.getTemplateLanguage(SYSTEM, language)
+
+	// Define
+	const MenuModel = Menu.bindKnex(req.app.get('db').adminDB)
+	let menuList = []
+
+	// Getting menu data
+	MenuModel.query().where('language', selectedLanguage).orderBy('order')
+	.then(menus => {
+		menus.forEach(menu => {
+			menuList.push({
+				key: menu.key,
+				name: menu.name,
+				link: menu.link,
+				order: menu.order,
+				target: menu.target
+			})
+		})
+		
+	})
+	.catch(err => {
+		next(err)
+	})
+	.finally(() => {
+		const resp = {
+			T: T,
+			server: server,
+			language: language,
+			selectedLanguage: selectedLanguage,
+			languageList: languageList,
+			websiteName: websiteName,
+			logoString: logoString,
+			logoImage: logoImage,
+			logoLink: logoLink,
+			webTitle: webTitle,
+			webSubtitle: webSubtitle,
+			mainButtonString: mainButtonString,
+			mainButtonLink: mainButtonLink,
+			mainButtonTarget: mainButtonTarget,
+			template: template,
+			contentPage: 'admin.menus.html',
+			loginUser: {
+				username: req.user.username,
+				privilege: req.user.privilege,
+				picture: req.user.picture
+			},
+			menuList: menuList,
+			pathList: pathList,
+			currentPath: currentPath
+		}
+		res.render(templateFile, resp)
+	})
+}
+
+
+exports.addMenu = function (req, res, next) {
+	const server = req.protocol + '://' + req.get('host')
+	const websiteName = req.app.get('websiteName')
+	const logoString = req.app.get('logoString')
+	const logoImage = req.app.get('logoImage')
+	const logoLink = req.app.get('logoLink')
+	const webTitle = req.app.get('webTitle')
+	const webSubtitle = req.app.get('webSubtitle')
+	const mainButtonString = req.app.get('mainButtonString')
+	const mainButtonLink = req.app.get('mainButtonLink')
+	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const language = req.app.get('language')
+	const template = req.app.get('template')
+	const templateFile = 'admin'
+
+	// Setting path
+	const pathList = [{
+		url: 'admin/user',
+		name: 'user'
+	}]
+	const currentPath = 'addMenu'
+
+	// Get template language data
+	const T = Language.getTemplateLanguage(SYSTEM, language)
+
+	const resp = {
+		T: T,
+		server: server,
+		language: language,
+		websiteName: websiteName,
+		logoString: logoString,
+		logoImage: logoImage,
+		logoLink: logoLink,
+		webTitle: webTitle,
+		webSubtitle: webSubtitle,
+		mainButtonString: mainButtonString,
+		mainButtonLink: mainButtonLink,
+		mainButtonTarget: mainButtonTarget,
+		template: template,
+		contentPage: 'admin.menu.add.html',
+		loginUser: {
+			username: req.user.username,
+			privilege: req.user.privilege,
+			picture: req.user.picture
+		},
+		pathList: pathList,
+		currentPath: currentPath
+	}
+	res.render(templateFile, resp)
+}
+
+
+exports.insertMenu = function (req, res, next) {
+	const language = req.app.get('language')
+	const languageList = req.app.get('languageList')
+
+	// Getting user data from the input
+	const key = req.body.key || ''
+	const name = req.body.name || ''
+	const link = req.body.link || ''
+	const target = req.body.target || ''
+	const order = req.body.order || 1
+	
+	// Checking user data
+	if (!verify.username(key, 1, 16)) {
+		res.status(400).send()
+		return
+	}
+
+	// Define
+	const MenuModel = Menu.bindKnex(req.app.get('db').adminDB)
+
+	let promiseList = []
+	// Prepare insert data
+	languageList.forEach(lang => {
+		promiseList.push(MenuModel.query().insert({
+			key: key,
+			name: name,
+			link: link,
+			target: target,
+			order: order,
+			language: lang
+		}))
+	})
+
+	// Checking is there the same key
+	MenuModel.query().where('key', key).count('*').first()
+	.then(data => {
+		if (data.count > 0) {
+			next('The key is existing.')
+			return
+		}
+
+		// Run insert
+		return Promise.all(promiseList)
+	})
+	.then(() => {
+		res.redirect('/' + language + '/admin/menu')
+	})
+	.catch(err => {
+		next(err)
+	})
+}
+
+
+exports.viewMenu = function (req, res, next) {
+	const server = req.protocol + '://' + req.get('host')
+	const websiteName = req.app.get('websiteName')
+	const logoString = req.app.get('logoString')
+	const logoImage = req.app.get('logoImage')
+	const logoLink = req.app.get('logoLink')
+	const webTitle = req.app.get('webTitle')
+	const webSubtitle = req.app.get('webSubtitle')
+	const mainButtonString = req.app.get('mainButtonString')
+	const mainButtonLink = req.app.get('mainButtonLink')
+	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const language = req.app.get('language')
+	const template = req.app.get('template')
+	const languageList = req.app.get('languageList')
+	const templateFile = 'admin'
+	const key = req.params.key
+	const selectedLanguage = req.query.lang || language
+
+	// Checking user data
+	if (!verify.username(key, 1, 16)) {
+		res.status(400).send()
+		return
+	}
+
+	// Setting path
+	const pathList = [{
+		url: 'admin/menu?lang=' + selectedLanguage,
+		name: 'menu'
+	}]
+	const currentPath = 'editMenu'
+
+	// Get template language data
+	const T = Language.getTemplateLanguage(SYSTEM, language)
+
+	// Define
+	const MenuModel = Menu.bindKnex(req.app.get('db').adminDB)
+	let menu = {}
+
+	// Getting user data
+	MenuModel.query().where('key', key).where('language', selectedLanguage).first()
+	.then(menus => {
+		if (!menus) {
+			res.redirect('/' + language + '/admin/menu')
+			return
+		}
+
+		menu = {
+			key: menus.key,
+			name: menus.name,
+			link: menus.link,
+			order: menus.order,
+			target: menus.target
+		}
+	})
+	.catch(err => {
+		next(err)
+	})
+	.finally(() => {
+		const resp = {
+			T: T,
+			server: server,
+			language: language,
+			languageList: languageList,
+			selectedLanguage: selectedLanguage,
+			websiteName: websiteName,
+			logoString: logoString,
+			logoImage: logoImage,
+			logoLink: logoLink,
+			webTitle: webTitle,
+			webSubtitle: webSubtitle,
+			mainButtonString: mainButtonString,
+			mainButtonLink: mainButtonLink,
+			mainButtonTarget: mainButtonTarget,
+			template: template,
+			contentPage: 'admin.menu.view.html',
+			loginUser: {
+				username: req.user.username,
+				privilege: req.user.privilege,
+				picture: req.user.picture
+			},
+			menu: menu,
+			pathList: pathList,
+			currentPath: currentPath
+		}
+		res.render(templateFile, resp)
+	})
+}
+
+
+exports.editMenu = function (req, res, next) {
+	const language = req.app.get('language')
+	const key = req.params.key
+	const selectedLanguage = req.query.lang || language
+
+	// Getting user data from the input
+	const name = req.body.name || ''
+	const link = req.body.link || ''
+	const target = req.body.target || ''
+	const order = req.body.order || 1
+
+	// Checking user data
+	if (!verify.username(key, 1, 16)) {
+		res.status(400).send()
+		return
+	}
+
+	// Define
+	const MenuModel = Menu.bindKnex(req.app.get('db').adminDB)
+
+	// Update structure
+	const updateStructure = {
+		name: name,
+		link: link,
+		target: target,
+		order: order
+	}
+
+	// Update the name of menu
+	MenuModel.query().where('key', key).where('language', selectedLanguage).update(updateStructure)
+	.then(data => {
+		
+	})
+	.catch(err => {
+		next(err)
+	})
+	.finally(() => {
+		res.redirect('/' + language + '/admin/menu/view/' + key + '?lang=' + selectedLanguage)
+	})
+}
+
+
+exports.deleteMenu = function (req, res, next) {
+	const key = req.params.key
+
+	// Checking user data
+	if (!verify.username(key, 1, 16)) {
+		res.status(400).send()
+		return
+	}
+
+	// Define
+	const MenuModel = Menu.bindKnex(req.app.get('db').adminDB)
+	
+	MenuModel.query().delete().where('key', key)
+	.then(data => {
+		
 	})
 	.then(() => {
 

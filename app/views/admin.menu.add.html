@@ -1,0 +1,46 @@
+<div class="grid-form">
+	<div class="grid-form1">
+		<h3 id="forms-example">{{ T.addNewMenu }}</h3>
+		<form class="form-horizontal" method="post" action="{{ server }}/{{ language }}/admin/menu/add">
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Order</label>
+				<div class="col-sm-10">
+					<select class="col-sm-2 control-label hor-form" id="order" name="order">
+						{% for i in Array(10) %}
+							<option value="{{ loop.index }}">{{ loop.index }}</option>
+						{% endfor %}
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Key</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="key" name="key" placeholder="key" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Name</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="name" name="name" placeholder="name" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Link</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="link" name="link" placeholder="Link" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Target</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="target" name="target" placeholder="Target">
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="submit" class="btn btn-primary">{{ T.addMenu }}</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

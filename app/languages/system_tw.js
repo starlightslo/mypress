@@ -14,5 +14,9 @@ module.exports = {
 	home: '首頁',
 	dashboard: '首頁',
 	addUser: '新增使用者',
-	editUser: '修改使用者'
+	editUser: '修改使用者',
+	menu: '選單',
+	editMenu: '修改選單',
+	addMenu: '新增選單',
+	addNewMenu: '新增選單'
 }
