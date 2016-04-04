@@ -552,6 +552,33 @@ exports.deleteUser = function (req, res, next) {
 }
 
 
+exports.validateUser = function (req, res, next) {
+	const username = req.params.username
+
+	// Checking user data
+	if (!verify.username(username, 6, 16)) {
+		res.status(400).send()
+		return
+	}
+
+	// Define
+	const UserModel = User.bindKnex(req.app.get('db').adminDB)
+
+	// Search user
+	UserModel.query().where('username', username).first()
+	.then(user => {
+		if (user) {
+			res.send('1')
+		} else {
+			res.send('0')
+		}
+	})
+	.catch(err => {
+		next(err)
+	})
+}
+
+
 exports.menu = function (req, res, next) {
 	const server = req.protocol + '://' + req.get('host')
 	const websiteName = req.app.get('websiteName')
