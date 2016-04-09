@@ -3,7 +3,7 @@
 		<h3 id="forms-example">Add new user</h3>
 		<form class="form-horizontal" method="post" action="{{ server }}/{{ language }}/admin/user/add">
 			<div class="form-group">
-				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Privilege</label>
+				<label class="col-sm-2 control-label hor-form">Privilege</label>
 				<div class="col-sm-10">
 					<select class="col-sm-2 control-label hor-form" id="privilege" name="privilege">
 						{% for i in Array(99) %}
@@ -13,7 +13,7 @@
 				</div>
 			</div>
 			<div id="username-group" class="form-group">
-				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Username</label>
+				<label class="col-sm-2 control-label hor-form">Username</label>
 				<div class="col-sm-10">
 					<div class="input-icon right spinner">
 						<i id="username-loading"></i>
@@ -22,67 +22,67 @@
 				</div>
 			</div>
 			<div id="password-group" class="form-group">
-				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Password</label>
+				<label class="col-sm-2 control-label hor-form">Password</label>
 				<div class="col-sm-10">
 					<input type="password" class="form-control1" id="password" name="password" placeholder="Password" required>
 				</div>
 			</div>
-			<div id="password-group" class="form-group">
-				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Repeated Password</label>
+			<div id="repeated-password-group" class="form-group">
+				<label class="col-sm-2 control-label hor-form">Repeated Password</label>
 				<div class="col-sm-10">
 					<input type="password" class="form-control1" id="repeated_password" placeholder="Repeated Password" required>
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="inputEmail3" class="col-sm-2 control-label hor-form">First Name</label>
+				<label class="col-sm-2 control-label hor-form">First Name</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control1" id="first_name" name="first_name" placeholder="First Name">
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Last Name</label>
+				<label class="col-sm-2 control-label hor-form">Last Name</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control1" id="last_name" name="last_name" placeholder="Last Name">
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Email</label>
+				<label class="col-sm-2 control-label hor-form">Email</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control1" id="email" name="email" placeholder="Email">
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Introduction</label>
+				<label class="col-sm-2 control-label hor-form">Introduction</label>
 				<div class="col-sm-10">
 					<textarea class="form-control1" id="introduction" name="introduction" placeholder="Introduce youself..."></textarea>
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Facebook</label>
+				<label class="col-sm-2 control-label hor-form">Facebook</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control1" id="facebook" name="facebook" placeholder="Facebook">
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Twitter</label>
+				<label class="col-sm-2 control-label hor-form">Twitter</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control1" id="twitter" name="twitter" placeholder="Twitter">
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Google</label>
+				<label class="col-sm-2 control-label hor-form">Google</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control1" id="google" name="google" placeholder="Google">
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="inputEmail3" class="col-sm-2 control-label hor-form">LinkedIn</label>
+				<label class="col-sm-2 control-label hor-form">LinkedIn</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control1" id="linkedin" name="linkedin" placeholder="LinkedIn">
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="inputEmail3" class="col-sm-2 control-label hor-form">Flickr</label>
+				<label class="col-sm-2 control-label hor-form">Flickr</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control1" id="flickr" name="flickr" placeholder="Flickr">
 				</div>
@@ -101,6 +101,7 @@
 	var VALIDATE_CLASS = 'form-group has-success'
 	var ERROR_CLASS = 'form-group has-error'
 	var usernameValid = false
+	var passwordvalid = false
 	var isLoading = false
 	$('#username').keyup(function() {
 		var username = $('#username').val()
@@ -130,7 +131,7 @@
 				checkData()
 			},
 			error: function() {
-				console.error('upload error');
+				console.error('upload error')
 				usernameValid = false
 				isLoading = false
 				checkData()
@@ -138,10 +139,47 @@
 			cache: false,
 			contentType: false,
 			processData: false
-		}, 'json');
+		}, 'json')
 		isLoading = true
 		setLoading('#username-loading', isLoading)
-	});
+	})
+
+	$('#password').keyup(function() {
+		passwordvalid = false
+		var password = $('#password').val()
+		if (verifyPassword(password, 6, 16)) {
+			$('#password-group').attr('class', NORMAL_CLASS)
+		} else {
+			$('#password-group').attr('class', ERROR_CLASS)
+			return
+		}
+
+		var repeated_password = $('#repeated_password').val()
+		if (password === repeated_password) {
+			passwordvalid = true
+			setValidate('#password-group', passwordvalid)
+		}
+		checkData()
+	})
+
+	$('#repeated_password').keyup(function() {
+		passwordvalid = false
+		var password = $('#password').val()
+		if (verifyPassword(password, 6, 16)) {
+			$('#repeated-password-group').attr('class', NORMAL_CLASS)
+		} else {
+			$('#repeated-password-group').attr('class', ERROR_CLASS)
+			return
+		}
+
+		var repeated_password = $('#repeated_password').val()
+		if (password === repeated_password) {
+			passwordvalid = true
+			setValidate('#password-group', passwordvalid)
+		}
+		checkData()
+	})
+
 	function setLoading(id, loading) {
 		if (loading) {
 			$(id).attr('class', LOADING_CLASS)
@@ -157,12 +195,13 @@
 		}
 	}
 	function checkData() {
-		if (usernameValid) {
+		if (usernameValid && passwordvalid) {
 			$(':submit').prop('disabled', false)
 		} else {
 			$(':submit').prop('disabled', true)
 		}
 		setValidate('#username-group', usernameValid)
+		setValidate('#repeated-password-group', passwordvalid)
 		setLoading('#username-loading', isLoading)
 	}
 
@@ -201,4 +240,18 @@
 		return /^[0-9a-zA-Z_\-\+]*$/.test(data)
 	}
 
+	function verifyPassword(data, min, max) {
+		// Checking empty
+		if (this.isEmpty(data)) {
+			return false
+		}
+
+		// Checking length
+		if (!this.checkLength(data, min, max)) {
+			return false
+		}
+
+		// Checking special characters
+		return /^[0-9a-zA-Z_\-\+~!@#$%\^&*=?,.]*$/.test(data)
+	}
 </script>
