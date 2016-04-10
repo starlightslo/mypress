@@ -189,18 +189,18 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							</div><!-- chart -->
 						{% endfor %}
 						<div class="clear"> </div>
-					</div>	
+					</div>
 				</div>
-			</section>		
+			</section>
 			<script src="js/plugins.js"></script>
-			<script src="js/script.js"></script>		
+			<script src="js/script.js"></script>
 		</div>
 		<div class="exper" id="Experience">
 			<div class="wrap">
 				<h3 class="heading">{{ T.experience }}</h3>
 				<section class="row section">
 					<div class="row-content2">
-						<!-- timeline-label -->		
+						<!-- timeline-label -->
 						<div class="timeline column six last">
 							{% for year in experiences|sort(true) %}
 								<div class="year">
@@ -217,7 +217,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 										</div><!-- experience -->
 									{% endfor %}
 								</div><!-- year -->
-							{% endfor %}							
+							{% endfor %}
 						</div><!-- timeline -->
 						<div class="clear"> </div>
 					</div>
@@ -250,9 +250,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			</script>
 			<script type="text/javascript">
 				jQuery(document).ready(function($) {
-					$(".scroll").click(function(event){		
-						event.preventDefault();
-						$('html,body').animate({scrollTop:$(this.hash).offset().top},1200);
+					$(".scroll").click(function(event){
+						if ($(this.hash).offset()) {
+							event.preventDefault();
+							$('html,body').animate({scrollTop:$(this.hash).offset().top},1200);
+						}
 					});
 				});
 			</script>
