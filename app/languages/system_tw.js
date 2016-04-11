@@ -18,5 +18,10 @@ module.exports = {
 	menu: '選單',
 	editMenu: '修改選單',
 	addMenu: '新增選單',
-	addNewMenu: '新增選單'
+	addNewMenu: '新增選單',
+	addPortfolio: '新增作品',
+	editPortfolio: '編輯作品',
+	addNewSkill: '新增技能',
+	addSkill: '新增技能',
+	editSkill: '編輯技能'
 }

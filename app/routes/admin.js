@@ -50,4 +50,11 @@ router.post('/portfolio/edit/:key', authController.checkAuth, preloadList, contr
 router.post('/portfolio/upload/:key', authController.checkAuth, preloadList, multipart(), controller.uploadPortfolioPicture)
 router.delete('/portfolio/:key', authController.checkAuth, preloadList, controller.deletePortfolio)
 
+router.get('/skill', authController.checkAuth, preloadList, controller.skill)
+router.get('/skill/add', authController.checkAuth, preloadList, controller.addSkill)
+router.get('/skill/view/:key', authController.checkAuth, preloadList, controller.viewSkill)
+router.post('/skill/add', authController.checkAuth, preloadList, controller.insertSkill)
+router.post('/skill/edit/:key', authController.checkAuth, preloadList, controller.editSkill)
+router.delete('/skill/:key', authController.checkAuth, preloadList, controller.deleteSkill)
+
 module.exports = router

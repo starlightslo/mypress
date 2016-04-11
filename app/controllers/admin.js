@@ -1368,3 +1368,355 @@ exports.editPortfolio = function (req, res, next) {
 		res.redirect('/' + language + '/admin/portfolio/view/' + key + '?lang=' + selectedLanguage + '&p=' + page)
 	})
 }
+
+
+exports.skill = function (req, res, next) {
+	const server = req.protocol + '://' + req.get('host')
+	const websiteName = req.app.get('websiteName')
+	const logoString = req.app.get('logoString')
+	const logoImage = req.app.get('logoImage')
+	const logoLink = req.app.get('logoLink')
+	const webTitle = req.app.get('webTitle')
+	const webSubtitle = req.app.get('webSubtitle')
+	const mainButtonString = req.app.get('mainButtonString')
+	const mainButtonLink = req.app.get('mainButtonLink')
+	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const language = req.app.get('language')
+	const template = req.app.get('template')
+	const languageList = req.app.get('languageList')
+	const templateFile = 'admin'
+	const selectedLanguage = req.query.lang || language
+
+	// Setting path
+	const pathList = []
+	const currentPath = 'skill'
+
+	// Get template language data
+	const T = Language.getTemplateLanguage(SYSTEM, language)
+
+	// Define
+	const SkillModel = Skill.bindKnex(req.app.get('db').adminDB)
+	let skillList = []
+
+	// Getting menu data
+	SkillModel.query().where('language', selectedLanguage).orderBy('order')
+	.then(skills => {
+		skills.forEach(skill => {
+			skillList.push({
+				key: skill.key,
+				name: skill.name,
+				percent: skill.percent,
+				color: skill.color,
+				animateTime: skill.animate_time,
+				order: skill.order,
+			})
+		})
+	})
+	.catch(err => {
+		next(err)
+	})
+	.finally(() => {
+		const resp = {
+			T: T,
+			server: server,
+			language: language,
+			selectedLanguage: selectedLanguage,
+			languageList: languageList,
+			websiteName: websiteName,
+			logoString: logoString,
+			logoImage: logoImage,
+			logoLink: logoLink,
+			webTitle: webTitle,
+			webSubtitle: webSubtitle,
+			mainButtonString: mainButtonString,
+			mainButtonLink: mainButtonLink,
+			mainButtonTarget: mainButtonTarget,
+			template: template,
+			contentPage: 'admin.skill.html',
+			loginUser: {
+				username: req.user.username,
+				privilege: req.user.privilege,
+				picture: req.user.picture
+			},
+			skillList: skillList,
+			pathList: pathList,
+			currentPath: currentPath
+		}
+		res.render(templateFile, resp)
+	})
+}
+
+
+exports.addSkill = function (req, res, next) {
+	const server = req.protocol + '://' + req.get('host')
+	const websiteName = req.app.get('websiteName')
+	const logoString = req.app.get('logoString')
+	const logoImage = req.app.get('logoImage')
+	const logoLink = req.app.get('logoLink')
+	const webTitle = req.app.get('webTitle')
+	const webSubtitle = req.app.get('webSubtitle')
+	const mainButtonString = req.app.get('mainButtonString')
+	const mainButtonLink = req.app.get('mainButtonLink')
+	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const language = req.app.get('language')
+	const template = req.app.get('template')
+	const templateFile = 'admin'
+
+	// Setting path
+	const pathList = [{
+		url: 'admin/skill',
+		name: 'skill'
+	}]
+	const currentPath = 'addSkill'
+
+	// Get template language data
+	const T = Language.getTemplateLanguage(SYSTEM, language)
+
+	const resp = {
+		T: T,
+		server: server,
+		language: language,
+		websiteName: websiteName,
+		logoString: logoString,
+		logoImage: logoImage,
+		logoLink: logoLink,
+		webTitle: webTitle,
+		webSubtitle: webSubtitle,
+		mainButtonString: mainButtonString,
+		mainButtonLink: mainButtonLink,
+		mainButtonTarget: mainButtonTarget,
+		template: template,
+		contentPage: 'admin.skill.add.html',
+		loginUser: {
+			username: req.user.username,
+			privilege: req.user.privilege,
+			picture: req.user.picture
+		},
+		pathList: pathList,
+		currentPath: currentPath
+	}
+	res.render(templateFile, resp)
+}
+
+
+exports.insertSkill = function (req, res, next) {
+	const language = req.app.get('language')
+	const languageList = req.app.get('languageList')
+
+	// Getting user data from the input
+	const name = req.body.name || ''
+	const percent = req.body.percent || 0
+	const color = req.body.color || '#000000'
+	const order = req.body.order || 1
+
+	// Define
+	const SkillModel = Skill.bindKnex(req.app.get('db').adminDB)
+
+	// Check the key is existing or not
+	const generatingKey = () => {
+		const resolver = require('bluebird').defer()
+		const loop = () => {
+			// Generating the key
+			const key = Utils.randomString(8)
+
+			// Start checking
+			SkillModel.query().where('key', key).count('*').first()
+			.then(data => {
+				if (data.count > 0) {
+					// If there is a same key
+					loop()
+				}
+				resolver.resolve(key)
+			})
+			.catch(resolver.reject)
+		}
+		loop()
+		return resolver.promise
+	}
+
+	generatingKey()
+	.then(key => {
+		let promiseList = []
+		// Prepare insert data
+		languageList.forEach(lang => {
+			promiseList.push(SkillModel.query().insert({
+				key: key,
+				name: name,
+				percent: percent,
+				color: color,
+				animate_time: 3000,
+				order: order,
+				language: lang
+			}))
+		})
+		return Promise.all(promiseList)
+	})
+	.then(() => {
+			res.redirect('/' + language + '/admin/skill')
+		})
+	.catch(err => {
+		next(err)
+	})
+}
+
+
+exports.viewSkill = function (req, res, next) {
+	const server = req.protocol + '://' + req.get('host')
+	const websiteName = req.app.get('websiteName')
+	const logoString = req.app.get('logoString')
+	const logoImage = req.app.get('logoImage')
+	const logoLink = req.app.get('logoLink')
+	const webTitle = req.app.get('webTitle')
+	const webSubtitle = req.app.get('webSubtitle')
+	const mainButtonString = req.app.get('mainButtonString')
+	const mainButtonLink = req.app.get('mainButtonLink')
+	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const language = req.app.get('language')
+	const template = req.app.get('template')
+	const languageList = req.app.get('languageList')
+	const templateFile = 'admin'
+	const key = req.params.key
+	const selectedLanguage = req.query.lang || language
+
+	// Checking user data
+	if (!verify.username(key, 1, 16)) {
+		res.status(400).send()
+		return
+	}
+
+	// Setting path
+	const pathList = [{
+		url: 'admin/skill?lang=' + selectedLanguage,
+		name: 'skill'
+	}]
+	const currentPath = 'editSkill'
+
+	// Get template language data
+	const T = Language.getTemplateLanguage(SYSTEM, language)
+
+	// Define
+	const SkillModel = Skill.bindKnex(req.app.get('db').adminDB)
+	let skill = {}
+
+	// Getting user data
+	SkillModel.query().where('key', key).where('language', selectedLanguage).first()
+	.then(skills => {
+		if (!skills) {
+			res.redirect('/' + language + '/admin/skill')
+			return
+		}
+
+		skill = {
+			key: skills.key,
+			name: skills.name,
+			percent: skills.percent,
+			color: skills.color,
+			animateTime: skills.animate_time,
+			order: skills.order
+		}
+	})
+	.catch(err => {
+		next(err)
+	})
+	.finally(() => {
+		const resp = {
+			T: T,
+			server: server,
+			language: language,
+			languageList: languageList,
+			selectedLanguage: selectedLanguage,
+			websiteName: websiteName,
+			logoString: logoString,
+			logoImage: logoImage,
+			logoLink: logoLink,
+			webTitle: webTitle,
+			webSubtitle: webSubtitle,
+			mainButtonString: mainButtonString,
+			mainButtonLink: mainButtonLink,
+			mainButtonTarget: mainButtonTarget,
+			template: template,
+			contentPage: 'admin.skill.view.html',
+			loginUser: {
+				username: req.user.username,
+				privilege: req.user.privilege,
+				picture: req.user.picture
+			},
+			skill: skill,
+			pathList: pathList,
+			currentPath: currentPath
+		}
+		res.render(templateFile, resp)
+	})
+}
+
+
+exports.editSkill = function (req, res, next) {
+	const language = req.app.get('language')
+	const key = req.params.key
+	const selectedLanguage = req.query.lang || language
+
+	// Getting user data from the input
+	const name = req.body.name || ''
+	const percent = req.body.percent || 0
+	const color = req.body.color || '#000000'
+	const order = req.body.order || 1
+	const animateTime = req.body.animate_time || 3000
+
+	// Checking user data
+	if ((!verify.username(key, 1, 16)) || (!verify.inNumber(order, 1, 99)) || (!verify.inNumber(order, 1, 99999))) {
+		res.status(400).send()
+		return
+	}
+
+	// Define
+	const SkillModel = Skill.bindKnex(req.app.get('db').adminDB)
+
+	// Update structure
+	const updateStructure = {
+		name: name,
+		percent: percent,
+		color: color,
+		order: order,
+		animate_time: animateTime
+	}
+
+	// Update the name of menu
+	SkillModel.query().where('key', key).where('language', selectedLanguage).update({name: name})
+	.then(data => {
+		return SkillModel.query().where('key', key).update(updateStructure)
+	})
+	.catch(err => {
+		next(err)
+	})
+	.finally(() => {
+		res.redirect('/' + language + '/admin/skill/view/' + key + '?lang=' + selectedLanguage)
+	})
+}
+
+
+exports.deleteSkill = function (req, res, next) {
+	const key = req.params.key
+
+	// Checking user data
+	if (!verify.username(key, 1, 16)) {
+		res.status(400).send()
+		return
+	}
+
+	// Define
+	const SkillModel = Skill.bindKnex(req.app.get('db').adminDB)
+	
+	SkillModel.query().delete().where('key', key)
+	.then(data => {
+		
+	})
+	.then(() => {
+
+	})
+	.catch(err => {
+		next(err)
+	})
+	.finally(() => {
+		res.status(204).send()
+	})
+}

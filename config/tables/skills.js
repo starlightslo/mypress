@@ -9,6 +9,10 @@ module.exports = {
 		type: 'increments',
 		primary: true
 	},{
+		name: 'key',
+		type: 'string',
+		length: 16
+	},{
 		name: 'language',
 		type: 'string',
 		length: 16
@@ -31,6 +35,7 @@ module.exports = {
 		type: 'integer'
 	}],
 	defaultDataList: [{
+		key: 'ui',
 		language: 'en',
 		name: 'User Interface',
 		percent: 73,
@@ -38,6 +43,7 @@ module.exports = {
 		animate_time: 3000,
 		order: 1
 	},{
+		key: 'frontend',
 		language: 'en',
 		name: 'Frontend',
 		percent: 85,
@@ -45,6 +51,7 @@ module.exports = {
 		animate_time: 3000,
 		order: 2
 	},{
+		key: 'backend',
 		language: 'en',
 		name: 'Backend',
 		percent: 99,
@@ -52,6 +59,7 @@ module.exports = {
 		animate_time: 3000,
 		order: 3
 	},{
+		key: 'ux',
 		language: 'en',
 		name: 'User Experience',
 		percent: 40,
@@ -59,6 +67,7 @@ module.exports = {
 		animate_time: 3000,
 		order: 4
 	},{
+		key: 'ui',
 		language: 'tw',
 		name: '使用者介面',
 		percent: 73,
@@ -66,6 +75,7 @@ module.exports = {
 		animate_time: 3000,
 		order: 1
 	},{
+		key: 'frontend',
 		language: 'tw',
 		name: '前端',
 		percent: 85,
@@ -73,6 +83,7 @@ module.exports = {
 		animate_time: 3000,
 		order: 2
 	},{
+		key: 'backend',
 		language: 'tw',
 		name: '後端',
 		percent: 99,
@@ -80,6 +91,7 @@ module.exports = {
 		animate_time: 3000,
 		order: 3
 	},{
+		key: 'ux',
 		language: 'tw',
 		name: '使用者體驗',
 		percent: 40,
