@@ -956,8 +956,22 @@ exports.portfolio = function (req, res, next) {
 	const PortfolioModel = Portfolio.bindKnex(req.app.get('db').adminDB)
 	let portfolioList = []
 
-	// Getting portfolio data
-	PortfolioModel.query().where('language', selectedLanguage).orderBy('name')
+	// Getting total count of portfolio data
+	PortfolioModel.query().where('language', selectedLanguage).count('*').first()
+	.then((data) => {
+		// Find the total page
+		const totalCount = data.count
+		totalPage = Math.ceil(totalCount / PAGE_COUNT)
+
+		// Check the current page
+		if (page > totalPage) page = totalPage
+
+		// Getting the offset
+		const offset = (page - 1) * PAGE_COUNT
+
+		// Getting portfolio data with limit and offset
+		return PortfolioModel.query().where('language', selectedLanguage).orderBy('name').limit(PAGE_COUNT).offset(offset)
+	})
 	.then(portfolios => {
 		portfolios.forEach(portfolio => {
 			portfolioList.push({
