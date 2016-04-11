@@ -23,5 +23,8 @@ module.exports = {
 	editPortfolio: '編輯作品',
 	addNewSkill: '新增技能',
 	addSkill: '新增技能',
-	editSkill: '編輯技能'
+	editSkill: '編輯技能',
+	addExperience: '新增經歷',
+	addNewExperience: '新增經歷',
+	editExperience: '編輯經歷'
 }

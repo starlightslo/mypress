@@ -23,5 +23,8 @@ module.exports = {
 	editPortfolio: 'Edit Portfolio',
 	addNewSkill: 'Add new skill',
 	addSkill: 'Add Skill',
-	editSkill: 'Edit Skill'
+	editSkill: 'Edit Skill',
+	addExperience: 'Add Experience',
+	addNewExperience: 'Add New Experience',
+	editExperience: 'Edit Experience'
 }

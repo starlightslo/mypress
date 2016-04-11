@@ -9,6 +9,10 @@ module.exports = {
 		type: 'increments',
 		primary: true
 	},{
+		name: 'key',
+		type: 'string',
+		length: 16
+	},{
 		name: 'language',
 		type: 'string',
 		length: 16
@@ -39,6 +43,7 @@ module.exports = {
 		type: 'boolean'
 	}],
 	defaultDataList: [{
+		key: 'facebook',
 		language: 'en',
 		company_name: 'Facebook',
 		company_logo: 'images/asset01.jpg',
@@ -48,6 +53,7 @@ module.exports = {
 		end_working_date: new Date(),
 		still_here: true
 	},{
+		key: 'amazon',
 		language: 'en',
 		company_name: 'Amazon',
 		company_logo: 'images/asset02.jpg',
@@ -57,6 +63,7 @@ module.exports = {
 		end_working_date: '2015/09/30',
 		still_here: false
 	},{
+		key: 'apple',
 		language: 'en',
 		company_name: 'Apple',
 		company_logo: 'images/asset03.jpg',
@@ -66,6 +73,7 @@ module.exports = {
 		end_working_date: '2014/09/30',
 		still_here: false
 	},{
+		key: 'ibm',
 		language: 'en',
 		company_name: 'IBM',
 		company_logo: 'images/asset04.jpg',
@@ -75,6 +83,7 @@ module.exports = {
 		end_working_date: '2010/09/30',
 		still_here: false
 	},{
+		key: 'facebook',
 		language: 'tw',
 		company_name: 'Facebook',
 		company_logo: 'images/asset01.jpg',
@@ -84,6 +93,7 @@ module.exports = {
 		end_working_date: new Date(),
 		still_here: true
 	},{
+		key: 'amazon',
 		language: 'tw',
 		company_name: 'Amazon',
 		company_logo: 'images/asset02.jpg',
@@ -93,6 +103,7 @@ module.exports = {
 		end_working_date: '2015/09/30',
 		still_here: false
 	},{
+		key: 'apple',
 		language: 'tw',
 		company_name: 'Apple',
 		company_logo: 'images/asset03.jpg',
@@ -102,6 +113,7 @@ module.exports = {
 		end_working_date: '2014/09/30',
 		still_here: false
 	},{
+		key: 'ibm',
 		language: 'tw',
 		company_name: 'IBM',
 		company_logo: 'images/asset04.jpg',

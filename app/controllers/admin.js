@@ -1131,11 +1131,9 @@ exports.viewPortfolio = function (req, res, next) {
 		portfolio = {
 			key: portfolios.key,
 			name: portfolios.name,
-			name: portfolios.name,
 			client: portfolios.client,
 			role: portfolios.role,
 			description: portfolios.description,
-			name: portfolios.name,
 			link: portfolios.link,
 			target: portfolios.target,
 			picture: portfolios.picture,
@@ -1718,5 +1716,455 @@ exports.deleteSkill = function (req, res, next) {
 	})
 	.finally(() => {
 		res.status(204).send()
+	})
+}
+
+
+exports.experience = function (req, res, next) {
+	const DateFormat = require('dateformat')
+
+	const server = req.protocol + '://' + req.get('host')
+	const websiteName = req.app.get('websiteName')
+	const logoString = req.app.get('logoString')
+	const logoImage = req.app.get('logoImage')
+	const logoLink = req.app.get('logoLink')
+	const webTitle = req.app.get('webTitle')
+	const webSubtitle = req.app.get('webSubtitle')
+	const mainButtonString = req.app.get('mainButtonString')
+	const mainButtonLink = req.app.get('mainButtonLink')
+	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const language = req.app.get('language')
+	const template = req.app.get('template')
+	const languageList = req.app.get('languageList')
+	const templateFile = 'admin'
+	const selectedLanguage = req.query.lang || language
+
+	// Page
+	let totalPage = 1
+	let page = req.query.p || 1
+	if (!verify.isNumber(page)) page = 1
+	page = Number(page)
+	if (page < 1) page = 1
+
+	// Setting path
+	const pathList = []
+	const currentPath = 'experience'
+
+	// Get template language data
+	const T = Language.getTemplateLanguage(SYSTEM, language)
+
+	// Define
+	const ExperienceModel = Experience.bindKnex(req.app.get('db').adminDB)
+	let experienceList = []
+
+	// Getting total count of experience data
+	ExperienceModel.query().where('language', selectedLanguage).count('*').first()
+	.then((data) => {
+		// Find the total page
+		const totalCount = data.count
+		totalPage = Math.ceil(totalCount / PAGE_COUNT)
+
+		// Check the current page
+		if (page > totalPage) page = totalPage
+
+		// Getting the offset
+		const offset = (page - 1) * PAGE_COUNT
+
+		// Getting portfolio data with limit and offset
+		return ExperienceModel.query().where('language', selectedLanguage).orderBy('start_working_date', 'desc').orderBy('end_working_date', 'desc').limit(PAGE_COUNT).offset(offset)
+	})
+	.then(experiences => {
+		experiences.forEach(experience => {
+			console.log(experience.start_working_date)
+			experienceList.push({
+				key: experience.key,
+				companyName: experience.company_name,
+				companyLogo: experience.company_logo,
+				role: experience.role,
+				description: experience.description,
+				startWorkingDate: DateFormat(experience.start_working_date, 'isoDate'),
+				endWorkingDate: DateFormat(experience.end_working_date, 'isoDate'),
+				stillHere: experience.still_here
+			})
+		})
+	})
+	.catch(err => {
+		next(err)
+	})
+	.finally(() => {
+		const resp = {
+			T: T,
+			server: server,
+			language: language,
+			selectedLanguage: selectedLanguage,
+			languageList: languageList,
+			websiteName: websiteName,
+			logoString: logoString,
+			logoImage: logoImage,
+			logoLink: logoLink,
+			webTitle: webTitle,
+			webSubtitle: webSubtitle,
+			mainButtonString: mainButtonString,
+			mainButtonLink: mainButtonLink,
+			mainButtonTarget: mainButtonTarget,
+			template: template,
+			contentPage: 'admin.experience.html',
+			loginUser: {
+				username: req.user.username,
+				privilege: req.user.privilege,
+				picture: req.user.picture
+			},
+			experienceList: experienceList,
+			pathList: pathList,
+			currentPath: currentPath,
+			page: page,
+			totalPage: totalPage
+		}
+		res.render(templateFile, resp)
+	})
+}
+
+
+exports.addExperience = function (req, res, next) {
+	const server = req.protocol + '://' + req.get('host')
+	const websiteName = req.app.get('websiteName')
+	const logoString = req.app.get('logoString')
+	const logoImage = req.app.get('logoImage')
+	const logoLink = req.app.get('logoLink')
+	const webTitle = req.app.get('webTitle')
+	const webSubtitle = req.app.get('webSubtitle')
+	const mainButtonString = req.app.get('mainButtonString')
+	const mainButtonLink = req.app.get('mainButtonLink')
+	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const language = req.app.get('language')
+	const template = req.app.get('template')
+	const templateFile = 'admin'
+	const selectedLanguage = req.query.lang || language
+
+	let page = req.query.p || 1
+
+	// Setting path
+	const pathList = [{
+		url: 'admin/experience?lang=' + selectedLanguage + '&p=' + page,
+		name: 'experience'
+	}]
+	const currentPath = 'addExperience'
+
+	// Get template language data
+	const T = Language.getTemplateLanguage(SYSTEM, language)
+
+	const resp = {
+		T: T,
+		server: server,
+		language: language,
+		websiteName: websiteName,
+		logoString: logoString,
+		logoImage: logoImage,
+		logoLink: logoLink,
+		webTitle: webTitle,
+		webSubtitle: webSubtitle,
+		mainButtonString: mainButtonString,
+		mainButtonLink: mainButtonLink,
+		mainButtonTarget: mainButtonTarget,
+		template: template,
+		contentPage: 'admin.experience.add.html',
+		loginUser: {
+			username: req.user.username,
+			privilege: req.user.privilege,
+			picture: req.user.picture
+		},
+		pathList: pathList,
+		currentPath: currentPath,
+		page: page
+	}
+	res.render(templateFile, resp)
+}
+
+
+exports.viewExperience = function (req, res, next) {
+	const DateFormat = require('dateformat')
+
+	const server = req.protocol + '://' + req.get('host')
+	const websiteName = req.app.get('websiteName')
+	const logoString = req.app.get('logoString')
+	const logoImage = req.app.get('logoImage')
+	const logoLink = req.app.get('logoLink')
+	const webTitle = req.app.get('webTitle')
+	const webSubtitle = req.app.get('webSubtitle')
+	const mainButtonString = req.app.get('mainButtonString')
+	const mainButtonLink = req.app.get('mainButtonLink')
+	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const language = req.app.get('language')
+	const template = req.app.get('template')
+	const languageList = req.app.get('languageList')
+	const templateFile = 'admin'
+	const key = req.params.key
+	const selectedLanguage = req.query.lang || language
+
+	const page = req.query.p || 1
+
+	// Checking user data
+	if (!verify.username(key, 1, 16)) {
+		res.status(400).send()
+		return
+	}
+
+	// Setting path
+	const pathList = [{
+		url: 'admin/experience?lang=' + selectedLanguage + '&p=' + page,
+		name: 'experience'
+	}]
+	const currentPath = 'editExperience'
+
+	// Get template language data
+	const T = Language.getTemplateLanguage(SYSTEM, language)
+
+	// Define
+	const ExperienceModel = Experience.bindKnex(req.app.get('db').adminDB)
+	let experience = {}
+
+	// Getting user data
+	ExperienceModel.query().where('key', key).where('language', selectedLanguage).first()
+	.then(experiences => {
+		if (!experiences) {
+			res.redirect('/' + language + '/admin/experience')
+			return
+		}
+
+		experience = {
+			key: experiences.key,
+			companyName: experiences.company_name,
+			companyLogo: experiences.company_logo,
+			role: experiences.role,
+			description: experiences.description,
+			startWorkingDate: DateFormat(experiences.start_working_date, 'isoDate'),
+			endWorkingDate: DateFormat(experiences.end_working_date, 'isoDate'),
+			stillHere: experiences.still_here
+		}
+	})
+	.catch(err => {
+		next(err)
+	})
+	.finally(() => {
+		const resp = {
+			T: T,
+			server: server,
+			language: language,
+			languageList: languageList,
+			selectedLanguage: selectedLanguage,
+			websiteName: websiteName,
+			logoString: logoString,
+			logoImage: logoImage,
+			logoLink: logoLink,
+			webTitle: webTitle,
+			webSubtitle: webSubtitle,
+			mainButtonString: mainButtonString,
+			mainButtonLink: mainButtonLink,
+			mainButtonTarget: mainButtonTarget,
+			template: template,
+			contentPage: 'admin.experience.view.html',
+			loginUser: {
+				username: req.user.username,
+				privilege: req.user.privilege,
+				picture: req.user.picture
+			},
+			experience: experience,
+			pathList: pathList,
+			currentPath: currentPath,
+			page: page
+		}
+		res.render(templateFile, resp)
+	})
+}
+
+exports.uploadExperiencePicture = function (req, res, next) {
+	const fs = require('fs')
+	const key = req.params.key
+
+	// Checking user data
+	if (!verify.username(key, 1, 16)) {
+		res.status(400).send()
+		return
+	}
+
+	// Checking files data
+	if (!req.files) {
+		res.status(400).send()
+		return
+	}
+
+	// Define
+	const ExperienceModel = Experience.bindKnex(req.app.get('db').adminDB)
+	
+	fs.readFile(req.files.picture.path, function (err, data) {
+		const imageName = req.files.picture.name
+		// If there's an error
+		if(!imageName){
+			next('error')
+		} else {
+			const path = config.root + "/public/uploads/experience-" + key
+			// write file to public/uploads folder
+			fs.writeFile(path, data, function (err) {
+				if (err) {
+					next(err)
+					return
+				}
+
+				// Update data
+				const updateStructure = {
+					picture: 'uploads/experience-' + key
+				}
+				ExperienceModel.query().where('key', key).update(updateStructure)
+				.then(data => {
+					
+				})
+				.catch(err => {
+					next(err)
+				})
+				.finally(() => {
+					res.status(204).send()
+				})
+			})
+		}
+	})
+}
+
+
+exports.insertExperience = function (req, res, next) {
+	const language = req.app.get('language')
+	const languageList = req.app.get('languageList')
+
+	// Getting user data from the input
+	const name = req.body.name || ''
+	const client = req.body.client || ''
+	const role = req.body.role || ''
+	const description = req.body.description || ''
+	const link = req.body.link || ''
+
+	// Define
+	const PortfolioModel = Portfolio.bindKnex(req.app.get('db').adminDB)
+
+	// Check the key is existing or not
+	const generatingKey = () => {
+		const resolver = require('bluebird').defer()
+		const loop = () => {
+			// Generating the key
+			const key = Utils.randomString(8)
+
+			// Start checking
+			PortfolioModel.query().where('key', key).count('*').first()
+			.then(data => {
+				if (data.count > 0) {
+					// If there is a same key
+					loop()
+				}
+				resolver.resolve(key)
+			})
+			.catch(resolver.reject)
+		}
+		loop()
+		return resolver.promise
+	}
+
+	generatingKey()
+	.then(key => {
+		let promiseList = []
+		// Prepare insert data
+		languageList.forEach(lang => {
+			promiseList.push(PortfolioModel.query().insert({
+				key: key,
+				name: name,
+				client: client,
+				role: role,
+				description: description,
+				link: link,
+				target: '_blank',
+				picture: '',
+				picture_alt: '',
+				language: lang
+			}))
+		})
+		return Promise.all(promiseList)
+	})
+	.then(() => {
+			res.redirect('/' + language + '/admin/portfolio')
+		})
+	.catch(err => {
+		next(err)
+	})
+}
+
+
+exports.deleteExperience = function (req, res, next) {
+	const key = req.params.key
+
+	// Checking user data
+	if (!verify.username(key, 1, 16)) {
+		res.status(400).send()
+		return
+	}
+
+	// Define
+	const ExperienceModel = Experience.bindKnex(req.app.get('db').adminDB)
+	
+	ExperienceModel.query().delete().where('key', key)
+	.then(data => {
+		
+	})
+	.catch(err => {
+		next(err)
+	})
+	.finally(() => {
+		res.status(204).send()
+	})
+}
+
+
+exports.editExperience = function (req, res, next) {
+	const language = req.app.get('language')
+	const key = req.params.key
+	const selectedLanguage = req.query.lang || language
+	const page = req.query.p || 1
+
+	// Getting user data from the input
+	const name = req.body.name || ''
+	const client = req.body.client || ''
+	const role = req.body.role || ''
+	const description = req.body.description || ''
+	const link = req.body.link || ''
+	const target = req.body.target || '_blank'
+	const pictureAlt = req.body.picture_alt || ''
+
+
+	// Checking user data
+	if (!verify.username(key, 1, 16)) {
+		res.status(400).send()
+		return
+	}
+
+	// Define
+	const PortfolioModel = Portfolio.bindKnex(req.app.get('db').adminDB)
+
+	// Update structure
+	const updateStructure = {
+		name: name,
+		client: client,
+		role: role,
+		description: description,
+		link: link,
+		target: target,
+		picture_alt: pictureAlt
+	}
+
+	// Update the name of menu
+	PortfolioModel.query().where('key', key).where('language', selectedLanguage).update(updateStructure)
+	.then(data => {
+		
+	})
+	.catch(err => {
+		next(err)
+	})
+	.finally(() => {
+		res.redirect('/' + language + '/admin/portfolio/view/' + key + '?lang=' + selectedLanguage + '&p=' + page)
 	})
 }

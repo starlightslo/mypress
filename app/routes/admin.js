@@ -57,4 +57,12 @@ router.post('/skill/add', authController.checkAuth, preloadList, controller.inse
 router.post('/skill/edit/:key', authController.checkAuth, preloadList, controller.editSkill)
 router.delete('/skill/:key', authController.checkAuth, preloadList, controller.deleteSkill)
 
+router.get('/experience', authController.checkAuth, preloadList, controller.experience)
+router.get('/experience/add', authController.checkAuth, preloadList, controller.addExperience)
+router.get('/experience/view/:key', authController.checkAuth, preloadList, controller.viewExperience)
+router.post('/experience/add', authController.checkAuth, preloadList, controller.insertExperience)
+router.post('/experience/edit/:key', authController.checkAuth, preloadList, controller.editExperience)
+router.post('/experience/upload/:key', authController.checkAuth, preloadList, multipart(), controller.uploadExperiencePicture)
+router.delete('/experience/:key', authController.checkAuth, preloadList, controller.deleteExperience)
+
 module.exports = router
