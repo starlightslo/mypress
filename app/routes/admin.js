@@ -45,7 +45,7 @@ router.delete('/menu/:key', authController.checkAuth, preloadList, controller.de
 router.get('/portfolio', authController.checkAuth, preloadList, controller.portfolio)
 router.get('/portfolio/add', authController.checkAuth, preloadList, controller.addPortfolio)
 router.get('/portfolio/view/:key', authController.checkAuth, preloadList, controller.viewPortfolio)
-//router.post('/portfolio/add', authController.checkAuth, preloadList, controller.insertPortfolio)
+router.post('/portfolio/add', authController.checkAuth, preloadList, controller.insertPortfolio)
 //router.post('/portfolio/edit/:key', authController.checkAuth, preloadList, controller.editPortfolio)
 router.post('/portfolio/upload/:key', authController.checkAuth, preloadList, multipart(), controller.uploadPortfolioPicture)
 //router.delete('/portfolio/:key', authController.checkAuth, preloadList, controller.deletePortfolio)

@@ -6,6 +6,7 @@ const salt = bcrypt.genSaltSync(config.saltLength)
 
 const Language = require('../modules/language')
 const verify = new (require('../modules/verify'))()
+const Utils = require('../modules/utils')
 
 const User = require('../models/user')
 const UserProfile = require('../models/user_profile')
@@ -1213,3 +1214,69 @@ exports.uploadPortfolioPicture = function (req, res, next) {
 		}
 	})
 }
+
+
+exports.insertPortfolio = function (req, res, next) {
+	const language = req.app.get('language')
+	const languageList = req.app.get('languageList')
+
+	// Getting user data from the input
+	const name = req.body.name || ''
+	const client = req.body.client || ''
+	const role = req.body.role || ''
+	const description = req.body.description || ''
+	const link = req.body.link || ''
+
+	// Define
+	const PortfolioModel = Portfolio.bindKnex(req.app.get('db').adminDB)
+
+	// Check the key is existing or not
+	const generatingKey = () => {
+		const resolver = require('bluebird').defer()
+		const loop = () => {
+			// Generating the key
+			const key = Utils.randomString(8)
+
+			// Start checking
+			PortfolioModel.query().where('key', key).count('*').first()
+			.then(data => {
+				if (data.count > 0) {
+					// If there is a same key
+					loop()
+				}
+				resolver.resolve(key)
+			})
+			.catch(resolver.reject)
+		}
+		loop()
+		return resolver.promise
+	}
+
+	generatingKey()
+	.then(key => {
+		let promiseList = []
+		// Prepare insert data
+		languageList.forEach(lang => {
+			promiseList.push(PortfolioModel.query().insert({
+				key: key,
+				name: name,
+				client: client,
+				role: role,
+				description: description,
+				link: link,
+				target: '_blank',
+				picture: '',
+				picture_alt: '',
+				language: lang
+			}))
+		})
+		return Promise.all(promiseList)
+	})
+	.then(() => {
+			res.redirect('/' + language + '/admin/portfolio')
+		})
+	.catch(err => {
+		next(err)
+	})
+}
+
