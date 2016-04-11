@@ -1,0 +1,99 @@
+<div class="content-top">
+	<div class="col-md-12">
+		<div class="tab-pane active text-style" id="tab1">
+			<div class="inbox-right">
+				<div class="mailbox-content">
+					<div class="mail-toolbar clearfix">
+						<div class="float-left">
+							<div class="btn-group">
+								<a class="btn btn-default" href="portfolio/add">New</a>
+							</div>
+						</div>
+						<div class="float-right">
+							<div class="dropdown">
+								<a href="#" title="" class="btn btn-default" data-toggle="dropdown" aria-expanded="false">
+									{{ selectedLanguage }}
+									<i class="fa fa-chevron-down icon_8"></i>
+									<div class="ripple-wrapper"></div>
+								</a>
+								<ul class="dropdown-menu float-right">
+									{% for lang in languageList %}
+									<li>
+										<a href="?lang={{ lang }}&p={{ page }}">{{ lang }}</a>
+									</li>
+									{% endfor %}
+								</ul>
+							</div>
+							<div class="btn-group">
+								<a class="btn btn-default {% if page == 1 %} disabled {% endif %}" href="?lang={{ selectedLanguage }}&p={{ page-1 }}">
+									<i class="fa fa-angle-left"></i>
+								</a>
+								<a class="btn btn-default {% if page == totalPage %} disabled {% endif %}" href="?lang={{ selectedLanguage }}&p={{ page+1 }}">
+									<i class="fa fa-angle-right"></i>
+								</a>
+							</div>
+							<div class="dropdown">
+								<a href="#" title="" class="btn btn-default" data-toggle="dropdown" aria-expanded="false">
+									{{ page }}
+									<i class="fa fa-chevron-down icon_8"></i>
+									<div class="ripple-wrapper"></div>
+								</a>
+								<ul class="dropdown-menu float-right">
+									{% for i in Array(totalPage) %}
+									<li>
+										<a href="?p={{ loop.index }}">{{ loop.index }}</a>
+									</li>
+									{% endfor %}
+								</ul>
+							</div>
+						</div>
+					</div>
+					<table class="table">
+						<tbody>
+							{% for portfolio in portfolioList %}
+								<tr class="table-row">
+									<td>
+										<span class="mar">{{ loop.index }}</span>
+									</td>
+									<td class="table-text">
+										<a href="portfolio/view/{{ portfolio.key }}?lang={{ selectedLanguage }}&p={{ page }}"><h6>{{ portfolio.name }}</h6></a>
+									</td>
+									<td>
+										{{ portfolio.client }}
+									</td>
+									<td>
+										{{ portfolio.role }}
+									</td>
+									<td >
+										<a href="#" onclick="deleteMenu('{{ portfolio.key }}');"><i class="fa delete fa-trash-o"></i></a>
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="clearfix"> </div>
+</div>
+<script type="text/javascript">
+	function deletePortfolio(key){
+		if (confirm("Are you sure you want to delete?")) {
+			$.ajax({
+				url: '{{ server }}/admin/portfolio/' + key,
+				type: 'DELETE',
+				success: function(data) {
+					// Delete success and reload
+					location.reload();
+				},
+				error: function() {
+					console.error('delete error');
+				},
+				cache: false,
+				contentType: false,
+				processData: false
+			}, 'json');
+		}
+	}
+</script>

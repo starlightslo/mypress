@@ -918,3 +918,298 @@ exports.deleteMenu = function (req, res, next) {
 		res.status(204).send()
 	})
 }
+
+
+exports.portfolio = function (req, res, next) {
+	const server = req.protocol + '://' + req.get('host')
+	const websiteName = req.app.get('websiteName')
+	const logoString = req.app.get('logoString')
+	const logoImage = req.app.get('logoImage')
+	const logoLink = req.app.get('logoLink')
+	const webTitle = req.app.get('webTitle')
+	const webSubtitle = req.app.get('webSubtitle')
+	const mainButtonString = req.app.get('mainButtonString')
+	const mainButtonLink = req.app.get('mainButtonLink')
+	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const language = req.app.get('language')
+	const template = req.app.get('template')
+	const languageList = req.app.get('languageList')
+	const templateFile = 'admin'
+	const selectedLanguage = req.query.lang || language
+
+	// Page
+	let totalPage = 1
+	let page = req.query.p || 1
+	if (!verify.isNumber(page)) page = 1
+	page = Number(page)
+	if (page < 1) page = 1
+
+	// Setting path
+	const pathList = []
+	const currentPath = 'portfolio'
+
+	// Get template language data
+	const T = Language.getTemplateLanguage(SYSTEM, language)
+
+	// Define
+	const PortfolioModel = Portfolio.bindKnex(req.app.get('db').adminDB)
+	let portfolioList = []
+
+	// Getting portfolio data
+	PortfolioModel.query().where('language', selectedLanguage).orderBy('name')
+	.then(portfolios => {
+		portfolios.forEach(portfolio => {
+			portfolioList.push({
+				key: portfolio.key,
+				name: portfolio.name,
+				client: portfolio.client,
+				role: portfolio.role,
+				description: portfolio.description,
+				link: portfolio.link,
+				target: portfolio.target,
+				picture: portfolio.picture,
+				picture_alt: portfolio.picture_alt,
+			})
+		})
+	})
+	.catch(err => {
+		next(err)
+	})
+	.finally(() => {
+		const resp = {
+			T: T,
+			server: server,
+			language: language,
+			selectedLanguage: selectedLanguage,
+			languageList: languageList,
+			websiteName: websiteName,
+			logoString: logoString,
+			logoImage: logoImage,
+			logoLink: logoLink,
+			webTitle: webTitle,
+			webSubtitle: webSubtitle,
+			mainButtonString: mainButtonString,
+			mainButtonLink: mainButtonLink,
+			mainButtonTarget: mainButtonTarget,
+			template: template,
+			contentPage: 'admin.portfolio.html',
+			loginUser: {
+				username: req.user.username,
+				privilege: req.user.privilege,
+				picture: req.user.picture
+			},
+			portfolioList: portfolioList,
+			pathList: pathList,
+			currentPath: currentPath,
+			page: page,
+			totalPage: totalPage
+		}
+		res.render(templateFile, resp)
+	})
+}
+
+
+exports.addPortfolio = function (req, res, next) {
+	const server = req.protocol + '://' + req.get('host')
+	const websiteName = req.app.get('websiteName')
+	const logoString = req.app.get('logoString')
+	const logoImage = req.app.get('logoImage')
+	const logoLink = req.app.get('logoLink')
+	const webTitle = req.app.get('webTitle')
+	const webSubtitle = req.app.get('webSubtitle')
+	const mainButtonString = req.app.get('mainButtonString')
+	const mainButtonLink = req.app.get('mainButtonLink')
+	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const language = req.app.get('language')
+	const template = req.app.get('template')
+	const templateFile = 'admin'
+	const selectedLanguage = req.query.lang || language
+
+	let page = req.query.p || 1
+
+	// Setting path
+	const pathList = [{
+		url: 'admin/portfolio?lang=' + selectedLanguage + '&p=' + page,
+		name: 'portfolio'
+	}]
+	const currentPath = 'addPortfolio'
+
+	// Get template language data
+	const T = Language.getTemplateLanguage(SYSTEM, language)
+
+	const resp = {
+		T: T,
+		server: server,
+		language: language,
+		websiteName: websiteName,
+		logoString: logoString,
+		logoImage: logoImage,
+		logoLink: logoLink,
+		webTitle: webTitle,
+		webSubtitle: webSubtitle,
+		mainButtonString: mainButtonString,
+		mainButtonLink: mainButtonLink,
+		mainButtonTarget: mainButtonTarget,
+		template: template,
+		contentPage: 'admin.portfolio.add.html',
+		loginUser: {
+			username: req.user.username,
+			privilege: req.user.privilege,
+			picture: req.user.picture
+		},
+		pathList: pathList,
+		currentPath: currentPath,
+		page: page
+	}
+	res.render(templateFile, resp)
+}
+
+
+exports.viewPortfolio = function (req, res, next) {
+	const server = req.protocol + '://' + req.get('host')
+	const websiteName = req.app.get('websiteName')
+	const logoString = req.app.get('logoString')
+	const logoImage = req.app.get('logoImage')
+	const logoLink = req.app.get('logoLink')
+	const webTitle = req.app.get('webTitle')
+	const webSubtitle = req.app.get('webSubtitle')
+	const mainButtonString = req.app.get('mainButtonString')
+	const mainButtonLink = req.app.get('mainButtonLink')
+	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const language = req.app.get('language')
+	const template = req.app.get('template')
+	const languageList = req.app.get('languageList')
+	const templateFile = 'admin'
+	const key = req.params.key
+	const selectedLanguage = req.query.lang || language
+
+	let page = req.query.p || 1
+
+	// Checking user data
+	if (!verify.username(key, 1, 16)) {
+		res.status(400).send()
+		return
+	}
+
+	// Setting path
+	const pathList = [{
+		url: 'admin/portfolio?lang=' + selectedLanguage + '&p=' + page,
+		name: 'portfolio'
+	}]
+	const currentPath = 'editPortfolio'
+
+	// Get template language data
+	const T = Language.getTemplateLanguage(SYSTEM, language)
+
+	// Define
+	const PortfolioModel = Portfolio.bindKnex(req.app.get('db').adminDB)
+	let portfolio = {}
+
+	// Getting user data
+	PortfolioModel.query().where('key', key).where('language', selectedLanguage).first()
+	.then(portfolios => {
+		if (!portfolios) {
+			res.redirect('/' + language + '/admin/portfolio')
+			return
+		}
+
+		portfolio = {
+			key: portfolios.key,
+			name: portfolios.name,
+			name: portfolios.name,
+			client: portfolios.client,
+			role: portfolios.role,
+			description: portfolios.description,
+			name: portfolios.name,
+			link: portfolios.link,
+			target: portfolios.target,
+			picture: portfolios.picture,
+			pictureAlt: portfolios.picture_alt
+		}
+	})
+	.catch(err => {
+		next(err)
+	})
+	.finally(() => {
+		const resp = {
+			T: T,
+			server: server,
+			language: language,
+			languageList: languageList,
+			selectedLanguage: selectedLanguage,
+			websiteName: websiteName,
+			logoString: logoString,
+			logoImage: logoImage,
+			logoLink: logoLink,
+			webTitle: webTitle,
+			webSubtitle: webSubtitle,
+			mainButtonString: mainButtonString,
+			mainButtonLink: mainButtonLink,
+			mainButtonTarget: mainButtonTarget,
+			template: template,
+			contentPage: 'admin.portfolio.view.html',
+			loginUser: {
+				username: req.user.username,
+				privilege: req.user.privilege,
+				picture: req.user.picture
+			},
+			portfolio: portfolio,
+			pathList: pathList,
+			currentPath: currentPath,
+			page: page
+		}
+		res.render(templateFile, resp)
+	})
+}
+
+exports.uploadPortfolioPicture = function (req, res, next) {
+	const fs = require('fs')
+	const key = req.params.key
+
+	// Checking user data
+	if (!verify.username(key, 1, 16)) {
+		res.status(400).send()
+		return
+	}
+
+	// Checking files data
+	if (!req.files) {
+		res.status(400).send()
+		return
+	}
+
+	// Define
+	const PortfolioModel = Portfolio.bindKnex(req.app.get('db').adminDB)
+	
+	fs.readFile(req.files.picture.path, function (err, data) {
+		const imageName = req.files.picture.name
+		// If there's an error
+		if(!imageName){
+			next('error')
+		} else {
+			const path = config.root + "/public/uploads/portfolio-" + key
+			// write file to public/uploads folder
+			fs.writeFile(path, data, function (err) {
+				if (err) {
+					next(err)
+					return
+				}
+
+				// Update data
+				const updateStructure = {
+					picture: 'uploads/portfolio-' + key
+				}
+				PortfolioModel.query().where('key', key).update(updateStructure)
+				.then(data => {
+					
+				})
+				.catch(err => {
+					next(err)
+				})
+				.finally(() => {
+					res.status(204).send()
+				})
+			})
+		}
+	})
+}

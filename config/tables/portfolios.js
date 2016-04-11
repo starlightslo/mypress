@@ -9,6 +9,10 @@ module.exports = {
 		type: 'increments',
 		primary: true
 	},{
+		name: 'key',
+		type: 'string',
+		length: 16
+	},{
 		name: 'language',
 		type: 'string',
 		length: 16
@@ -46,6 +50,7 @@ module.exports = {
 		length: 128
 	}],
 	defaultDataList: [{
+		key: 'my-press1',
 		language: 'en',
 		name: 'MyPress',
 		client: 'MyPress',
@@ -56,6 +61,7 @@ module.exports = {
 		picture: 'images/img1.png',
 		picture_alt: ''
 	},{
+		key: 'my-press2',
 		language: 'en',
 		name: 'MyPress',
 		client: 'MyPress',
@@ -66,6 +72,7 @@ module.exports = {
 		picture: 'images/img2.jpg',
 		picture_alt: ''
 	},{
+		key: 'my-press3',
 		language: 'en',
 		name: 'MyPress',
 		client: 'MyPress',
@@ -76,6 +83,7 @@ module.exports = {
 		picture: 'images/img3.jpg',
 		picture_alt: ''
 	},{
+		key: 'my-press1',
 		language: 'tw',
 		name: 'MyPress',
 		client: 'MyPress',
@@ -86,6 +94,7 @@ module.exports = {
 		picture: 'images/img1.png',
 		picture_alt: ''
 	},{
+		key: 'my-press2',
 		language: 'tw',
 		name: 'MyPress',
 		client: 'MyPress',
@@ -96,6 +105,7 @@ module.exports = {
 		picture: 'images/img2.jpg',
 		picture_alt: ''
 	},{
+		key: 'my-press3',
 		language: 'tw',
 		name: 'MyPress',
 		client: 'MyPress',
