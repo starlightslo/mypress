@@ -1280,3 +1280,28 @@ exports.insertPortfolio = function (req, res, next) {
 	})
 }
 
+
+exports.deletePortfolio = function (req, res, next) {
+	const key = req.params.key
+
+	// Checking user data
+	if (!verify.username(key, 1, 16)) {
+		res.status(400).send()
+		return
+	}
+
+	// Define
+	const PortfolioModel = Portfolio.bindKnex(req.app.get('db').adminDB)
+	
+	PortfolioModel.query().delete().where('key', key)
+	.then(data => {
+		
+	})
+	.catch(err => {
+		next(err)
+	})
+	.finally(() => {
+		res.status(204).send()
+	})
+}
+
