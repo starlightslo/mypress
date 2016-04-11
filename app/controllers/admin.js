@@ -1084,7 +1084,7 @@ exports.viewPortfolio = function (req, res, next) {
 	const key = req.params.key
 	const selectedLanguage = req.query.lang || language
 
-	let page = req.query.p || 1
+	const page = req.query.p || 1
 
 	// Checking user data
 	if (!verify.username(key, 1, 16)) {
@@ -1305,3 +1305,52 @@ exports.deletePortfolio = function (req, res, next) {
 	})
 }
 
+
+exports.editPortfolio = function (req, res, next) {
+	const language = req.app.get('language')
+	const key = req.params.key
+	const selectedLanguage = req.query.lang || language
+	const page = req.query.p || 1
+
+	// Getting user data from the input
+	const name = req.body.name || ''
+	const client = req.body.client || ''
+	const role = req.body.role || ''
+	const description = req.body.description || ''
+	const link = req.body.link || ''
+	const target = req.body.target || '_blank'
+	const pictureAlt = req.body.picture_alt || ''
+
+
+	// Checking user data
+	if (!verify.username(key, 1, 16)) {
+		res.status(400).send()
+		return
+	}
+
+	// Define
+	const PortfolioModel = Portfolio.bindKnex(req.app.get('db').adminDB)
+
+	// Update structure
+	const updateStructure = {
+		name: name,
+		client: client,
+		role: role,
+		description: description,
+		link: link,
+		target: target,
+		picture_alt: pictureAlt
+	}
+
+	// Update the name of menu
+	PortfolioModel.query().where('key', key).where('language', selectedLanguage).update(updateStructure)
+	.then(data => {
+		
+	})
+	.catch(err => {
+		next(err)
+	})
+	.finally(() => {
+		res.redirect('/' + language + '/admin/portfolio/view/' + key + '?lang=' + selectedLanguage + '&p=' + page)
+	})
+}
