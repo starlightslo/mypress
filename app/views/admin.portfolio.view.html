@@ -112,9 +112,15 @@
 					myXhr = $.ajaxSettings.xhr();
 					return myXhr
 				},
-				success: function(data) {
-					// Reload the image
-					$("#head-picture-img").attr("src", '{{ server }}/uploads/portfolio-{{ portfolio.key }}?' + (new Date()).getTime())
+				success: function(data, textStatus, xhr) {
+					if (xhr && xhr.status === 204) {
+						// Reload the image
+						$("#head-picture-img").attr("src", '{{ server }}/uploads/portfolio-{{ portfolio.key }}?' + (new Date()).getTime())
+					} else {
+						console.error('upload error')
+						console.error('responseText: ' + xhr.responseText)
+						console.error('status: ' + xhr.status)
+					}
 				},
 				error: function() {
 					console.error('upload error')
