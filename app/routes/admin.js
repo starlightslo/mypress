@@ -65,4 +65,16 @@ router.post('/experience/edit/:key', authController.checkAuth, preloadList, cont
 router.post('/experience/upload/:key', authController.checkAuth, preloadList, multipart(), controller.uploadExperiencePicture)
 router.delete('/experience/:key', authController.checkAuth, preloadList, controller.deleteExperience)
 
+router.get('/settings/language', authController.checkAuth, preloadList, controller.settingsLanguage)
+router.get('/settings/language/add', authController.checkAuth, preloadList, controller.addSettingsLanguage)
+router.get('/settings/language/view/:id', authController.checkAuth, preloadList, controller.viewSettingsLanguage)
+router.post('/settings/language/add', authController.checkAuth, preloadList, controller.insertSettingsLanguage)
+router.post('/settings/language/edit/:id', authController.checkAuth, preloadList, controller.editSettingsLanguage)
+router.delete('/settings/language/:id', authController.checkAuth, preloadList, controller.deleteSettingsLanguage)
+
+router.get('/settings/template', authController.checkAuth, preloadList, controller.settingsTemplate)
+
+
+router.get('/settings/system', authController.checkAuth, preloadList, controller.settingsSystem)
+
 module.exports = router

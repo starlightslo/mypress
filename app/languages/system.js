@@ -26,5 +26,11 @@ module.exports = {
 	editSkill: 'Edit Skill',
 	addExperience: 'Add Experience',
 	addNewExperience: 'Add New Experience',
-	editExperience: 'Edit Experience'
+	editExperience: 'Edit Experience',
+	language: 'Language',
+	addLanguage: 'Add Language',
+	addNewLanguage: 'Add New Language',
+	editLanguage: 'Edit Language',
+	template: 'Template',
+	system: 'System'
 }

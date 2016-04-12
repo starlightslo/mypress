@@ -26,5 +26,11 @@ module.exports = {
 	editSkill: '編輯技能',
 	addExperience: '新增經歷',
 	addNewExperience: '新增經歷',
-	editExperience: '編輯經歷'
+	editExperience: '編輯經歷',
+	language: '語言',
+	addLanguage: '新增語言',
+	addNewLanguage: '新增新語言',
+	editLanguage: '編輯語言',
+	template: '樣板',
+	system: '系統'
 }
