@@ -26,7 +26,9 @@
 										<a href="language/view/{{ settingsLanguage.id }}"><h6>{{ settingsLanguage.name }}</h6></a>
 									</td>
 									<td >
-										<a href="#" onclick="deleteLanguage('{{ settingsLanguage.id }}');"><i class="fa delete fa-trash-o"></i></a>
+										{% if settingsLanguageList.length > 1 %}
+											<a href="#" onclick="deleteLanguage('{{ settingsLanguage.id }}');"><i class="fa delete fa-trash-o"></i></a>
+										{% endif %}
 									</td>
 								</tr>
 							{% endfor %}
