@@ -35,6 +35,21 @@ class Verify {
 		return false
 	}
 
+	isBoolean(data) {
+		if (data === null || data === undefined || typeof data === 'object') {
+			return false
+		}
+		return (typeof data === 'boolean')
+	}
+
+	isDate(data, format) {
+		if (data === null || data === undefined || typeof data === 'object') {
+			return false
+		}
+		const moment = require('moment')
+		return moment(data, format).isValid()
+	}
+
 	checkLength(data, min, max) {
 		if (data === null || data === undefined || typeof data === 'object') {
 			return false

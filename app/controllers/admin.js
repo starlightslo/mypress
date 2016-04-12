@@ -1775,7 +1775,6 @@ exports.experience = function (req, res, next) {
 	})
 	.then(experiences => {
 		experiences.forEach(experience => {
-			console.log(experience.start_working_date)
 			experienceList.push({
 				key: experience.key,
 				companyName: experience.company_name,
@@ -2035,14 +2034,26 @@ exports.insertExperience = function (req, res, next) {
 	const languageList = req.app.get('languageList')
 
 	// Getting user data from the input
-	const name = req.body.name || ''
-	const client = req.body.client || ''
+	const companyName = req.body.company_name || ''
+	const companyLogo = req.body.company_logo || ''
 	const role = req.body.role || ''
 	const description = req.body.description || ''
-	const link = req.body.link || ''
+	const startWorkingDate = req.body.start_working_date || new Date()
+	const endWorkingDate = req.body.end_working_date || new Date()
+	const stillHere = req.body.still_here === 'on' ? true : false || false
+
+	// Checking user data formate
+	if ((!verify.isBoolean(stillHere)) || (!verify.isDate(startWorkingDate, 'mm/dd/yyyy'))) {
+		res.status(400).send()
+		return
+	}
+	if (!stillHere && (!verify.isDate(endWorkingDate, 'mm/dd/yyyy'))) {
+		res.status(400).send()
+		return
+	}
 
 	// Define
-	const PortfolioModel = Portfolio.bindKnex(req.app.get('db').adminDB)
+	const ExperienceModel = Experience.bindKnex(req.app.get('db').adminDB)
 
 	// Check the key is existing or not
 	const generatingKey = () => {
@@ -2052,7 +2063,7 @@ exports.insertExperience = function (req, res, next) {
 			const key = Utils.randomString(8)
 
 			// Start checking
-			PortfolioModel.query().where('key', key).count('*').first()
+			ExperienceModel.query().where('key', key).count('*').first()
 			.then(data => {
 				if (data.count > 0) {
 					// If there is a same key
@@ -2071,23 +2082,22 @@ exports.insertExperience = function (req, res, next) {
 		let promiseList = []
 		// Prepare insert data
 		languageList.forEach(lang => {
-			promiseList.push(PortfolioModel.query().insert({
+			promiseList.push(ExperienceModel.query().insert({
 				key: key,
-				name: name,
-				client: client,
+				company_name: companyName,
+				company_logo: companyLogo,
 				role: role,
 				description: description,
-				link: link,
-				target: '_blank',
-				picture: '',
-				picture_alt: '',
+				start_working_date: startWorkingDate,
+				end_working_date: endWorkingDate,
+				still_here: stillHere,
 				language: lang
 			}))
 		})
 		return Promise.all(promiseList)
 	})
 	.then(() => {
-			res.redirect('/' + language + '/admin/portfolio')
+			res.redirect('/' + language + '/admin/experience')
 		})
 	.catch(err => {
 		next(err)
@@ -2127,44 +2137,51 @@ exports.editExperience = function (req, res, next) {
 	const page = req.query.p || 1
 
 	// Getting user data from the input
-	const name = req.body.name || ''
-	const client = req.body.client || ''
+	const companyName = req.body.company_name || ''
+	const companyLogo = req.body.company_logo || ''
 	const role = req.body.role || ''
 	const description = req.body.description || ''
-	const link = req.body.link || ''
-	const target = req.body.target || '_blank'
-	const pictureAlt = req.body.picture_alt || ''
+	const startWorkingDate = req.body.start_working_date || new Date()
+	const endWorkingDate = req.body.end_working_date || new Date()
+	const stillHere = req.body.still_here === 'on' ? true : false || false
 
-
-	// Checking user data
-	if (!verify.username(key, 1, 16)) {
+	// Checking user data formate
+	if ((!verify.username(key, 1, 16)) || (!verify.isBoolean(stillHere)) || (!verify.isDate(startWorkingDate, 'mm/dd/yyyy'))) {
+		res.status(400).send()
+		return
+	}
+	if (!stillHere && (!verify.isDate(startWorkingDate, 'mm/dd/yyyy'))) {
 		res.status(400).send()
 		return
 	}
 
 	// Define
-	const PortfolioModel = Portfolio.bindKnex(req.app.get('db').adminDB)
+	const ExperienceModel = Experience.bindKnex(req.app.get('db').adminDB)
 
 	// Update structure
 	const updateStructure = {
-		name: name,
-		client: client,
+		company_name: companyName,
 		role: role,
-		description: description,
-		link: link,
-		target: target,
-		picture_alt: pictureAlt
+		description: description
+	}
+	const updateDateStructure = {
+		start_working_date: startWorkingDate,
+		end_working_date: endWorkingDate,
+		still_here: stillHere
 	}
 
-	// Update the name of menu
-	PortfolioModel.query().where('key', key).where('language', selectedLanguage).update(updateStructure)
+	// Update the name of experience
+	ExperienceModel.query().where('key', key).where('language', selectedLanguage).update(updateStructure)
 	.then(data => {
-		
+		return ExperienceModel.query().where('key', key).update(updateDateStructure)
+	})
+	.then(data => {
+
 	})
 	.catch(err => {
 		next(err)
 	})
 	.finally(() => {
-		res.redirect('/' + language + '/admin/portfolio/view/' + key + '?lang=' + selectedLanguage + '&p=' + page)
+		res.redirect('/' + language + '/admin/experience/view/' + key + '?lang=' + selectedLanguage + '&p=' + page)
 	})
 }
