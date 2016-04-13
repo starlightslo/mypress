@@ -9,13 +9,13 @@ const Language = require('../modules/language')
 const verify = new (require('../modules/verify'))()
 const Utils = require('../modules/utils')
 
-const User = require('../models/user')
-const UserProfile = require('../models/user_profile')
-const Menu = require('../models/menu')
-const Experience = require('../models/experience')
-const Portfolio = require('../models/portfolio')
-const Skill = require('../models/skill')
-const Settings = require('../models/settings')
+const UserTable = 'users'
+const UserProfileTable = 'user_profiles'
+const MenuTable = 'menu'
+const ExperienceTable = 'experiences'
+const PortfolioTable = 'portfolios'
+const SkillTable = 'skills'
+const SettingsTable = 'settings'
 const LanguageTable = 'languages'
 const SystemTable = 'system'
 
@@ -101,11 +101,11 @@ exports.user = function (req, res, next) {
 	const T = Language.getTemplateLanguage(SYSTEM, language)
 
 	// Define
-	const UserModel = User.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 	let userList = []
 
 	// Getting total count of user data
-	UserModel.query().count('*').first()
+	db(UserTable).count('*').first()
 	.then((data) => {
 		// Find the total page
 		const totalCount = data.count
@@ -118,7 +118,7 @@ exports.user = function (req, res, next) {
 		const offset = (page - 1) * PAGE_COUNT
 
 		// Getting user data with limit and offset
-		return UserModel.query().innerJoin('user_profiles', 'user_profiles.user_id', 'users.id').where('user_profiles.language', language).orderBy('first_name').orderBy('last_name').limit(PAGE_COUNT).offset(offset)
+		return db(UserTable).innerJoin(UserProfileTable, 'user_profiles.user_id', 'users.id').where('user_profiles.language', language).orderBy('first_name').orderBy('last_name').limit(PAGE_COUNT).offset(offset)
 	})
 	.then(users => {
 		users.forEach(user => {
@@ -259,11 +259,11 @@ exports.viewUser = function (req, res, next) {
 	const T = Language.getTemplateLanguage(SYSTEM, language)
 
 	// Define
-	const UserModel = User.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 	let user = {}
 
 	// Getting user data
-	UserModel.query().innerJoin('user_profiles', 'user_profiles.user_id', 'users.id').where('user_profiles.language', selectedLanguage).where('users.username', username).first()
+	db(UserTable).innerJoin(UserProfileTable, 'user_profiles.user_id', 'users.id').where('user_profiles.language', selectedLanguage).where('users.username', username).first()
 	.then(users => {
 		if (!users) {
 			res.redirect('/' + language + '/admin/user')
@@ -344,11 +344,10 @@ exports.insertUser = function (req, res, next) {
 	}
 
 	// Define
-	const UserModel = User.bindKnex(req.app.get('db').adminDB)
-	const UserProfileModel = UserProfile.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 
 	// Insert data
-	UserModel.query().insert({
+	db(UserTable).returning('id').insert({
 		username: username,
 		password: bcrypt.hashSync(password, salt),
 		privilege: privilege,
@@ -363,9 +362,9 @@ exports.insertUser = function (req, res, next) {
 	.then(user => {
 		let promiseList = []
 		languageList.forEach(lang => {
-			promiseList.push(UserProfileModel.query().insert({
+			promiseList.push(db(UserProfileTable).insert({
 				language: lang,
-				user_id: user.id,
+				user_id: user[0],
 				first_name: firstName,
 				last_name: lastName,
 				introduction: introduction
@@ -415,8 +414,7 @@ exports.editUser = function (req, res, next) {
 	}
 
 	// Define
-	const UserModel = User.bindKnex(req.app.get('db').adminDB)
-	const UserProfileModel = UserProfile.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 
 	// Update structrue
 	const updateUserStructure = {
@@ -439,13 +437,13 @@ exports.editUser = function (req, res, next) {
 	}
 	
 	// Update data
-	UserModel.query().where('users.username', username).first()
+	db(UserTable).where('username', username).first()
 	.then(user => {
 		if (user) {
 			const uid = user.id
 			let promiseList = []
-			promiseList.push(UserModel.query().where('id', uid).update(updateUserStructure))
-			promiseList.push(UserProfileModel.query().where('user_id', uid).where('language', selectedLanguage).update(updateUserProfileStructure))
+			promiseList.push(db(UserTable).where('id', uid).update(updateUserStructure))
+			promiseList.push(db(UserProfileTable).where('user_id', uid).where('language', selectedLanguage).update(updateUserProfileStructure))
 			return Promise.all(promiseList)
 		}
 	})
@@ -480,7 +478,7 @@ exports.uploadPicture = function (req, res, next) {
 	}
 
 	// Define
-	const UserModel = User.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 	
 	fs.readFile(req.files.picture.path, function (err, data) {
 		const imageName = req.files.picture.name
@@ -500,7 +498,7 @@ exports.uploadPicture = function (req, res, next) {
 				const updateStructure = {
 					picture: 'uploads/' + username
 				}
-				UserModel.query().where('users.username', username).update(updateStructure)
+				db(UserTable).where('users.username', username).update(updateStructure)
 				.then(data => {
 					
 				})
@@ -531,16 +529,15 @@ exports.deleteUser = function (req, res, next) {
 	}
 
 	// Define
-	const UserModel = User.bindKnex(req.app.get('db').adminDB)
-	const UserProfileModel = UserProfile.bindKnex(req.app.get('db').adminDB)
-	
-	UserModel.query().where('username', username).first()
+	const db = req.app.get('db').adminDB
+
+	db(UserTable).where('username', username).first()
 	.then(user => {
 		if (user) {
 			const uid = user.id
 			let promiseList = []
-			promiseList.push(UserModel.query().delete().where('id', uid))
-			promiseList.push(UserProfileModel.query().delete().where('user_id', uid))
+			promiseList.push(db(UserTable).where('id', uid).del())
+			promiseList.push(db(UserProfileTable).where('user_id', uid).del())
 			return Promise.all(promiseList)
 		}
 	})
@@ -566,10 +563,10 @@ exports.validateUser = function (req, res, next) {
 	}
 
 	// Define
-	const UserModel = User.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 
 	// Search user
-	UserModel.query().where('username', username).first()
+	db(UserTable).where('username', username).first()
 	.then(user => {
 		if (user) {
 			res.send('1')
@@ -608,11 +605,11 @@ exports.menu = function (req, res, next) {
 	const T = Language.getTemplateLanguage(SYSTEM, language)
 
 	// Define
-	const MenuModel = Menu.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 	let menuList = []
 
 	// Getting menu data
-	MenuModel.query().where('language', selectedLanguage).orderBy('order')
+	db(MenuTable).where('language', selectedLanguage).orderBy('order')
 	.then(menus => {
 		menus.forEach(menu => {
 			menuList.push({
@@ -730,12 +727,12 @@ exports.insertMenu = function (req, res, next) {
 	}
 
 	// Define
-	const MenuModel = Menu.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 
 	let promiseList = []
 	// Prepare insert data
 	languageList.forEach(lang => {
-		promiseList.push(MenuModel.query().insert({
+		promiseList.push(db(MenuTable).insert({
 			key: key,
 			name: name,
 			link: link,
@@ -746,7 +743,7 @@ exports.insertMenu = function (req, res, next) {
 	})
 
 	// Checking is there the same key
-	MenuModel.query().where('key', key).count('*').first()
+	db(MenuTable).where('key', key).count('*').first()
 	.then(data => {
 		if (data.count > 0) {
 			next('The key is existing.')
@@ -800,11 +797,11 @@ exports.viewMenu = function (req, res, next) {
 	const T = Language.getTemplateLanguage(SYSTEM, language)
 
 	// Define
-	const MenuModel = Menu.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 	let menu = {}
 
 	// Getting user data
-	MenuModel.query().where('key', key).where('language', selectedLanguage).first()
+	db(MenuTable).where('key', key).where('language', selectedLanguage).first()
 	.then(menus => {
 		if (!menus) {
 			res.redirect('/' + language + '/admin/menu')
@@ -872,7 +869,7 @@ exports.editMenu = function (req, res, next) {
 	}
 
 	// Define
-	const MenuModel = Menu.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 
 	// Update structure
 	const updateStructure = {
@@ -883,7 +880,7 @@ exports.editMenu = function (req, res, next) {
 	}
 
 	// Update the name of menu
-	MenuModel.query().where('key', key).where('language', selectedLanguage).update(updateStructure)
+	db(MenuTable).where('key', key).where('language', selectedLanguage).update(updateStructure)
 	.then(data => {
 		
 	})
@@ -906,14 +903,11 @@ exports.deleteMenu = function (req, res, next) {
 	}
 
 	// Define
-	const MenuModel = Menu.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 	
-	MenuModel.query().delete().where('key', key)
+	db(MenuTable).where('key', key).del()
 	.then(data => {
 		
-	})
-	.then(() => {
-
 	})
 	.catch(err => {
 		next(err)
@@ -956,11 +950,11 @@ exports.portfolio = function (req, res, next) {
 	const T = Language.getTemplateLanguage(SYSTEM, language)
 
 	// Define
-	const PortfolioModel = Portfolio.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 	let portfolioList = []
 
 	// Getting total count of portfolio data
-	PortfolioModel.query().where('language', selectedLanguage).count('*').first()
+	db(PortfolioTable).where('language', selectedLanguage).count('*').first()
 	.then((data) => {
 		// Find the total page
 		const totalCount = data.count
@@ -973,7 +967,7 @@ exports.portfolio = function (req, res, next) {
 		const offset = (page - 1) * PAGE_COUNT
 
 		// Getting portfolio data with limit and offset
-		return PortfolioModel.query().where('language', selectedLanguage).orderBy('name').limit(PAGE_COUNT).offset(offset)
+		return db(PortfolioTable).where('language', selectedLanguage).orderBy('name').limit(PAGE_COUNT).offset(offset)
 	})
 	.then(portfolios => {
 		portfolios.forEach(portfolio => {
@@ -1120,11 +1114,11 @@ exports.viewPortfolio = function (req, res, next) {
 	const T = Language.getTemplateLanguage(SYSTEM, language)
 
 	// Define
-	const PortfolioModel = Portfolio.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 	let portfolio = {}
 
 	// Getting user data
-	PortfolioModel.query().where('key', key).where('language', selectedLanguage).first()
+	db(PortfolioTable).where('key', key).where('language', selectedLanguage).first()
 	.then(portfolios => {
 		if (!portfolios) {
 			res.redirect('/' + language + '/admin/portfolio')
@@ -1195,7 +1189,7 @@ exports.uploadPortfolioPicture = function (req, res, next) {
 	}
 
 	// Define
-	const PortfolioModel = Portfolio.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 	
 	fs.readFile(req.files.picture.path, function (err, data) {
 		const imageName = req.files.picture.name
@@ -1215,7 +1209,7 @@ exports.uploadPortfolioPicture = function (req, res, next) {
 				const updateStructure = {
 					picture: 'uploads/portfolio-' + key
 				}
-				PortfolioModel.query().where('key', key).update(updateStructure)
+				db(PortfolioTable).where('key', key).update(updateStructure)
 				.then(data => {
 					
 				})
@@ -1243,7 +1237,7 @@ exports.insertPortfolio = function (req, res, next) {
 	const link = req.body.link || ''
 
 	// Define
-	const PortfolioModel = Portfolio.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 
 	// Check the key is existing or not
 	const generatingKey = () => {
@@ -1253,7 +1247,7 @@ exports.insertPortfolio = function (req, res, next) {
 			const key = Utils.randomString(8)
 
 			// Start checking
-			PortfolioModel.query().where('key', key).count('*').first()
+			db(PortfolioTable).where('key', key).count('*').first()
 			.then(data => {
 				if (data.count > 0) {
 					// If there is a same key
@@ -1272,7 +1266,7 @@ exports.insertPortfolio = function (req, res, next) {
 		let promiseList = []
 		// Prepare insert data
 		languageList.forEach(lang => {
-			promiseList.push(PortfolioModel.query().insert({
+			promiseList.push(db(PortfolioTable).insert({
 				key: key,
 				name: name,
 				client: client,
@@ -1306,9 +1300,9 @@ exports.deletePortfolio = function (req, res, next) {
 	}
 
 	// Define
-	const PortfolioModel = Portfolio.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 	
-	PortfolioModel.query().delete().where('key', key)
+	db(PortfolioTable).where('key', key).del()
 	.then(data => {
 		
 	})
@@ -1344,7 +1338,7 @@ exports.editPortfolio = function (req, res, next) {
 	}
 
 	// Define
-	const PortfolioModel = Portfolio.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 
 	// Update structure
 	const updateStructure = {
@@ -1358,7 +1352,7 @@ exports.editPortfolio = function (req, res, next) {
 	}
 
 	// Update the name of menu
-	PortfolioModel.query().where('key', key).where('language', selectedLanguage).update(updateStructure)
+	db(PortfolioTable).where('key', key).where('language', selectedLanguage).update(updateStructure)
 	.then(data => {
 		
 	})
@@ -1396,11 +1390,11 @@ exports.skill = function (req, res, next) {
 	const T = Language.getTemplateLanguage(SYSTEM, language)
 
 	// Define
-	const SkillModel = Skill.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 	let skillList = []
 
 	// Getting menu data
-	SkillModel.query().where('language', selectedLanguage).orderBy('order')
+	db(SkillTable).where('language', selectedLanguage).orderBy('order')
 	.then(skills => {
 		skills.forEach(skill => {
 			skillList.push({
@@ -1511,7 +1505,7 @@ exports.insertSkill = function (req, res, next) {
 	const order = req.body.order || 1
 
 	// Define
-	const SkillModel = Skill.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 
 	// Check the key is existing or not
 	const generatingKey = () => {
@@ -1521,7 +1515,7 @@ exports.insertSkill = function (req, res, next) {
 			const key = Utils.randomString(8)
 
 			// Start checking
-			SkillModel.query().where('key', key).count('*').first()
+			db(SkillTable).where('key', key).count('*').first()
 			.then(data => {
 				if (data.count > 0) {
 					// If there is a same key
@@ -1540,7 +1534,7 @@ exports.insertSkill = function (req, res, next) {
 		let promiseList = []
 		// Prepare insert data
 		languageList.forEach(lang => {
-			promiseList.push(SkillModel.query().insert({
+			promiseList.push(db(SkillTable).insert({
 				key: key,
 				name: name,
 				percent: percent,
@@ -1596,11 +1590,11 @@ exports.viewSkill = function (req, res, next) {
 	const T = Language.getTemplateLanguage(SYSTEM, language)
 
 	// Define
-	const SkillModel = Skill.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 	let skill = {}
 
 	// Getting user data
-	SkillModel.query().where('key', key).where('language', selectedLanguage).first()
+	db(SkillTable).where('key', key).where('language', selectedLanguage).first()
 	.then(skills => {
 		if (!skills) {
 			res.redirect('/' + language + '/admin/skill')
@@ -1670,7 +1664,7 @@ exports.editSkill = function (req, res, next) {
 	}
 
 	// Define
-	const SkillModel = Skill.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 
 	// Update structure
 	const updateStructure = {
@@ -1682,9 +1676,12 @@ exports.editSkill = function (req, res, next) {
 	}
 
 	// Update the name of menu
-	SkillModel.query().where('key', key).where('language', selectedLanguage).update({name: name})
+	db(SkillTable).where('key', key).where('language', selectedLanguage).update({name: name})
 	.then(data => {
-		return SkillModel.query().where('key', key).update(updateStructure)
+		return db(SkillTable).where('key', key).update(updateStructure)
+	})
+	.then(data => {
+
 	})
 	.catch(err => {
 		next(err)
@@ -1705,14 +1702,11 @@ exports.deleteSkill = function (req, res, next) {
 	}
 
 	// Define
-	const SkillModel = Skill.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 	
-	SkillModel.query().delete().where('key', key)
+	db(SkillTable).where('key', key).del()
 	.then(data => {
 		
-	})
-	.then(() => {
-
 	})
 	.catch(err => {
 		next(err)
@@ -1757,11 +1751,11 @@ exports.experience = function (req, res, next) {
 	const T = Language.getTemplateLanguage(SYSTEM, language)
 
 	// Define
-	const ExperienceModel = Experience.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 	let experienceList = []
 
 	// Getting total count of experience data
-	ExperienceModel.query().where('language', selectedLanguage).count('*').first()
+	db(ExperienceTable).where('language', selectedLanguage).count('*').first()
 	.then((data) => {
 		// Find the total page
 		const totalCount = data.count
@@ -1774,7 +1768,7 @@ exports.experience = function (req, res, next) {
 		const offset = (page - 1) * PAGE_COUNT
 
 		// Getting portfolio data with limit and offset
-		return ExperienceModel.query().where('language', selectedLanguage).orderBy('start_working_date', 'desc').orderBy('end_working_date', 'desc').limit(PAGE_COUNT).offset(offset)
+		return db(ExperienceTable).where('language', selectedLanguage).orderBy('start_working_date', 'desc').orderBy('end_working_date', 'desc').limit(PAGE_COUNT).offset(offset)
 	})
 	.then(experiences => {
 		experiences.forEach(experience => {
@@ -1922,11 +1916,11 @@ exports.viewExperience = function (req, res, next) {
 	const T = Language.getTemplateLanguage(SYSTEM, language)
 
 	// Define
-	const ExperienceModel = Experience.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 	let experience = {}
 
 	// Getting user data
-	ExperienceModel.query().where('key', key).where('language', selectedLanguage).first()
+	db(ExperienceTable).where('key', key).where('language', selectedLanguage).first()
 	.then(experiences => {
 		if (!experiences) {
 			res.redirect('/' + language + '/admin/experience')
@@ -1996,7 +1990,7 @@ exports.uploadExperiencePicture = function (req, res, next) {
 	}
 
 	// Define
-	const ExperienceModel = Experience.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 	
 	fs.readFile(req.files.picture.path, function (err, data) {
 		const imageName = req.files.picture.name
@@ -2014,9 +2008,9 @@ exports.uploadExperiencePicture = function (req, res, next) {
 
 				// Update data
 				const updateStructure = {
-					picture: 'uploads/experience-' + key
+					company_logo: 'uploads/experience-' + key
 				}
-				ExperienceModel.query().where('key', key).update(updateStructure)
+				db(ExperienceTable).where('key', key).update(updateStructure)
 				.then(data => {
 					
 				})
@@ -2056,7 +2050,7 @@ exports.insertExperience = function (req, res, next) {
 	}
 
 	// Define
-	const ExperienceModel = Experience.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 
 	// Check the key is existing or not
 	const generatingKey = () => {
@@ -2066,7 +2060,7 @@ exports.insertExperience = function (req, res, next) {
 			const key = Utils.randomString(8)
 
 			// Start checking
-			ExperienceModel.query().where('key', key).count('*').first()
+			db(ExperienceTable).where('key', key).count('*').first()
 			.then(data => {
 				if (data.count > 0) {
 					// If there is a same key
@@ -2085,7 +2079,7 @@ exports.insertExperience = function (req, res, next) {
 		let promiseList = []
 		// Prepare insert data
 		languageList.forEach(lang => {
-			promiseList.push(ExperienceModel.query().insert({
+			promiseList.push(db(ExperienceTable).insert({
 				key: key,
 				company_name: companyName,
 				company_logo: companyLogo,
@@ -2118,9 +2112,9 @@ exports.deleteExperience = function (req, res, next) {
 	}
 
 	// Define
-	const ExperienceModel = Experience.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 	
-	ExperienceModel.query().delete().where('key', key)
+	db(ExperienceTable).where('key', key).del()
 	.then(data => {
 		
 	})
@@ -2159,7 +2153,7 @@ exports.editExperience = function (req, res, next) {
 	}
 
 	// Define
-	const ExperienceModel = Experience.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 
 	// Update structure
 	const updateStructure = {
@@ -2174,9 +2168,9 @@ exports.editExperience = function (req, res, next) {
 	}
 
 	// Update the name of experience
-	ExperienceModel.query().where('key', key).where('language', selectedLanguage).update(updateStructure)
+	db(ExperienceTable).where('key', key).where('language', selectedLanguage).update(updateStructure)
 	.then(data => {
-		return ExperienceModel.query().where('key', key).update(updateDateStructure)
+		return db(ExperienceTable).where('key', key).update(updateDateStructure)
 	})
 	.then(data => {
 

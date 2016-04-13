@@ -2,7 +2,7 @@
 
 const LocalStrategy = require('passport-local').Strategy
 const bcrypt = require('bcryptjs')
-const User = require('../models/user')
+const UserTable = 'users'
 
 
 /**
@@ -19,9 +19,9 @@ function (req, username, password, done) {
 	 */
 
 
-	// Set table model
-	const UserModel = User.bindKnex(req.app.get('db').normalDB)
-	UserModel.query().where('username', username).first()
+	// Define
+	const db = req.app.get('db').normalDB
+	db(UserTable).where('username', username).first()
 	.then(user => {
 		if (user) {
 			// verify the password

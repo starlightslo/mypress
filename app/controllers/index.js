@@ -1,11 +1,13 @@
 'use strict'
 
 const Language = require('../modules/language')
-const Menu = require('../models/menu')
-const User = require('../models/user')
-const Portfolio = require('../models/portfolio')
-const Skill = require('../models/skill')
-const Experience = require('../models/experience')
+
+const UserTable = 'users'
+const UserProfileTable = 'user_profiles'
+const MenuTable = 'menu'
+const ExperienceTable = 'experiences'
+const PortfolioTable = 'portfolios'
+const SkillTable = 'skills'
 
 exports.index = function (req, res, next) {
 	const websiteName = req.app.get('websiteName')
@@ -26,11 +28,7 @@ exports.index = function (req, res, next) {
 	const T = Language.getTemplateLanguage(template, language)
 
 	// Define
-	const MenuModel = Menu.bindKnex(req.app.get('db').normalDB)
-	const UserModel = User.bindKnex(req.app.get('db').normalDB)
-	const PortfolioModel = Portfolio.bindKnex(req.app.get('db').normalDB)
-	const SkillModel = Skill.bindKnex(req.app.get('db').normalDB)
-	const ExperienceModel = Experience.bindKnex(req.app.get('db').normalDB)
+	const db = req.app.get('db').normalDB
 	let userList = []
 	let menuList = []
 	let portfolioList = []
@@ -38,7 +36,7 @@ exports.index = function (req, res, next) {
 	let experienceMap = new Map()
 
 	// Getting menu data
-	MenuModel.query().where('language', language).orderBy('order')
+	db(MenuTable).where('language', language).orderBy('order')
 	.then(menus => {
 		menus.forEach(menu => {
 			menuList.push({
@@ -47,7 +45,7 @@ exports.index = function (req, res, next) {
 				target: menu.target,
 			})
 		})
-		return UserModel.query().innerJoin('user_profiles', 'user_profiles.user_id', 'users.id').where('user_profiles.language', language).orderBy('first_name').orderBy('last_name')
+		return db(UserTable).innerJoin(UserProfileTable, 'user_profiles.user_id', 'users.id').where('user_profiles.language', language).orderBy('first_name').orderBy('last_name')
 	})
 	// Getting user data
 	.then(users => {
@@ -67,7 +65,7 @@ exports.index = function (req, res, next) {
 				flickr: user.flickr
 			})
 		})
-		return PortfolioModel.query().where('language', language).orderBy('name')
+		return db(PortfolioTable).where('language', language).orderBy('name')
 	})
 	// Getting portfolio data
 	.then(portfolios => {
@@ -83,7 +81,7 @@ exports.index = function (req, res, next) {
 				pictureAlt: portfolio.picture_alt
 			})
 		})
-		return SkillModel.query().where('language', language).orderBy('order')
+		return db(SkillTable).where('language', language).orderBy('order')
 	})
 	.then(skills => {
 		skills.forEach(skill => {
@@ -94,7 +92,7 @@ exports.index = function (req, res, next) {
 				animateTime: skill.animate_time
 			})
 		})
-		return ExperienceModel.query().where('language', language).orderBy('start_working_date', 'desc').orderBy('end_working_date', 'desc')
+		return db(ExperienceTable).where('language', language).orderBy('start_working_date', 'desc').orderBy('end_working_date', 'desc')
 	})
 	.then(experiences => {
 		experiences.forEach(experience => {

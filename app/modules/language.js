@@ -27,11 +27,12 @@ class Language {
 		// Getting language
 		const language = req.params.language
 		if (language) {
-			// Set table model
-			const LanguageModel = require('../models/language').bindKnex(req.app.get('db').normalDB)
+			// Define
+			const db = req.app.get('db').normalDB
+			const LanguageTable = 'languages'
 
 			// Getting language
-			LanguageModel.query().select('name')
+			db(LanguageTable).select('name')
 			.then(languages => {
 				// Setting the language if the language is in the support list
 				let hasLanguage = false

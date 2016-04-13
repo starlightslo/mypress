@@ -1,7 +1,7 @@
 'use strict'
 
 const config = require('../../../config/config')
-const Settings = require('../../models/settings')
+const SettingsTable = 'settings'
 
 /**
  * This module will load app's settings from `settings` table and pass to the controllers.
@@ -13,11 +13,11 @@ module.exports = function(req, res, next) {
 		req.app.set('language', req.app.get('defaultLanguage') || config.language)
 	}
 
-	// Set table model
-	const SettingsModel = Settings.bindKnex(req.app.get('db').normalDB)
+	// Define
+	const db = req.app.get('db').normalDB
 
 	// Getting language
-	SettingsModel.query().where('language', req.app.get('language')).first()
+	db(SettingsTable).where('language', req.app.get('language')).first()
 	.then(settings => {
 		req.app.set('websiteName', settings.website_name)
 		req.app.set('template', settings.template)
