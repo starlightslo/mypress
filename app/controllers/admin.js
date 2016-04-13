@@ -16,7 +16,7 @@ const Experience = require('../models/experience')
 const Portfolio = require('../models/portfolio')
 const Skill = require('../models/skill')
 const Settings = require('../models/settings')
-const LanguageTable = require('../models/language')
+const LanguageTable = 'languages'
 const SystemTable = 'system'
 
 const SYSTEM = 'system'
@@ -2215,11 +2215,11 @@ exports.settingsLanguage = function (req, res, next) {
 	const T = Language.getTemplateLanguage(SYSTEM, language)
 
 	// Define
-	const LanguageModel = LanguageTable.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 	let settingsLanguageList = []
 
 	// Getting menu data
-	LanguageModel.query().orderBy('order')
+	db(LanguageTable).orderBy('order')
 	.then(languages => {
 		languages.forEach(language => {
 			settingsLanguageList.push({
@@ -2326,11 +2326,11 @@ exports.insertSettingsLanguage = function (req, res, next) {
 	const name = req.body.name || ''
 	
 	// Define
-	const LanguageModel = LanguageTable.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 	let tableList = []
 
 	// Checking is there the same key
-	LanguageModel.query().where('name', name).count('*').first()
+	db(LanguageTable).where('name', name).count('*').first()
 	.then(data => {
 		if (data.count > 0) {
 			next('The language is existing.')
@@ -2338,14 +2338,14 @@ exports.insertSettingsLanguage = function (req, res, next) {
 		}
 
 		// Run insert
-		return LanguageModel.query().insert({
+		return db(LanguageTable).insert({
 			order: order,
 			name: name
 		})
 	})
 	.then(() => {
 		// Getting all supported multiple language tables
-		return req.app.get('db').adminDB.select('multipleLanguageTables').from(SystemTable).first()
+		return db(SystemTable).select('multipleLanguageTables').first()
 	})
 	.then(tables => {
 		if (tables) {
@@ -2353,7 +2353,7 @@ exports.insertSettingsLanguage = function (req, res, next) {
 			tables['multipleLanguageTables'].forEach(table => {
 				// Choose default langauge for base data
 				promiseList.push(
-					req.app.get('db').adminDB(table.name).where('language', language)
+					db(table.name).where('language', language)
 				)
 				tableList.push(table)
 			})
@@ -2369,7 +2369,7 @@ exports.insertSettingsLanguage = function (req, res, next) {
 				results[i].forEach(result => {
 					delete result[table.primaryKey]
 					result[table.langColumn] = name
-					promiseList.push(req.app.get('db').adminDB(table.name).insert(result))
+					promiseList.push(db(table.name).insert(result))
 				})
 			}
 			return Promise.all(promiseList)
@@ -2394,11 +2394,36 @@ exports.deleteSettingsLanguage = function (req, res, next) {
 	}
 
 	// Define
-	const LanguageModel = LanguageTable.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
+	let language = undefined
 	
-	LanguageModel.query().delete().where('id', id)
+	db(LanguageTable).select('name').where('id', id).first()
 	.then(data => {
-		// Starting to delete all language in each table
+		// Getting the language
+		if (data) {
+			language = data['name']
+		}
+
+		// Delete the language
+		return db(LanguageTable).where('id', id).del()
+	})
+	.then(() => {
+		// Getting all supported multiple language tables
+		return db(SystemTable).select('multipleLanguageTables').first()
+	})
+	.then(tables => {
+		if (tables && language) {
+			let promiseList = []
+			tables['multipleLanguageTables'].forEach(table => {
+				// Starting to delete all language in each table
+				promiseList.push(
+					db(table.name).where('language', language).del()
+				)
+			})
+			return Promise.all(promiseList)
+		}
+	})
+	.then(data => {
 
 	})
 	.catch(err => {
@@ -2444,11 +2469,11 @@ exports.viewSettingsLanguage = function (req, res, next) {
 	const T = Language.getTemplateLanguage(SYSTEM, language)
 
 	// Define
-	const LanguageModel = LanguageTable.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 	let settingsLanguage = {}
 
 	// Getting user data
-	LanguageModel.query().where('id', id).first()
+	db(LanguageTable).where('id', id).first()
 	.then(languages => {
 		if (!languages) {
 			res.redirect('/' + language + '/admin/settings/language')
@@ -2509,7 +2534,7 @@ exports.editSettingsLanguage = function (req, res, next) {
 	}
 
 	// Define
-	const LanguageModel = LanguageTable.bindKnex(req.app.get('db').adminDB)
+	const db = req.app.get('db').adminDB
 
 	// Update structure
 	const updateStructure = {
@@ -2517,7 +2542,7 @@ exports.editSettingsLanguage = function (req, res, next) {
 	}
 
 	// Update the order of language
-	LanguageModel.query().where('id', id).update(updateStructure)
+	db(LanguageTable).where('id', id).update(updateStructure)
 	.then(data => {
 		
 	})
