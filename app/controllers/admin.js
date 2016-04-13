@@ -1,5 +1,6 @@
 'use strict'
 
+const knex = require('knex')
 const bcrypt = require('bcryptjs')
 const config = require('../../config/config')
 const salt = bcrypt.genSaltSync(config.saltLength)
@@ -16,6 +17,7 @@ const Portfolio = require('../models/portfolio')
 const Skill = require('../models/skill')
 const Settings = require('../models/settings')
 const LanguageTable = require('../models/language')
+const SystemTable = 'system'
 
 const SYSTEM = 'system'
 const PAGE_COUNT = 10
@@ -2325,6 +2327,7 @@ exports.insertSettingsLanguage = function (req, res, next) {
 	
 	// Define
 	const LanguageModel = LanguageTable.bindKnex(req.app.get('db').adminDB)
+	let tableList = []
 
 	// Checking is there the same key
 	LanguageModel.query().where('name', name).count('*').first()
@@ -2341,13 +2344,42 @@ exports.insertSettingsLanguage = function (req, res, next) {
 		})
 	})
 	.then(() => {
-		// Starting to add new language to each table
-		
+		// Getting all supported multiple language tables
+		return req.app.get('db').adminDB.select('multipleLanguageTables').from(SystemTable).first()
+	})
+	.then(tables => {
+		if (tables) {
+			let promiseList = []
+			tables['multipleLanguageTables'].forEach(table => {
+				// Choose default langauge for base data
+				promiseList.push(
+					req.app.get('db').adminDB(table.name).where('language', language)
+				)
+				tableList.push(table)
+			})
+			return Promise.all(promiseList)
+		}
+	})
+	.then(results => {
+		if (results) {
+			let promiseList = []
+			// Starting to add new language for each suuported table
+			for (let i = 0 ; i < results.length ; i++) {
+				const table = tableList[i]
+				results[i].forEach(result => {
+					delete result[table.primaryKey]
+					result[table.langColumn] = name
+					promiseList.push(req.app.get('db').adminDB(table.name).insert(result))
+				})
+			}
+			return Promise.all(promiseList)
+		}
+	})
+	.then(data => {
+		res.redirect('/' + language + '/admin/settings/language')
 	})
 	.catch(err => {
 		next(err)
-	}).finally(() => {
-		res.redirect('/' + language + '/admin/settings/language')
 	})
 }
 
@@ -2499,10 +2531,148 @@ exports.editSettingsLanguage = function (req, res, next) {
 
 
 exports.settingsTemplate = function (req, res, next) {
-	
+	const server = req.protocol + '://' + req.get('host')
+	const websiteName = req.app.get('websiteName')
+	const logoString = req.app.get('logoString')
+	const logoImage = req.app.get('logoImage')
+	const logoLink = req.app.get('logoLink')
+	const webTitle = req.app.get('webTitle')
+	const webSubtitle = req.app.get('webSubtitle')
+	const mainButtonString = req.app.get('mainButtonString')
+	const mainButtonLink = req.app.get('mainButtonLink')
+	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const language = req.app.get('language')
+	const template = req.app.get('template')
+	const languageList = req.app.get('languageList')
+	const templateFile = 'admin'
+	const selectedLanguage = req.query.lang || language
+
+	// Setting path
+	const pathList = []
+	const currentPath = 'language'
+
+	// Get template language data
+	const T = Language.getTemplateLanguage(SYSTEM, language)
+
+	// Define
+	const LanguageModel = Language.bindKnex(req.app.get('db').adminDB)
+	let settingsLanguageList = []
+
+	// Getting template data
+	MenuModel.query().where('language', selectedLanguage).orderBy('order')
+	.then(languages => {
+		languages.forEach(language => {
+			settingsLanguageList.push({
+				name: language.name,
+				order: language.order
+			})
+		})
+		
+	})
+	.catch(err => {
+		next(err)
+	})
+	.finally(() => {
+		const resp = {
+			T: T,
+			server: server,
+			language: language,
+			selectedLanguage: selectedLanguage,
+			languageList: languageList,
+			websiteName: websiteName,
+			logoString: logoString,
+			logoImage: logoImage,
+			logoLink: logoLink,
+			webTitle: webTitle,
+			webSubtitle: webSubtitle,
+			mainButtonString: mainButtonString,
+			mainButtonLink: mainButtonLink,
+			mainButtonTarget: mainButtonTarget,
+			template: template,
+			contentPage: 'admin.settings.language.html',
+			loginUser: {
+				username: req.user.username,
+				privilege: req.user.privilege,
+				picture: req.user.picture
+			},
+			settingsLanguageList: settingsLanguageList,
+			pathList: pathList,
+			currentPath: currentPath
+		}
+		res.render(templateFile, resp)
+	})
 }
 
 
 exports.settingsSystem = function (req, res, next) {
-	
+	const server = req.protocol + '://' + req.get('host')
+	const websiteName = req.app.get('websiteName')
+	const logoString = req.app.get('logoString')
+	const logoImage = req.app.get('logoImage')
+	const logoLink = req.app.get('logoLink')
+	const webTitle = req.app.get('webTitle')
+	const webSubtitle = req.app.get('webSubtitle')
+	const mainButtonString = req.app.get('mainButtonString')
+	const mainButtonLink = req.app.get('mainButtonLink')
+	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const language = req.app.get('language')
+	const template = req.app.get('template')
+	const languageList = req.app.get('languageList')
+	const templateFile = 'admin'
+	const selectedLanguage = req.query.lang || language
+
+	// Setting path
+	const pathList = []
+	const currentPath = 'language'
+
+	// Get template language data
+	const T = Language.getTemplateLanguage(SYSTEM, language)
+
+	// Define
+	const LanguageModel = Language.bindKnex(req.app.get('db').adminDB)
+	let settingsLanguageList = []
+
+	// Getting menu data
+	MenuModel.query().where('language', selectedLanguage).orderBy('order')
+	.then(languages => {
+		languages.forEach(language => {
+			settingsLanguageList.push({
+				name: language.name,
+				order: language.order
+			})
+		})
+		
+	})
+	.catch(err => {
+		next(err)
+	})
+	.finally(() => {
+		const resp = {
+			T: T,
+			server: server,
+			language: language,
+			selectedLanguage: selectedLanguage,
+			languageList: languageList,
+			websiteName: websiteName,
+			logoString: logoString,
+			logoImage: logoImage,
+			logoLink: logoLink,
+			webTitle: webTitle,
+			webSubtitle: webSubtitle,
+			mainButtonString: mainButtonString,
+			mainButtonLink: mainButtonLink,
+			mainButtonTarget: mainButtonTarget,
+			template: template,
+			contentPage: 'admin.settings.language.html',
+			loginUser: {
+				username: req.user.username,
+				privilege: req.user.privilege,
+				picture: req.user.picture
+			},
+			settingsLanguageList: settingsLanguageList,
+			pathList: pathList,
+			currentPath: currentPath
+		}
+		res.render(templateFile, resp)
+	})
 }
