@@ -32,5 +32,6 @@ module.exports = {
 	addNewLanguage: 'Add New Language',
 	editLanguage: 'Edit Language',
 	template: 'Template',
-	system: 'System'
+	system: 'System',
+	templateCenter: 'Template Center'
 }

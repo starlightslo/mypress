@@ -74,7 +74,7 @@ router.post('/settings/language/edit/:id', authController.checkAuth, preloadList
 router.delete('/settings/language/:id', authController.checkAuth, preloadList, controller.deleteSettingsLanguage)
 
 router.get('/settings/template', authController.checkAuth, preloadList, controller.settingsTemplate)
-
+router.post('/settings/template/edit', authController.checkAuth, preloadList, controller.editSettingsTemplate)
 
 router.get('/settings/system', authController.checkAuth, preloadList, controller.settingsSystem)
 

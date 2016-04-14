@@ -11,9 +11,12 @@ module.exports = {
 	},{
 		name: 'multipleLanguageTables',
 		type: 'json'
+	},{
+		name: 'template',
+		type: 'json'
 	}],
 	defaultDataList: [{
-		multipleLanguageTables: '[{ \
+		multipleLanguageTables: '[{\
 			"name":"user_profiles","langColumn":"language","primaryKey":"id"\
 		},{\
 			"name":"skills","langColumn":"language","primaryKey":"id"\
@@ -23,6 +26,9 @@ module.exports = {
 			"name":"portfolios","langColumn":"language","primaryKey":"id"\
 		},{\
 			"name":"experiences","langColumn":"language","primaryKey":"id"\
+		}]',
+		template: '[{\
+			"name": "Default","key":"default"\
 		}]'
 	}]
 }

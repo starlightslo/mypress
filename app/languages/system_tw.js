@@ -32,5 +32,6 @@ module.exports = {
 	addNewLanguage: '新增新語言',
 	editLanguage: '編輯語言',
 	template: '樣板',
-	system: '系統'
+	system: '系統',
+	templateCenter: '樣板中心'
 }

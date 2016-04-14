@@ -2595,25 +2595,23 @@ exports.settingsTemplate = function (req, res, next) {
 
 	// Setting path
 	const pathList = []
-	const currentPath = 'language'
+	const currentPath = 'template'
 
 	// Get template language data
 	const T = Language.getTemplateLanguage(SYSTEM, language)
 
 	// Define
-	const LanguageModel = Language.bindKnex(req.app.get('db').adminDB)
-	let settingsLanguageList = []
+	const db = req.app.get('db').adminDB
+	let templateList = []
 
-	// Getting template data
-	MenuModel.query().where('language', selectedLanguage).orderBy('order')
-	.then(languages => {
-		languages.forEach(language => {
-			settingsLanguageList.push({
-				name: language.name,
-				order: language.order
+	db(SystemTable).select('template').first()
+	.then(data => {
+		data['template'].forEach(tmpl => {
+			templateList.push({
+				name: tmpl.name,
+				key: tmpl.key
 			})
 		})
-		
 	})
 	.catch(err => {
 		next(err)
@@ -2635,17 +2633,64 @@ exports.settingsTemplate = function (req, res, next) {
 			mainButtonLink: mainButtonLink,
 			mainButtonTarget: mainButtonTarget,
 			template: template,
-			contentPage: 'admin.settings.language.html',
+			contentPage: 'admin.settings.template.html',
 			loginUser: {
 				username: req.user.username,
 				privilege: req.user.privilege,
 				picture: req.user.picture
 			},
-			settingsLanguageList: settingsLanguageList,
+			templateList: templateList,
 			pathList: pathList,
 			currentPath: currentPath
 		}
 		res.render(templateFile, resp)
+	})
+}
+
+
+exports.editSettingsTemplate = function (req, res, next) {
+	const language = req.app.get('language')
+
+	// Getting user data from the input
+	const key = req.body.key || ''
+
+	// Checking user data
+	if (verify.isEmpty(key)) {
+		res.status(400).send()
+		return
+	}
+
+	// Define
+	const db = req.app.get('db').adminDB
+
+	// Update structure
+	const updateStructure = {
+		template: key
+	}
+
+	// Checking the template is in the list
+	db(SystemTable).select('template').first()
+	.then(data => {
+		let installed = false
+		data['template'].forEach(tmpl => {
+			if (tmpl.key === key) {
+				installed = true
+			}
+		})
+		if (installed) {
+			return db(SettingsTable).update(updateStructure)
+		} else {
+			res.status(400).send()
+			return
+		}
+	})
+	.then(data => {
+		if (data) {
+			res.redirect('/' + language + '/admin/settings/template')
+		}
+	})
+	.catch(err => {
+		next(err)
 	})
 }
 
