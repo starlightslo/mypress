@@ -33,5 +33,16 @@ module.exports = {
 	editLanguage: 'Edit Language',
 	template: 'Template',
 	system: 'System',
-	templateCenter: 'Template Center'
+	templateCenter: 'Template Center',
+	defaultLanguage: 'Default Language',
+	websiteName: 'Website Name',
+	webTitle: 'Web Title',
+	webSubtitle: 'Web Subtitle',
+	backgroundImage: 'Background Image',
+	logoImage: 'Logo Image',
+	logoString: 'Logo String',
+	logoLink: 'Logo Link',
+	mainButtonString: 'Main Button String',
+	mainButtonLink: 'Main Button Link',
+	mainButtonTarget: 'Main Button Target'
 }

@@ -77,5 +77,6 @@ router.get('/settings/template', authController.checkAuth, preloadList, controll
 router.post('/settings/template/edit', authController.checkAuth, preloadList, controller.editSettingsTemplate)
 
 router.get('/settings/system', authController.checkAuth, preloadList, controller.settingsSystem)
+router.post('/settings/system/edit', authController.checkAuth, preloadList, controller.editSettingsSystem)
 
 module.exports = router

@@ -33,5 +33,16 @@ module.exports = {
 	editLanguage: '編輯語言',
 	template: '樣板',
 	system: '系統',
-	templateCenter: '樣板中心'
+	templateCenter: '樣板中心',
+	defaultLanguage: '預設語言',
+	websiteName: '網站名稱',
+	webTitle: '網頁表題',
+	webSubtitle: '網頁子標題',
+	backgroundImage: '背景圖示',
+	logoImage: 'Logo圖片',
+	logoString: 'Logo文字',
+	logoLink: 'Logo連結',
+	mainButtonString: '主按鈕文字',
+	mainButtonLink: '主按鈕連結',
+	mainButtonTarget: '主按鈕目標'
 }

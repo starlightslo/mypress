@@ -2714,25 +2714,31 @@ exports.settingsSystem = function (req, res, next) {
 
 	// Setting path
 	const pathList = []
-	const currentPath = 'language'
+	const currentPath = 'system'
 
 	// Get template language data
 	const T = Language.getTemplateLanguage(SYSTEM, language)
 
 	// Define
-	const LanguageModel = Language.bindKnex(req.app.get('db').adminDB)
-	let settingsLanguageList = []
+	const db = req.app.get('db').adminDB
+	let system = {}
 
 	// Getting menu data
-	MenuModel.query().where('language', selectedLanguage).orderBy('order')
-	.then(languages => {
-		languages.forEach(language => {
-			settingsLanguageList.push({
-				name: language.name,
-				order: language.order
-			})
-		})
-		
+	db(SettingsTable).where('language', selectedLanguage).first()
+	.then(data => {
+		system = {
+			defaultLanguage: data.default_language,
+			websiteName: data.website_name,
+			webTitle: data.web_title,
+			webSubtitle: data.web_subtitle,
+			backgroundImage: data.background_image,
+			logoString: data.logo_string,
+			logoImage: data.logo_image,
+			logoLink: data.logo_link,
+			mainButtonString: data.main_button_string,
+			mainButtonLink: data.main_button_link,
+			mainButtonTarget: data.main_button_target
+		}
 	})
 	.catch(err => {
 		next(err)
@@ -2754,16 +2760,69 @@ exports.settingsSystem = function (req, res, next) {
 			mainButtonLink: mainButtonLink,
 			mainButtonTarget: mainButtonTarget,
 			template: template,
-			contentPage: 'admin.settings.language.html',
+			contentPage: 'admin.settings.system.html',
 			loginUser: {
 				username: req.user.username,
 				privilege: req.user.privilege,
 				picture: req.user.picture
 			},
-			settingsLanguageList: settingsLanguageList,
+			system: system,
 			pathList: pathList,
 			currentPath: currentPath
 		}
 		res.render(templateFile, resp)
+	})
+}
+
+
+exports.editSettingsSystem = function (req, res, next) {
+	const language = req.app.get('language')
+	const selectedLanguage = req.query.lang || language
+
+	// Getting user data from the input
+	const defaultLanguage = req.body.default_language || req.app.get('defaultLanguage')
+	const websiteName = req.body.website_name || req.app.get('websiteName')
+	const webTitle = req.body.web_title || req.app.get('webTitle')
+	const webSubtitle = req.body.web_subtitle || req.app.get('webSubtitle')
+	const logoString = req.body.logo_string || req.app.get('logoString')
+	const logoLink = req.body.logo_link || req.app.get('logoLink')
+	const mainButtonString = req.body.main_button_string || req.app.get('mainButtonString')
+	const mainButtonLink = req.body.main_button_link || req.app.get('mainButtonLink')
+	const mainButtonTarget = req.body.main_button_target || req.app.get('mainButtonTarget')
+
+	// Checking user data
+	if (verify.isEmpty(defaultLanguage)) {
+		defaultLanguage = req.app.get('defaultLanguage')
+	}
+
+	// Define
+	const db = req.app.get('db').adminDB
+
+	// Update structure
+	const updateStructure = {
+		website_name: websiteName,
+		web_title: webTitle,
+		web_subtitle: webSubtitle,
+		logo_string: logoString,
+		logo_link: logoLink,
+		main_button_string: mainButtonString,
+		main_button_link: mainButtonLink,
+		main_button_target: mainButtonTarget
+	}
+
+	// Update the default language
+	db(SettingsTable).update({default_language: defaultLanguage})
+	.then(data => {
+		// Update other data
+		return db(SettingsTable).where('language', selectedLanguage).update(updateStructure)
+	})
+	.then(data => {
+
+	})
+	.catch(err => {
+		next(err)
+	})
+	.finally(() => {
+		res.redirect('/' + language + '/admin/settings/system?lang=' + selectedLanguage)
 	})
 }

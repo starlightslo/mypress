@@ -1,0 +1,101 @@
+<div class="grid-form">
+	<div class="grid-form1">
+		<div class="float-left">
+			<h3 id="forms-horizontal"></h3>
+		</div>
+		<div class="float-right">
+			<div class="dropdown">
+				<a href="#" title="" class="btn btn-default" data-toggle="dropdown" aria-expanded="false">
+					{{ selectedLanguage }}
+					<i class="fa fa-chevron-down icon_8"></i>
+					<div class="ripple-wrapper"></div>
+				</a>
+				<ul class="dropdown-menu float-right">
+					{% for lang in languageList %}
+					<li>
+						<a href="?lang={{ lang }}">{{ lang }}</a>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<form class="form-horizontal" method="post" action="{{ server }}/{{ language }}/admin/settings/system/edit?lang={{ selectedLanguage }}">
+			<div class="form-group">
+				<label class="col-sm-2 control-label hor-form">{{ T.defaultLanguage }}</label>
+				<div class="col-sm-10">
+					<select class="col-sm-2 control-label hor-form" id="defaultLanguage" name="default_language">
+						{% for lang in languageList %}
+							<option value="{{ lang }}" {% if lang === system.defaultLanguage %} selected {% endif %}>{{ lang }}</option>
+						{% endfor %}
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">{{ T.websiteName }}</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="websiteName" name="website_name" placeholder="{{ T.websiteName }}" value="{{ system.websiteName }}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">{{ T.webTitle }}</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="webTitle" name="web_title" placeholder="{{ T.webTitle }}" value="{{ system.webTitle }}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">{{ T.webSubtitle }}</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="webSubtitle" name="web_subtitle" placeholder="{{ T.webSubtitle }}" value="{{ system.webSubtitle }}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">{{ T.backgroundImage }}</label>
+				<div class="col-sm-10">
+					
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">{{ T.logoImage }}</label>
+				<div class="col-sm-10">
+					
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">{{ T.logoString }}</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="logoString" name="logo_string" placeholder="{{ T.logoString }}" value="{{ system.logoString }}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">{{ T.logoLink }}</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="logoLink" name="logo_link" placeholder="{{ T.logoLink }}" value="{{ system.logoLink }}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">{{ T.mainButtonString }}</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="mainButtonString" name="main_button_string" placeholder="{{ T.mainButtonString }}" value="{{ system.mainButtonString }}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">{{ T.mainButtonLink }}</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="mainButtonLink" name="main_button_link" placeholder="{{ T.mainButtonLink }}" value="{{ system.mainButtonLink }}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">{{ T.mainButtonTarget }}</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="mainButtonTarget" name="main_button_target" placeholder="_blank" value="{{ system.mainButtonTarget }}">
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="submit" class="btn btn-primary">Save</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
