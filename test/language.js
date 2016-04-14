@@ -2,24 +2,7 @@
 
 const proxyquire = require('proxyquire')
 
-const LanguageModel = {
-	bindKnex: (db) => {
-		return {
-			query: function() {
-				return this
-			},
-			select: function(data) {
-
-				return this
-			},
-			then: function(callback) {
-				return callback([{name: 'en'}, {name: 'tw'}])
-			}
-		}
-	}
-}
-
-const Language = proxyquire('../app/modules/language', {'../models/language': LanguageModel})
+const Language = require('../app/modules/language')
 const chai = require('chai')
 const should = chai.should()
 const assert = chai.assert
@@ -32,7 +15,16 @@ const DefaultTWLanguage = require('../app/languages/default_tw')
 describe('Language', function() {
 	let data = {
 		db: {
-			normalDB: ''
+			normalDB: table => {
+				return {
+					select: function(data) {
+						return this
+					},
+					then: function(callback) {
+						return callback([{name: 'en'}, {name: 'tw'}])
+					}
+				}
+			}
 		}
 	}
 
