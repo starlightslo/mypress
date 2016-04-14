@@ -68,6 +68,7 @@ router.delete('/experience/:key', authController.checkAuth, preloadList, control
 router.get('/settings/language', authController.checkAuth, preloadList, controller.settingsLanguage)
 router.get('/settings/language/add', authController.checkAuth, preloadList, controller.addSettingsLanguage)
 router.get('/settings/language/view/:id', authController.checkAuth, preloadList, controller.viewSettingsLanguage)
+router.get('/settings/language/validate/:name', authController.checkAuth, preloadList, controller.validateSettingsLanguage)
 router.post('/settings/language/add', authController.checkAuth, preloadList, controller.insertSettingsLanguage)
 router.post('/settings/language/edit/:id', authController.checkAuth, preloadList, controller.editSettingsLanguage)
 router.delete('/settings/language/:id', authController.checkAuth, preloadList, controller.deleteSettingsLanguage)

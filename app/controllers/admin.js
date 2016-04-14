@@ -2549,6 +2549,33 @@ exports.editSettingsLanguage = function (req, res, next) {
 }
 
 
+exports.validateSettingsLanguage = function (req, res, next) {
+	const name = req.params.name
+
+	// Checking user data
+	if (verify.isEmpty(name)) {
+		res.status(400).send()
+		return
+	}
+
+	// Define
+	const db = req.app.get('db').adminDB
+
+	// Search user
+	db(LanguageTable).where('name', name).first()
+	.then(language => {
+		if (language) {
+			res.send('1')
+		} else {
+			res.send('0')
+		}
+	})
+	.catch(err => {
+		next(err)
+	})
+}
+
+
 exports.settingsTemplate = function (req, res, next) {
 	const server = req.protocol + '://' + req.get('host')
 	const websiteName = req.app.get('websiteName')

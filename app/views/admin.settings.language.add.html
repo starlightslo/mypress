@@ -1,7 +1,7 @@
 <div class="grid-form">
 	<div class="grid-form1">
 		<h3 id="forms-example">{{ T.addNewLanguage }}</h3>
-		<form class="form-horizontal" method="post" action="{{ server }}/{{ language }}/admin/settings/language/add">
+		<form class="form-horizontal" id="form1" method="post" action="{{ server }}/{{ language }}/admin/settings/language/add">
 			<div class="form-group">
 				<label class="col-sm-2 control-label hor-form">Order</label>
 				<div class="col-sm-10">
@@ -12,7 +12,7 @@
 					</select>
 				</div>
 			</div>
-			<div class="form-group">
+			<div id="name-group" class="form-group">
 				<label class="col-sm-2 control-label hor-form">Name</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control" id="name" name="name" placeholder="name" required>
@@ -26,3 +26,40 @@
 		</form>
 	</div>
 </div>
+<script language="JavaScript">
+	var NORMAL_CLASS = 'form-group'
+	var ERROR_CLASS = 'form-group has-error'
+	var validateLanguageName = false
+
+	$('#name').keyup(function() {
+		$('#name-group').attr('class', NORMAL_CLASS)
+	})
+
+	$("#form1").submit(function(event) {
+		if (!validateLanguageName) {
+			$(':submit').prop('disabled', true)
+			event.preventDefault()
+			// Pre-check the language is existing or not
+			var name = $('#name').val()
+			$.ajax({
+				url: '{{ server }}/admin/settings/language/validate/' + name,
+				type: 'GET',
+				success: function(data) {
+					if (data === '0') {
+						validateLanguageName = true
+						$("#form1").submit()
+					} else {
+						$(':submit').prop('disabled', false)
+						$('#name-group').attr('class', ERROR_CLASS)
+					}
+				},
+				error: function() {
+					console.error('check error')
+				},
+				cache: false,
+				contentType: false,
+				processData: false
+			}, 'json')
+		}
+	})
+</script>
