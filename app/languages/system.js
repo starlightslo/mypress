@@ -32,5 +32,17 @@ module.exports = {
 	addNewLanguage: 'Add New Language',
 	editLanguage: 'Edit Language',
 	template: 'Template',
-	system: 'System'
+	system: 'System',
+	templateCenter: 'Template Center',
+	defaultLanguage: 'Default Language',
+	websiteName: 'Website Name',
+	webTitle: 'Web Title',
+	webSubtitle: 'Web Subtitle',
+	backgroundImage: 'Background Image',
+	logoImage: 'Logo Image',
+	logoString: 'Logo String',
+	logoLink: 'Logo Link',
+	mainButtonString: 'Main Button String',
+	mainButtonLink: 'Main Button Link',
+	mainButtonTarget: 'Main Button Target'
 }
