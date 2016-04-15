@@ -52,7 +52,7 @@
 				<div class="col-sm-10">
 					<select class="col-sm-2 control-label hor-form" id="privilege" name="privilege">
 						{% for i in Array(99) %}
-							<option value="{{loop.index}}">{{loop.index}}</option>
+							<option value="{{loop.index}}" {% if user.privilege === loop.index %} selected {% endif %}>{{loop.index}}</option>
 						{% endfor %}
 					</select>
 				</div>
