@@ -68,6 +68,20 @@ exports.loginSuccess = function(req, res, next) {
 	res.redirect('/' + language + '/admin')
 }
 
+exports.logout = function(req, res, next) {
+	const language = req.app.get('language')
+	const redirectUrl = req.query.redirect_url || undefined
+
+	// Clean the session token
+	req.session.token = null
+
+	if (redirectUrl) {
+		res.redirect('/' + language + '/' + redirectUrl)
+	} else {
+		res.redirect('/' + language)
+	}
+}
+
 exports.localAuthenticate = function(req, res, next) {
 	const remoteIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress
 

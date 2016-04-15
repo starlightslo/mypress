@@ -23,6 +23,7 @@ fs.readdirSync(PRELOAD_PATH).forEach(file => {
  * Routers
  */
 router.get('/login', preloadList, controller.login)
+router.get('/logout', preloadList, controller.logout)
 router.post('/login', preloadList, controller.localAuthenticate, controller.loginSuccess)
 
 module.exports = router
