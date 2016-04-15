@@ -52,13 +52,43 @@
 			<div class="form-group">
 				<label for="inputEmail3" class="col-sm-2 control-label hor-form">{{ T.backgroundImage }}</label>
 				<div class="col-sm-10">
-					
+					<div class="picture-inline-group">
+						{% if system.backgroundImage.length > 0 %}
+							<img class="picture" id="background-img" src="{{ server }}/{{ system.backgroundImage }}" />
+						{% else %}
+							<img class="picture" id="background-img" />
+						{% endif %}
+					</div>
+					<div class="upload-block">
+						<a href="#" class="btn btn-sm btn-info btn-upload">
+							<label class="upload">
+								Upload new picture
+								<input type="file" class="upload-picture" id="backgroundImageFile" name="background_image" />
+								<button type="button" style="display: none;">Upload</button>
+							</label>
+						</a>
+					</div>
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="inputEmail3" class="col-sm-2 control-label hor-form">{{ T.logoImage }}</label>
 				<div class="col-sm-10">
-					
+					<div class="picture-inline-group">
+						{% if system.logoImage.length > 0 %}
+							<img class="picture" id="logo-img" src="{{ server }}/{{ system.logoImage }}" />
+						{% else %}
+							<img class="picture" id="logo-img" />
+						{% endif %}
+					</div>
+					<div class="upload-block">
+						<a href="#" class="btn btn-sm btn-info btn-upload">
+							<label class="upload">
+								Upload new picture
+								<input type="file" class="upload-picture" id="logoImageFile" name="logo_image" />
+								<button type="button" style="display: none;">Upload</button>
+							</label>
+						</a>
+					</div>
 				</div>
 			</div>
 			<div class="form-group">
@@ -99,3 +129,65 @@
 		</form>
 	</div>
 </div>
+<script language="JavaScript">
+	var BACKGROUND_IMAGE = 'backgroundImage'
+	var LOGO_IMAGE = 'logoImage'
+
+	var upload = function(data, file) {
+		name = file.name
+		size = file.size
+		type = file.type
+
+		if (file.name.length < 1) {
+		} else if (file.size > 1000000) {
+			alert("File is to big")
+		} else if (file.type != 'image/png' && file.type != 'image/jpg' && file.type != 'image/gif' && file.type != 'image/jpeg') {
+			alert("File doesnt match png, jpg or gif")
+		} else { 
+			// Create new form data and put data into the form
+			var formData = new FormData()
+			formData.append("picture", file)
+			formData.append("data", data)
+
+			// Starting to upload
+			$.ajax({
+				url: '{{ server }}/admin/settings/system/upload?lang={{ selectedLanguage }}',
+				type: 'POST',
+				xhr: function() {
+					myXhr = $.ajaxSettings.xhr();
+					return myXhr
+				},
+				success: function(result, textStatus, xhr) {
+					if (xhr && xhr.status === 204) {
+						// Reload the image
+						if (data === BACKGROUND_IMAGE) {
+							$("#background-img").attr("src", '{{ server }}/uploads/background_image?' + (new Date()).getTime())
+						} else if (data === LOGO_IMAGE) {
+							$("#logo-img").attr("src", '{{ server }}/uploads/logo_image?' + (new Date()).getTime())
+						}
+					} else {
+						console.error('upload error')
+						console.error('responseText: ' + xhr.responseText)
+						console.error('status: ' + xhr.status)
+					}
+				},
+				error: function() {
+					console.error('upload error')
+				},
+				data: formData,
+				cache: false,
+				contentType: false,
+				processData: false
+			}, 'json')
+		}
+	}
+
+	$('#backgroundImageFile').change(function(){
+		var file = this.files[0]
+		upload('backgroundImage', file)
+	})
+	$('#logoImageFile').change(function(){
+		var file = this.files[0]
+		upload('logoImage', file)
+	})
+</script>

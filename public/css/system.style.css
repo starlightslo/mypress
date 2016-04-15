@@ -50,6 +50,10 @@ div#wrapper {
   text-align: right;
   float: left;
 }
+.picture-inline-group {
+  width: 13%;
+  float: left;
+}
 .picture {
   display: inline-block;
   border: 5px dotted #eee;

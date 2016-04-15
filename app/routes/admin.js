@@ -78,5 +78,6 @@ router.post('/settings/template/edit', authController.checkAuth, preloadList, co
 
 router.get('/settings/system', authController.checkAuth, preloadList, controller.settingsSystem)
 router.post('/settings/system/edit', authController.checkAuth, preloadList, controller.editSettingsSystem)
+router.post('/settings/system/upload', authController.checkAuth, preloadList, multipart(), controller.uploadSettingsSystemPicture)
 
 module.exports = router

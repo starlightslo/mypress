@@ -2826,3 +2826,67 @@ exports.editSettingsSystem = function (req, res, next) {
 		res.redirect('/' + language + '/admin/settings/system?lang=' + selectedLanguage)
 	})
 }
+
+
+exports.uploadSettingsSystemPicture = function (req, res, next) {
+	const fs = require('fs')
+
+	const language = req.app.get('language')
+	const data = req.body.data
+	const selectedLanguage = req.query.lang || language
+
+	// Define
+	const BACKGROUND_IMAGE = 'backgroundImage'
+	const LOGO_IMAGE = 'logoImage'
+	let filename = ''
+	let updateStructure = {}
+
+	// Checking user data
+	if (data === BACKGROUND_IMAGE) {
+		filename = 'background_image'
+		updateStructure['background_image'] = 'uploads/' + filename
+	} else if(data === LOGO_IMAGE) {
+		filename = 'logo_image'
+		updateStructure['logo_image'] = 'uploads/' + filename
+	} else {
+		res.status(400).send()
+		return
+	}
+
+	// Checking files data
+	if (!req.files) {
+		res.status(400).send()
+		return
+	}
+
+	// Define
+	const db = req.app.get('db').adminDB
+	fs.readFile(req.files.picture.path, function (err, data) {
+		const imageName = req.files.picture.name
+		// If there's an error
+		if(!imageName){
+			next('error')
+		} else {
+			const path = config.root + "/public/uploads/" + filename
+			// write file to public/uploads folder
+			fs.writeFile(path, data, function (err) {
+				if (err) {
+					next(err)
+					return
+				}
+
+				// Update data
+				db(SettingsTable).where('language', selectedLanguage).update(updateStructure)
+				.then(data => {
+					
+				})
+				.catch(err => {
+					next(err)
+				})
+				.finally(() => {
+					res.status(204).send()
+				})
+			})
+		}
+	})
+}
