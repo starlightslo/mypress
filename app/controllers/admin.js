@@ -338,7 +338,7 @@ exports.insertUser = function (req, res, next) {
 	const flickr = req.body.flickr || ''
 
 	// Checking user data
-	if (!verify.username(username, 6, 16) || !verify.password(password, 6, 16) || !verify.inNumber(privilege, 1, 99)) {
+	if (!verify.username(username, 6, 16) || !verify.password(password, 6, 16) || !verify.inNumber(privilege, 1, 99) || verify.isEmpty(firstName)) {
 		res.status(400).send()
 		return
 	}
@@ -402,13 +402,7 @@ exports.editUser = function (req, res, next) {
 	const flickr = req.body.flickr || ''
 
 	// Checking user data
-	if (!verify.username(username, 6, 16)) {
-		res.status(400).send()
-		return
-	}
-
-	// Checking user data
-	if ((newPassword && !verify.password(newPassword)) || !verify.inNumber(privilege, 1, 99)) {
+	if (!verify.username(username, 6, 16) || (newPassword && !verify.password(newPassword)) || !verify.inNumber(privilege, 1, 99) || verify.isEmpty(firstName)) {
 		res.status(400).send()
 		return
 	}
