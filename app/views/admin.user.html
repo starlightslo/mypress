@@ -68,7 +68,7 @@
 										{% endif %}
 									</td>
 									<td >
-										{% if user.username !== loginUser.username %}
+										{% if user.username !== loginUser.username && user.privilege <= loginUser.privilege  %}
 											<a href="#" onclick="deleteUser('{{ user.username }}');"><i class="fa delete fa-trash-o"></i></a>
 										{% endif %}
 									</td>
