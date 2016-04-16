@@ -714,43 +714,50 @@ exports.insertMenu = function (req, res, next) {
 	const languageList = req.app.get('languageList')
 
 	// Getting user data from the input
-	const key = req.body.key || ''
 	const name = req.body.name || ''
 	const link = req.body.link || ''
 	const target = req.body.target || ''
 	const order = req.body.order || 1
-	
-	// Checking user data
-	if (!verify.username(key, 1, 16)) {
-		res.status(400).send()
-		return
-	}
 
 	// Define
 	const db = req.app.get('db').adminDB
 
-	let promiseList = []
-	// Prepare insert data
-	languageList.forEach(lang => {
-		promiseList.push(db(MenuTable).insert({
-			key: key,
-			name: name,
-			link: link,
-			target: target,
-			order: order,
-			language: lang
-		}))
-	})
+	// Check the key is existing or not
+	const generatingKey = () => {
+		const resolver = require('bluebird').defer()
+		const loop = () => {
+			// Generating the key
+			const key = Utils.randomString(8)
 
-	// Checking is there the same key
-	db(MenuTable).where('key', key).count('*').first()
-	.then(data => {
-		if (data.count > 0) {
-			next('The key is existing.')
-			return
+			// Start checking
+			db(MenuTable).where('key', key).count('*').first()
+			.then(data => {
+				if (data.count > 0) {
+					// If there is a same key
+					loop()
+				}
+				resolver.resolve(key)
+			})
+			.catch(resolver.reject)
 		}
+		loop()
+		return resolver.promise
+	}
 
-		// Run insert
+	generatingKey()
+	.then(key => {
+		let promiseList = []
+		// Prepare insert data
+		languageList.forEach(lang => {
+			promiseList.push(db(MenuTable).insert({
+				key: key,
+				name: name,
+				link: link,
+				target: target,
+				order: order,
+				language: lang
+			}))
+		})
 		return Promise.all(promiseList)
 	})
 	.then(() => {
