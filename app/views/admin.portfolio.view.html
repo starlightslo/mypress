@@ -32,7 +32,7 @@
 				<div class="upload-block">
 					<a href="#" class="btn btn-sm btn-info btn-upload">
 						<label class="upload">
-							Upload new picture
+							{{ T.uploadNewPicture }}
 							<input type="file" class="upload-picture" id="picture" name="picture" />
 							<button type="submit" style="display: none;">Upload</button>
 						</label>
@@ -42,50 +42,50 @@
 		</form>
 		<form class="form-horizontal" method="post" action="{{ server }}/{{ language }}/admin/portfolio/edit/{{ portfolio.key }}?lang={{ selectedLanguage }}&p={{ page }}">
 			<div class="form-group">
-				<label class="col-sm-2 control-label hor-form">Project Name</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.projectName }}</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" id="name" name="name" placeholder="Project Name" value="{{ portfolio.name }}">
+					<input type="text" class="form-control" id="name" name="name" placeholder="{{ T.projectName }}" value="{{ portfolio.name }}">
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label hor-form">Client</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.client }}</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" id="client" name="client" placeholder="Client" value="{{ portfolio.client }}">
+					<input type="text" class="form-control" id="client" name="client" placeholder="{{ T.client }}" value="{{ portfolio.client }}">
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label hor-form">Role</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.role }}</label>
 				<div class="col-sm-10">
-					<input type="type" class="form-control" id="role" name="role" placeholder="Role in Project" value="{{ portfolio.role }}">
+					<input type="type" class="form-control" id="role" name="role" placeholder="{{ T.roleInThisProject }}" value="{{ portfolio.role }}">
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label hor-form">Description</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.description }}</label>
 				<div class="col-sm-10">
-					<textarea class="form-control" id="description" name="description" placeholder="Description...">{{ portfolio.description }}</textarea>
+					<textarea class="form-control" id="description" name="description" placeholder="{{ T.description }}...">{{ portfolio.description }}</textarea>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label hor-form">Link</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.link }}</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" id="link" name="link" placeholder="Link" value="{{ portfolio.link }}">
+					<input type="text" class="form-control" id="link" name="link" placeholder="{{ T.link }}" value="{{ portfolio.link }}">
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label hor-form">Target</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.target }}</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control" id="target" name="target" placeholder="_blank" value="{{ portfolio.target }}">
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label hor-form">Picture Alt</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.pictureAlt }}</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" id="picture_alt" name="picture_alt" placeholder="Picture Alt" value="{{ portfolio.pictureAlt }}">
+					<input type="text" class="form-control" id="picture_alt" name="picture_alt" placeholder="{{ T.pictureAlt }}" value="{{ portfolio.pictureAlt }}">
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
-					<button type="submit" class="btn btn-primary">Save</button>
+					<button type="submit" class="btn btn-primary">{{ T.save }}</button>
 				</div>
 			</div>
 		</form>

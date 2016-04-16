@@ -3,36 +3,36 @@
 		<h3 id="forms-example">{{ T.addNewExperience }}</h3>
 		<form class="form-horizontal" method="post" action="{{ server }}/{{ language }}/admin/experience/add">
 			<div id="username-group" class="form-group">
-				<label class="col-sm-2 control-label hor-form">Company Name</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.companyName }}</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control1" id="companyName" name="company_name" placeholder="Company Name" required>
+					<input type="text" class="form-control1" id="companyName" name="company_name" placeholder="{{ T.companyName }}" required>
 				</div>
 			</div>
 			<div id="password-group" class="form-group">
-				<label class="col-sm-2 control-label hor-form">Role</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.role }}</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control1" id="role" name="role" placeholder="Role">
+					<input type="text" class="form-control1" id="role" name="role" placeholder="{{ T.roleInThisProject }}">
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label hor-form">Description</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.description }}</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control1" id="description" name="description" placeholder="Description">
+					<input type="text" class="form-control1" id="description" name="description" placeholder="{{ T.description }}...">
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label hor-form">Start Working Date</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.startWorkingDate }}</label>
 				<div class="col-sm-10">
 					<input type="date" class="form-control1 ng-invalid ng-invalid-required" id="startWorkingDate" name="start_working_date" ng-model="model.date" required>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label hor-form">End Working Date</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.endWorkingDate }}</label>
 				<div class="col-sm-10">
 					<input type="date" class="form-control1 ng-invalid ng-invalid-required" id="endWorkingDate" name="end_working_date" ng-model="model.date">
 					<label>
 						<input type="checkbox" id="stillHere" name="still_here" checked>
-						Still here
+						{{ T.stillHere }}
 					</label>
 				</div>
 			</div>

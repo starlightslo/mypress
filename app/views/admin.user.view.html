@@ -32,7 +32,7 @@
 				<div class="upload-block">
 					<a href="#" class="btn btn-sm btn-info btn-upload">
 						<label class="upload">
-							Upload new picture
+							{{ T.uploadNewPicture }}
 							<input type="file" class="upload-picture" id="picture" name="picture" />
 							<button type="submit" style="display: none;">Upload</button>
 						</label>
@@ -42,13 +42,13 @@
 		</form>
 		<form class="form-horizontal" method="post" action="{{ server }}/{{ language }}/admin/user/edit/{{ user.username }}?lang={{ selectedLanguage }}">
 			<div class="form-group">
-				<label class="col-sm-2 control-label hor-form">Username</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.username }}</label>
 				<div class="col-sm-10">
 					<p class="form-control-static">{{ user.username }}</p>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label hor-form">Privilege</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.privilege }}</label>
 				<div class="col-sm-10">
 					{% if user.isAdmin %}
 						<p class="form-control-static">{{ user.privilege }}</p>
@@ -62,80 +62,80 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label hor-form">First Name</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.firstName }}</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" id="first_name" name="first_name" placeholder="First Name" value="{{ user.firstName }}" required>
+					<input type="text" class="form-control" id="first_name" name="first_name" placeholder="{{ T.firstName }}" value="{{ user.firstName }}" required>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label hor-form">Last Name</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.lastName }}</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last Name" value="{{ user.lastName }}">
+					<input type="text" class="form-control" id="last_name" name="last_name" placeholder="{{ T.lastName }}" value="{{ user.lastName }}">
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label hor-form">Email</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.email }}</label>
 				<div class="col-sm-10">
-					<input type="email" class="form-control" id="email" name="email" placeholder="Email" value="{{ user.email }}">
+					<input type="email" class="form-control" id="email" name="email" placeholder="{{ T.email }}" value="{{ user.email }}">
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label hor-form">Introduction</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.introduction }}</label>
 				<div class="col-sm-10">
-					<textarea class="form-control" id="introduction" name="introduction" placeholder="Introduce youself...">{{ user.introduction }}</textarea>
+					<textarea class="form-control" id="introduction" name="introduction" placeholder="{{ T.introductionYourself }}">{{ user.introduction }}</textarea>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label hor-form">Facebook</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.facebook }}</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" id="facebook" name="facebook" placeholder="Facebook" value="{{ user.facebook }}">
+					<input type="text" class="form-control" id="facebook" name="facebook" placeholder="{{ T.facebook }}" value="{{ user.facebook }}">
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label hor-form">Twitter</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.twitter }}</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" id="twitter" name="twitter" placeholder="Twitter" value="{{ user.twitter }}">
+					<input type="text" class="form-control" id="twitter" name="twitter" placeholder="{{ T.twitter }}" value="{{ user.twitter }}">
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label hor-form">Google</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.google }}</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" id="google" name="google" placeholder="Google" value="{{ user.google }}">
+					<input type="text" class="form-control" id="google" name="google" placeholder="{{ T.google }}" value="{{ user.google }}">
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label hor-form">LinkedIn</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.linkedin }}</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" id="linkedin" name="linkedin" placeholder="LinkedIn" value="{{ user.linkedin }}">
+					<input type="text" class="form-control" id="linkedin" name="linkedin" placeholder="{{ T.linkedin }}" value="{{ user.linkedin }}">
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label hor-form">Flickr</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.flickr }}</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" id="flickr" name="flickr" placeholder="Flickr" value="{{ user.flickr }}">
+					<input type="text" class="form-control" id="flickr" name="flickr" placeholder="{{ T.flickr }}" value="{{ user.flickr }}">
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label hor-form">Change Password</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.changePassword }}</label>
 				<div class="col-sm-10">
 
 				</div>
 			</div>
 			<div id="password-group" class="form-group">
-				<label class="col-sm-2 control-label hor-form">New Password</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.newPassword }}</label>
 				<div class="col-sm-10">
-					<input type="password" class="form-control" id="password" name="newPassword" placeholder="New Password">
+					<input type="password" class="form-control" id="password" name="newPassword" placeholder="{{ T.newPassword }}">
 				</div>
 			</div>
 			<div id="repeated-password-group" class="form-group">
-				<label class="col-sm-2 control-label hor-form">Repeated New Password</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.repeatedNewPassword }}</label>
 				<div class="col-sm-10">
-					<input type="password" class="form-control" id="repeated_password" placeholder="Repeated Password">
+					<input type="password" class="form-control" id="repeated_password" placeholder="{{ T.repeatedNewPassword }}">
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
-					<button type="submit" class="btn btn-primary">Save</button>
+					<button type="submit" class="btn btn-primary">{{ T.save }}</button>
 				</div>
 			</div>
 		</form>

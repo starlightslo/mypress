@@ -1,43 +1,43 @@
 <div class="grid-form">
 	<div class="grid-form1">
-		<h3 id="forms-example">Add new portfolio</h3>
+		<h3 id="forms-example">{{ T.addNewPortfolio }}</h3>
 		<form class="form-horizontal" method="post" action="{{ server }}/{{ language }}/admin/portfolio/add">
 			<div id="username-group" class="form-group">
-				<label class="col-sm-2 control-label hor-form">Project Name</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.projectName }}</label>
 				<div class="col-sm-10">
 					<div class="input-icon right spinner">
 						<i id="username-loading"></i>
-						<input type="text" class="form-control1" id="name" name="name" placeholder="Project Name" required>
+						<input type="text" class="form-control1" id="name" name="name" placeholder="{{ T.projectName }}" required>
 					</div>
 				</div>
 			</div>
 			<div id="password-group" class="form-group">
-				<label class="col-sm-2 control-label hor-form">Client</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.client }}</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control1" id="client" name="client" placeholder="Client">
+					<input type="text" class="form-control1" id="client" name="client" placeholder="{{ T.client }}">
 				</div>
 			</div>
 			<div id="repeated-password-group" class="form-group">
-				<label class="col-sm-2 control-label hor-form">Role</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.role }}</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control1" id="role" name="role" placeholder="Role in this project">
+					<input type="text" class="form-control1" id="role" name="role" placeholder="{{ T.roleInThisProject }}">
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label hor-form">Description</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.description }}</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control1" id="description" name="description" placeholder="Description">
+					<input type="text" class="form-control1" id="description" name="description" placeholder="{{ T.description }}">
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label hor-form">Link</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.link }}</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control1" id="link" name="link" placeholder="Link">
+					<input type="text" class="form-control1" id="link" name="link" placeholder="{{ T.link }}">
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
-					<button type="submit" class="btn btn-primary">Add Portfolio</button>
+					<button type="submit" class="btn btn-primary">{{ T.addPortfolio }}</button>
 				</div>
 			</div>
 		</form>

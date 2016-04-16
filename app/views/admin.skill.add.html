@@ -3,7 +3,7 @@
 		<h3 id="forms-example">{{ T.addNewSkill }}</h3>
 		<form class="form-horizontal" method="post" action="{{ server }}/{{ language }}/admin/skill/add">
 			<div class="form-group">
-				<label class="col-sm-2 control-label hor-form">Order</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.order }}</label>
 				<div class="col-sm-10">
 					<select class="col-sm-2 control-label hor-form" id="order" name="order">
 						{% for i in Array(20) %}
@@ -13,21 +13,21 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label hor-form">Name</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.name }}</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" id="name" name="name" placeholder="name" required>
+					<input type="text" class="form-control" id="name" name="name" placeholder="{{ T.name }}" required>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label hor-form">Percent</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.percent }}</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" id="percent" name="percent" placeholder="Percent (%)" required>
+					<input type="text" class="form-control" id="percent" name="percent" placeholder="{{ T.percent }} (%)" required>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label hor-form">Color</label>
+				<label class="col-sm-2 control-label hor-form">{{ T.color }}</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" id="color" name="color" placeholder="Color" required>
+					<input type="text" class="form-control" id="color" name="color" placeholder="{{ T.color }}" required>
 				</div>
 			</div>
 			<div class="form-group">

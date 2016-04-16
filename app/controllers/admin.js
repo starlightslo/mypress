@@ -674,8 +674,8 @@ exports.addMenu = function (req, res, next) {
 
 	// Setting path
 	const pathList = [{
-		url: 'admin/user',
-		name: 'user'
+		url: 'admin/menu',
+		name: 'menu'
 	}]
 	const currentPath = 'addMenu'
 
