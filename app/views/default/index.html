@@ -53,7 +53,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<div class="da-slide da-slide-fromright da-slide-current">
 							<h2>{{ webTitle }}</h2>
 							<p>{{ webSubtitle }}</p>
-							<a href="{{ mainButtonLink }}" {% if mainButtonTarget.length > 0 %} target="{{ mainButtonTarget }}" {% endif %} class="da-link"><span>{{ mainButtonString }}</span></a>
+							<div class="center-block">
+								<a href="{{ mainButtonLink }}" {% if mainButtonTarget.length > 0 %} target="{{ mainButtonTarget }}" {% endif %} class="main-button"><span>{{ mainButtonString }}</span></a>
+							</div>
 						</div>
 					</div>
 					<div class="down-arrow">
