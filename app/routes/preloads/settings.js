@@ -34,6 +34,7 @@ module.exports = function(req, res, next) {
 			webSubtitle: settings.web_subtitle,
 			backgroundImage: settings.background_image,
 			mainButtonString: settings.main_button_string,
+			mainButtonLink: settings.main_button_link,
 			mainButtonTarget: settings.main_button_target
 		}
 		req.app.set('settings', serverSettings)
