@@ -3,6 +3,7 @@
 
 const express = require('express')
 const session = require('express-session')
+const compression = require('compression')
 const RedisStore = require('connect-redis')(session)
 const errorhandler = require('errorhandler')
 const app = express()
@@ -21,6 +22,9 @@ class Server {
 
 		// Enable the proxy
 		app.set('trust proxy', 'loopback')
+
+		// compress responses
+		app.use(compression())
 
 		// Set variables into app
 		app.set('secret', this.config.secret)
