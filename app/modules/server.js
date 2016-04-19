@@ -38,6 +38,7 @@ class Server {
 		app.engine('html', swig.renderFile)
 		app.set('views', config.root + '/app/views')
 		app.set('view engine', 'html')
+		app.set('view cache', true)
 
 		this.initMiddleware()
 		this.initPassport()
