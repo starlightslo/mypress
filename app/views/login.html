@@ -14,6 +14,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		<!--web-fonts-->
 		<link href='//fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700' rel='stylesheet' type='text/css'>
 		<!--web-fonts-->
+		<script src="{{ settings.server }}/js/jquery.min.js"></script>
 	</head>
 	<body>
 		<div class="main">
@@ -23,7 +24,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				</div>
 				<h1>{{ T.portalLogin }}</h1>
 				<div class="login-bottom">
-					<form method="post" action="login">
+					<form id="form1" method="post" action="login">
 						<input type="text" name="username" placeholder="{{ T.username }}" required=" ">
 						<input type="password" name="password" class="password" placeholder="{{ T.password }}" required=" ">
 						<input type="submit" value="{{ T.login }}">
@@ -38,3 +39,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		</div>
 	</body>
 </html>
+<script language="JavaScript">
+	$("#form1").submit(function(event) {
+		$(':submit').prop('disabled', true)
+	})
+</script>
