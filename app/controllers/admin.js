@@ -414,6 +414,7 @@ exports.editUser = function (req, res, next) {
 
 	if (username === 'admin') {
 		isAdmin = true
+		privilege = 99
 	}
 
 	// Checking user data
