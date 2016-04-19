@@ -23,7 +23,8 @@ const SYSTEM = 'system'
 const PAGE_COUNT = 10
 
 exports.index = function (req, res, next) {
-	const server = req.protocol + '://' + req.get('host')
+	const protocol = req.get('X-Forwarded-Proto') || req.protocol
+	const server = protocol + '://' + req.get('host')
 	const websiteName = req.app.get('websiteName')
 	const logoString = req.app.get('logoString')
 	const logoImage = req.app.get('logoImage')
@@ -72,7 +73,8 @@ exports.index = function (req, res, next) {
 
 
 exports.user = function (req, res, next) {
-	const server = req.protocol + '://' + req.get('host')
+	const protocol = req.get('X-Forwarded-Proto') || req.protocol
+	const server = protocol + '://' + req.get('host')
 	const websiteName = req.app.get('websiteName')
 	const logoString = req.app.get('logoString')
 	const logoImage = req.app.get('logoImage')
@@ -174,7 +176,8 @@ exports.user = function (req, res, next) {
 }
 
 exports.addUser = function (req, res, next) {
-	const server = req.protocol + '://' + req.get('host')
+	const protocol = req.get('X-Forwarded-Proto') || req.protocol
+	const server = protocol + '://' + req.get('host')
 	const websiteName = req.app.get('websiteName')
 	const logoString = req.app.get('logoString')
 	const logoImage = req.app.get('logoImage')
@@ -225,7 +228,8 @@ exports.addUser = function (req, res, next) {
 }
 
 exports.viewUser = function (req, res, next) {
-	const server = req.protocol + '://' + req.get('host')
+	const protocol = req.get('X-Forwarded-Proto') || req.protocol
+	const server = protocol + '://' + req.get('host')
 	const websiteName = req.app.get('websiteName')
 	const logoString = req.app.get('logoString')
 	const logoImage = req.app.get('logoImage')
@@ -581,7 +585,8 @@ exports.validateUser = function (req, res, next) {
 
 
 exports.menu = function (req, res, next) {
-	const server = req.protocol + '://' + req.get('host')
+	const protocol = req.get('X-Forwarded-Proto') || req.protocol
+	const server = protocol + '://' + req.get('host')
 	const websiteName = req.app.get('websiteName')
 	const logoString = req.app.get('logoString')
 	const logoImage = req.app.get('logoImage')
@@ -658,7 +663,8 @@ exports.menu = function (req, res, next) {
 
 
 exports.addMenu = function (req, res, next) {
-	const server = req.protocol + '://' + req.get('host')
+	const protocol = req.get('X-Forwarded-Proto') || req.protocol
+	const server = protocol + '://' + req.get('host')
 	const websiteName = req.app.get('websiteName')
 	const logoString = req.app.get('logoString')
 	const logoImage = req.app.get('logoImage')
@@ -770,7 +776,8 @@ exports.insertMenu = function (req, res, next) {
 
 
 exports.viewMenu = function (req, res, next) {
-	const server = req.protocol + '://' + req.get('host')
+	const protocol = req.get('X-Forwarded-Proto') || req.protocol
+	const server = protocol + '://' + req.get('host')
 	const websiteName = req.app.get('websiteName')
 	const logoString = req.app.get('logoString')
 	const logoImage = req.app.get('logoImage')
@@ -926,7 +933,8 @@ exports.deleteMenu = function (req, res, next) {
 
 
 exports.portfolio = function (req, res, next) {
-	const server = req.protocol + '://' + req.get('host')
+	const protocol = req.get('X-Forwarded-Proto') || req.protocol
+	const server = protocol + '://' + req.get('host')
 	const websiteName = req.app.get('websiteName')
 	const logoString = req.app.get('logoString')
 	const logoImage = req.app.get('logoImage')
@@ -1029,7 +1037,8 @@ exports.portfolio = function (req, res, next) {
 
 
 exports.addPortfolio = function (req, res, next) {
-	const server = req.protocol + '://' + req.get('host')
+	const protocol = req.get('X-Forwarded-Proto') || req.protocol
+	const server = protocol + '://' + req.get('host')
 	const websiteName = req.app.get('websiteName')
 	const logoString = req.app.get('logoString')
 	const logoImage = req.app.get('logoImage')
@@ -1085,7 +1094,8 @@ exports.addPortfolio = function (req, res, next) {
 
 
 exports.viewPortfolio = function (req, res, next) {
-	const server = req.protocol + '://' + req.get('host')
+	const protocol = req.get('X-Forwarded-Proto') || req.protocol
+	const server = protocol + '://' + req.get('host')
 	const websiteName = req.app.get('websiteName')
 	const logoString = req.app.get('logoString')
 	const logoImage = req.app.get('logoImage')
@@ -1373,7 +1383,8 @@ exports.editPortfolio = function (req, res, next) {
 
 
 exports.skill = function (req, res, next) {
-	const server = req.protocol + '://' + req.get('host')
+	const protocol = req.get('X-Forwarded-Proto') || req.protocol
+	const server = protocol + '://' + req.get('host')
 	const websiteName = req.app.get('websiteName')
 	const logoString = req.app.get('logoString')
 	const logoImage = req.app.get('logoImage')
@@ -1450,7 +1461,8 @@ exports.skill = function (req, res, next) {
 
 
 exports.addSkill = function (req, res, next) {
-	const server = req.protocol + '://' + req.get('host')
+	const protocol = req.get('X-Forwarded-Proto') || req.protocol
+	const server = protocol + '://' + req.get('host')
 	const websiteName = req.app.get('websiteName')
 	const logoString = req.app.get('logoString')
 	const logoImage = req.app.get('logoImage')
@@ -1563,7 +1575,8 @@ exports.insertSkill = function (req, res, next) {
 
 
 exports.viewSkill = function (req, res, next) {
-	const server = req.protocol + '://' + req.get('host')
+	const protocol = req.get('X-Forwarded-Proto') || req.protocol
+	const server = protocol + '://' + req.get('host')
 	const websiteName = req.app.get('websiteName')
 	const logoString = req.app.get('logoString')
 	const logoImage = req.app.get('logoImage')
@@ -1727,7 +1740,8 @@ exports.deleteSkill = function (req, res, next) {
 exports.experience = function (req, res, next) {
 	const DateFormat = require('dateformat')
 
-	const server = req.protocol + '://' + req.get('host')
+	const protocol = req.get('X-Forwarded-Proto') || req.protocol
+	const server = protocol + '://' + req.get('host')
 	const websiteName = req.app.get('websiteName')
 	const logoString = req.app.get('logoString')
 	const logoImage = req.app.get('logoImage')
@@ -1829,7 +1843,8 @@ exports.experience = function (req, res, next) {
 
 
 exports.addExperience = function (req, res, next) {
-	const server = req.protocol + '://' + req.get('host')
+	const protocol = req.get('X-Forwarded-Proto') || req.protocol
+	const server = protocol + '://' + req.get('host')
 	const websiteName = req.app.get('websiteName')
 	const logoString = req.app.get('logoString')
 	const logoImage = req.app.get('logoImage')
@@ -1887,7 +1902,8 @@ exports.addExperience = function (req, res, next) {
 exports.viewExperience = function (req, res, next) {
 	const DateFormat = require('dateformat')
 
-	const server = req.protocol + '://' + req.get('host')
+	const protocol = req.get('X-Forwarded-Proto') || req.protocol
+	const server = protocol + '://' + req.get('host')
 	const websiteName = req.app.get('websiteName')
 	const logoString = req.app.get('logoString')
 	const logoImage = req.app.get('logoImage')
@@ -2192,7 +2208,8 @@ exports.editExperience = function (req, res, next) {
 
 
 exports.settingsLanguage = function (req, res, next) {
-	const server = req.protocol + '://' + req.get('host')
+	const protocol = req.get('X-Forwarded-Proto') || req.protocol
+	const server = protocol + '://' + req.get('host')
 	const websiteName = req.app.get('websiteName')
 	const logoString = req.app.get('logoString')
 	const logoImage = req.app.get('logoImage')
@@ -2267,7 +2284,8 @@ exports.settingsLanguage = function (req, res, next) {
 
 
 exports.addSettingsLanguage = function (req, res, next) {
-	const server = req.protocol + '://' + req.get('host')
+	const protocol = req.get('X-Forwarded-Proto') || req.protocol
+	const server = protocol + '://' + req.get('host')
 	const websiteName = req.app.get('websiteName')
 	const logoString = req.app.get('logoString')
 	const logoImage = req.app.get('logoImage')
@@ -2437,7 +2455,8 @@ exports.deleteSettingsLanguage = function (req, res, next) {
 
 
 exports.viewSettingsLanguage = function (req, res, next) {
-	const server = req.protocol + '://' + req.get('host')
+	const protocol = req.get('X-Forwarded-Proto') || req.protocol
+	const server = protocol + '://' + req.get('host')
 	const websiteName = req.app.get('websiteName')
 	const logoString = req.app.get('logoString')
 	const logoImage = req.app.get('logoImage')
@@ -2584,7 +2603,8 @@ exports.validateSettingsLanguage = function (req, res, next) {
 
 
 exports.settingsTemplate = function (req, res, next) {
-	const server = req.protocol + '://' + req.get('host')
+	const protocol = req.get('X-Forwarded-Proto') || req.protocol
+	const server = protocol + '://' + req.get('host')
 	const websiteName = req.app.get('websiteName')
 	const logoString = req.app.get('logoString')
 	const logoImage = req.app.get('logoImage')
@@ -2703,7 +2723,8 @@ exports.editSettingsTemplate = function (req, res, next) {
 
 
 exports.settingsSystem = function (req, res, next) {
-	const server = req.protocol + '://' + req.get('host')
+	const protocol = req.get('X-Forwarded-Proto') || req.protocol
+	const server = protocol + '://' + req.get('host')
 	const websiteName = req.app.get('websiteName')
 	const logoString = req.app.get('logoString')
 	const logoImage = req.app.get('logoImage')
