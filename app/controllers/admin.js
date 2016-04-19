@@ -417,7 +417,7 @@ exports.editUser = function (req, res, next) {
 	}
 
 	// Checking user data
-	if ((!isAdmin && !verify.username(username, 6, 16)) || (newPassword && !verify.password(newPassword)) || !verify.inNumber(privilege, 1, 99) || verify.isEmpty(firstName)) {
+	if ((!isAdmin && !verify.username(username, 6, 16)) || (newPassword && !verify.password(newPassword, 6, 16)) || !verify.inNumber(privilege, 1, 99) || verify.isEmpty(firstName)) {
 		res.status(400).send()
 		return
 	}
@@ -442,7 +442,7 @@ exports.editUser = function (req, res, next) {
 	}
 
 	if (newPassword) {
-		updateStructure['password'] = bcrypt.hashSync(newPassword, salt)
+		updateUserStructure['password'] = bcrypt.hashSync(newPassword, salt)
 	}
 	
 	// Update data
