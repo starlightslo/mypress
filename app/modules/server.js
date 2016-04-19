@@ -19,6 +19,9 @@ class Server {
 		this.config = config
 		this.app = app
 
+		// Enable the proxy
+		app.set('trust proxy', 'loopback')
+
 		// Set variables into app
 		app.set('secret', this.config.secret)
 
