@@ -78,7 +78,7 @@ module.exports = {
 	percent: 'Percent',
 	color: 'Color',
 	animationTime: 'Animation Time',
-	comapnyName: 'Comapny Name',
+	companyName: 'Comapny Name',
 	startWorkingDate: 'Start Working Date',
 	endWorkingDate: 'End Working Date',
 	stillHere: 'Still Here'
