@@ -410,9 +410,14 @@ exports.editUser = function (req, res, next) {
 	const google = req.body.google || ''
 	const linkedin = req.body.linkedin || ''
 	const flickr = req.body.flickr || ''
+	let isAdmin = false
+
+	if (username === 'admin') {
+		isAdmin = true
+	}
 
 	// Checking user data
-	if (!verify.username(username, 6, 16) || (newPassword && !verify.password(newPassword)) || !verify.inNumber(privilege, 1, 99) || verify.isEmpty(firstName)) {
+	if ((!isAdmin && !verify.username(username, 6, 16)) || (newPassword && !verify.password(newPassword)) || !verify.inNumber(privilege, 1, 99) || verify.isEmpty(firstName)) {
 		res.status(400).send()
 		return
 	}
