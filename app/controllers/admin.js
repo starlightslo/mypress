@@ -414,7 +414,6 @@ exports.editUser = function (req, res, next) {
 
 	if (username === 'admin') {
 		isAdmin = true
-		privilege = 99
 	}
 
 	// Checking user data
@@ -428,7 +427,7 @@ exports.editUser = function (req, res, next) {
 
 	// Update structrue
 	const updateUserStructure = {
-		privilege: privilege,
+		privilege: isAdmin ? 99 : privilege,
 		email: email,
 		facebook: facebook,
 		linkedin: linkedin,
