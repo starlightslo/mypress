@@ -11,7 +11,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<!-- Facebook property -->
-		<meta property="og:image" content="{% if settings.logoImage.length > 0 %}{{ settings.logoImage }}{% else %}{{ settings.backgroundImage }}{% endif %}"/>
+		<meta property="og:image" content="{{ settings.server }}/{% if settings.logoImage.length > 0 %}{{ settings.logoImage }}{% else %}{{ settings.backgroundImage }}{% endif %}"/>
 		<meta property="og:title" content="{{ settings.websiteName }}"/>
 		<meta property="og:description" content="{{ settings.webSubtitle }}"/>
 
