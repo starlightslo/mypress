@@ -1,6 +1,6 @@
 {
   "name": "mypress",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "MyPress is simply to create a website to introduce yourself.",
   "main": "index.js",
   "scripts": {
