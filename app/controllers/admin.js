@@ -23,19 +23,9 @@ const SYSTEM = 'system'
 const PAGE_COUNT = 10
 
 exports.index = function (req, res, next) {
-	const protocol = req.get('X-Forwarded-Proto') || req.protocol
-	const server = protocol + '://' + req.get('host')
-	const websiteName = req.app.get('websiteName')
-	const logoString = req.app.get('logoString')
-	const logoImage = req.app.get('logoImage')
-	const logoLink = req.app.get('logoLink')
-	const webTitle = req.app.get('webTitle')
-	const webSubtitle = req.app.get('webSubtitle')
-	const mainButtonString = req.app.get('mainButtonString')
-	const mainButtonLink = req.app.get('mainButtonLink')
-	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const settings = req.app.get('settings')
 	const language = req.app.get('language')
-	const template = req.app.get('template')
+	const template = settings.teamplate
 	const templateFile = 'admin'
 
 	// Setting path
@@ -47,18 +37,8 @@ exports.index = function (req, res, next) {
 
 	const resp = {
 		T: T,
-		server: server,
 		language: language,
-		websiteName: websiteName,
-		logoString: logoString,
-		logoImage: logoImage,
-		logoLink: logoLink,
-		webTitle: webTitle,
-		webSubtitle: webSubtitle,
-		mainButtonString: mainButtonString,
-		mainButtonLink: mainButtonLink,
-		mainButtonTarget: mainButtonTarget,
-		template: template,
+		settings: settings,
 		contentPage: 'admin.dashboards.html',
 		loginUser: {
 			username: req.user.username,
@@ -73,19 +53,9 @@ exports.index = function (req, res, next) {
 
 
 exports.user = function (req, res, next) {
-	const protocol = req.get('X-Forwarded-Proto') || req.protocol
-	const server = protocol + '://' + req.get('host')
-	const websiteName = req.app.get('websiteName')
-	const logoString = req.app.get('logoString')
-	const logoImage = req.app.get('logoImage')
-	const logoLink = req.app.get('logoLink')
-	const webTitle = req.app.get('webTitle')
-	const webSubtitle = req.app.get('webSubtitle')
-	const mainButtonString = req.app.get('mainButtonString')
-	const mainButtonLink = req.app.get('mainButtonLink')
-	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const settings = req.app.get('settings')
 	const language = req.app.get('language')
-	const template = req.app.get('template')
+	const template = settings.teamplate
 	const templateFile = 'admin'
 
 	// Page
@@ -147,18 +117,8 @@ exports.user = function (req, res, next) {
 	.finally(() => {
 		const resp = {
 			T: T,
-			server: server,
 			language: language,
-			websiteName: websiteName,
-			logoString: logoString,
-			logoImage: logoImage,
-			logoLink: logoLink,
-			webTitle: webTitle,
-			webSubtitle: webSubtitle,
-			mainButtonString: mainButtonString,
-			mainButtonLink: mainButtonLink,
-			mainButtonTarget: mainButtonTarget,
-			template: template,
+			settings: settings,
 			contentPage: 'admin.user.html',
 			loginUser: {
 				username: req.user.username,
@@ -176,19 +136,9 @@ exports.user = function (req, res, next) {
 }
 
 exports.addUser = function (req, res, next) {
-	const protocol = req.get('X-Forwarded-Proto') || req.protocol
-	const server = protocol + '://' + req.get('host')
-	const websiteName = req.app.get('websiteName')
-	const logoString = req.app.get('logoString')
-	const logoImage = req.app.get('logoImage')
-	const logoLink = req.app.get('logoLink')
-	const webTitle = req.app.get('webTitle')
-	const webSubtitle = req.app.get('webSubtitle')
-	const mainButtonString = req.app.get('mainButtonString')
-	const mainButtonLink = req.app.get('mainButtonLink')
-	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const settings = req.app.get('settings')
 	const language = req.app.get('language')
-	const template = req.app.get('template')
+	const template = settings.teamplate
 	const templateFile = 'admin'
 
 	// Setting path
@@ -203,18 +153,8 @@ exports.addUser = function (req, res, next) {
 
 	const resp = {
 		T: T,
-		server: server,
 		language: language,
-		websiteName: websiteName,
-		logoString: logoString,
-		logoImage: logoImage,
-		logoLink: logoLink,
-		webTitle: webTitle,
-		webSubtitle: webSubtitle,
-		mainButtonString: mainButtonString,
-		mainButtonLink: mainButtonLink,
-		mainButtonTarget: mainButtonTarget,
-		template: template,
+		settings: settings,
 		contentPage: 'admin.user.add.html',
 		loginUser: {
 			username: req.user.username,
@@ -228,19 +168,9 @@ exports.addUser = function (req, res, next) {
 }
 
 exports.viewUser = function (req, res, next) {
-	const protocol = req.get('X-Forwarded-Proto') || req.protocol
-	const server = protocol + '://' + req.get('host')
-	const websiteName = req.app.get('websiteName')
-	const logoString = req.app.get('logoString')
-	const logoImage = req.app.get('logoImage')
-	const logoLink = req.app.get('logoLink')
-	const webTitle = req.app.get('webTitle')
-	const webSubtitle = req.app.get('webSubtitle')
-	const mainButtonString = req.app.get('mainButtonString')
-	const mainButtonLink = req.app.get('mainButtonLink')
-	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const settings = req.app.get('settings')
 	const language = req.app.get('language')
-	const template = req.app.get('template')
+	const template = settings.teamplate
 	const languageList = req.app.get('languageList')
 	const templateFile = 'admin'
 	const username = req.params.username
@@ -301,20 +231,10 @@ exports.viewUser = function (req, res, next) {
 	.finally(() => {
 		const resp = {
 			T: T,
-			server: server,
 			language: language,
 			selectedLanguage: selectedLanguage,
 			languageList: languageList,
-			websiteName: websiteName,
-			logoString: logoString,
-			logoImage: logoImage,
-			logoLink: logoLink,
-			webTitle: webTitle,
-			webSubtitle: webSubtitle,
-			mainButtonString: mainButtonString,
-			mainButtonLink: mainButtonLink,
-			mainButtonTarget: mainButtonTarget,
-			template: template,
+			settings: settings,
 			contentPage: 'admin.user.view.html',
 			loginUser: {
 				username: req.user.username,
@@ -595,19 +515,9 @@ exports.validateUser = function (req, res, next) {
 
 
 exports.menu = function (req, res, next) {
-	const protocol = req.get('X-Forwarded-Proto') || req.protocol
-	const server = protocol + '://' + req.get('host')
-	const websiteName = req.app.get('websiteName')
-	const logoString = req.app.get('logoString')
-	const logoImage = req.app.get('logoImage')
-	const logoLink = req.app.get('logoLink')
-	const webTitle = req.app.get('webTitle')
-	const webSubtitle = req.app.get('webSubtitle')
-	const mainButtonString = req.app.get('mainButtonString')
-	const mainButtonLink = req.app.get('mainButtonLink')
-	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const settings = req.app.get('settings')
 	const language = req.app.get('language')
-	const template = req.app.get('template')
+	const template = settings.teamplate
 	const languageList = req.app.get('languageList')
 	const templateFile = 'admin'
 	const selectedLanguage = req.query.lang || language
@@ -643,20 +553,10 @@ exports.menu = function (req, res, next) {
 	.finally(() => {
 		const resp = {
 			T: T,
-			server: server,
 			language: language,
 			selectedLanguage: selectedLanguage,
 			languageList: languageList,
-			websiteName: websiteName,
-			logoString: logoString,
-			logoImage: logoImage,
-			logoLink: logoLink,
-			webTitle: webTitle,
-			webSubtitle: webSubtitle,
-			mainButtonString: mainButtonString,
-			mainButtonLink: mainButtonLink,
-			mainButtonTarget: mainButtonTarget,
-			template: template,
+			settings: settings,
 			contentPage: 'admin.menus.html',
 			loginUser: {
 				username: req.user.username,
@@ -673,19 +573,9 @@ exports.menu = function (req, res, next) {
 
 
 exports.addMenu = function (req, res, next) {
-	const protocol = req.get('X-Forwarded-Proto') || req.protocol
-	const server = protocol + '://' + req.get('host')
-	const websiteName = req.app.get('websiteName')
-	const logoString = req.app.get('logoString')
-	const logoImage = req.app.get('logoImage')
-	const logoLink = req.app.get('logoLink')
-	const webTitle = req.app.get('webTitle')
-	const webSubtitle = req.app.get('webSubtitle')
-	const mainButtonString = req.app.get('mainButtonString')
-	const mainButtonLink = req.app.get('mainButtonLink')
-	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const settings = req.app.get('settings')
 	const language = req.app.get('language')
-	const template = req.app.get('template')
+	const template = settings.teamplate
 	const templateFile = 'admin'
 
 	// Setting path
@@ -700,18 +590,8 @@ exports.addMenu = function (req, res, next) {
 
 	const resp = {
 		T: T,
-		server: server,
 		language: language,
-		websiteName: websiteName,
-		logoString: logoString,
-		logoImage: logoImage,
-		logoLink: logoLink,
-		webTitle: webTitle,
-		webSubtitle: webSubtitle,
-		mainButtonString: mainButtonString,
-		mainButtonLink: mainButtonLink,
-		mainButtonTarget: mainButtonTarget,
-		template: template,
+		settings: settings,
 		contentPage: 'admin.menu.add.html',
 		loginUser: {
 			username: req.user.username,
@@ -786,19 +666,9 @@ exports.insertMenu = function (req, res, next) {
 
 
 exports.viewMenu = function (req, res, next) {
-	const protocol = req.get('X-Forwarded-Proto') || req.protocol
-	const server = protocol + '://' + req.get('host')
-	const websiteName = req.app.get('websiteName')
-	const logoString = req.app.get('logoString')
-	const logoImage = req.app.get('logoImage')
-	const logoLink = req.app.get('logoLink')
-	const webTitle = req.app.get('webTitle')
-	const webSubtitle = req.app.get('webSubtitle')
-	const mainButtonString = req.app.get('mainButtonString')
-	const mainButtonLink = req.app.get('mainButtonLink')
-	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const settings = req.app.get('settings')
 	const language = req.app.get('language')
-	const template = req.app.get('template')
+	const template = settings.teamplate
 	const languageList = req.app.get('languageList')
 	const templateFile = 'admin'
 	const key = req.params.key
@@ -846,20 +716,10 @@ exports.viewMenu = function (req, res, next) {
 	.finally(() => {
 		const resp = {
 			T: T,
-			server: server,
 			language: language,
 			languageList: languageList,
 			selectedLanguage: selectedLanguage,
-			websiteName: websiteName,
-			logoString: logoString,
-			logoImage: logoImage,
-			logoLink: logoLink,
-			webTitle: webTitle,
-			webSubtitle: webSubtitle,
-			mainButtonString: mainButtonString,
-			mainButtonLink: mainButtonLink,
-			mainButtonTarget: mainButtonTarget,
-			template: template,
+			settings: settings,
 			contentPage: 'admin.menu.view.html',
 			loginUser: {
 				username: req.user.username,
@@ -943,19 +803,9 @@ exports.deleteMenu = function (req, res, next) {
 
 
 exports.portfolio = function (req, res, next) {
-	const protocol = req.get('X-Forwarded-Proto') || req.protocol
-	const server = protocol + '://' + req.get('host')
-	const websiteName = req.app.get('websiteName')
-	const logoString = req.app.get('logoString')
-	const logoImage = req.app.get('logoImage')
-	const logoLink = req.app.get('logoLink')
-	const webTitle = req.app.get('webTitle')
-	const webSubtitle = req.app.get('webSubtitle')
-	const mainButtonString = req.app.get('mainButtonString')
-	const mainButtonLink = req.app.get('mainButtonLink')
-	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const settings = req.app.get('settings')
 	const language = req.app.get('language')
-	const template = req.app.get('template')
+	const template = settings.teamplate
 	const languageList = req.app.get('languageList')
 	const templateFile = 'admin'
 	const selectedLanguage = req.query.lang || language
@@ -1015,20 +865,10 @@ exports.portfolio = function (req, res, next) {
 	.finally(() => {
 		const resp = {
 			T: T,
-			server: server,
 			language: language,
 			selectedLanguage: selectedLanguage,
 			languageList: languageList,
-			websiteName: websiteName,
-			logoString: logoString,
-			logoImage: logoImage,
-			logoLink: logoLink,
-			webTitle: webTitle,
-			webSubtitle: webSubtitle,
-			mainButtonString: mainButtonString,
-			mainButtonLink: mainButtonLink,
-			mainButtonTarget: mainButtonTarget,
-			template: template,
+			settings: settings,
 			contentPage: 'admin.portfolio.html',
 			loginUser: {
 				username: req.user.username,
@@ -1047,19 +887,9 @@ exports.portfolio = function (req, res, next) {
 
 
 exports.addPortfolio = function (req, res, next) {
-	const protocol = req.get('X-Forwarded-Proto') || req.protocol
-	const server = protocol + '://' + req.get('host')
-	const websiteName = req.app.get('websiteName')
-	const logoString = req.app.get('logoString')
-	const logoImage = req.app.get('logoImage')
-	const logoLink = req.app.get('logoLink')
-	const webTitle = req.app.get('webTitle')
-	const webSubtitle = req.app.get('webSubtitle')
-	const mainButtonString = req.app.get('mainButtonString')
-	const mainButtonLink = req.app.get('mainButtonLink')
-	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const settings = req.app.get('settings')
 	const language = req.app.get('language')
-	const template = req.app.get('template')
+	const template = settings.teamplate
 	const templateFile = 'admin'
 	const selectedLanguage = req.query.lang || language
 
@@ -1077,18 +907,8 @@ exports.addPortfolio = function (req, res, next) {
 
 	const resp = {
 		T: T,
-		server: server,
 		language: language,
-		websiteName: websiteName,
-		logoString: logoString,
-		logoImage: logoImage,
-		logoLink: logoLink,
-		webTitle: webTitle,
-		webSubtitle: webSubtitle,
-		mainButtonString: mainButtonString,
-		mainButtonLink: mainButtonLink,
-		mainButtonTarget: mainButtonTarget,
-		template: template,
+		settings: settings,
 		contentPage: 'admin.portfolio.add.html',
 		loginUser: {
 			username: req.user.username,
@@ -1104,19 +924,9 @@ exports.addPortfolio = function (req, res, next) {
 
 
 exports.viewPortfolio = function (req, res, next) {
-	const protocol = req.get('X-Forwarded-Proto') || req.protocol
-	const server = protocol + '://' + req.get('host')
-	const websiteName = req.app.get('websiteName')
-	const logoString = req.app.get('logoString')
-	const logoImage = req.app.get('logoImage')
-	const logoLink = req.app.get('logoLink')
-	const webTitle = req.app.get('webTitle')
-	const webSubtitle = req.app.get('webSubtitle')
-	const mainButtonString = req.app.get('mainButtonString')
-	const mainButtonLink = req.app.get('mainButtonLink')
-	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const settings = req.app.get('settings')
 	const language = req.app.get('language')
-	const template = req.app.get('template')
+	const template = settings.teamplate
 	const languageList = req.app.get('languageList')
 	const templateFile = 'admin'
 	const key = req.params.key
@@ -1170,20 +980,10 @@ exports.viewPortfolio = function (req, res, next) {
 	.finally(() => {
 		const resp = {
 			T: T,
-			server: server,
 			language: language,
 			languageList: languageList,
 			selectedLanguage: selectedLanguage,
-			websiteName: websiteName,
-			logoString: logoString,
-			logoImage: logoImage,
-			logoLink: logoLink,
-			webTitle: webTitle,
-			webSubtitle: webSubtitle,
-			mainButtonString: mainButtonString,
-			mainButtonLink: mainButtonLink,
-			mainButtonTarget: mainButtonTarget,
-			template: template,
+			settings: settings,
 			contentPage: 'admin.portfolio.view.html',
 			loginUser: {
 				username: req.user.username,
@@ -1393,19 +1193,9 @@ exports.editPortfolio = function (req, res, next) {
 
 
 exports.skill = function (req, res, next) {
-	const protocol = req.get('X-Forwarded-Proto') || req.protocol
-	const server = protocol + '://' + req.get('host')
-	const websiteName = req.app.get('websiteName')
-	const logoString = req.app.get('logoString')
-	const logoImage = req.app.get('logoImage')
-	const logoLink = req.app.get('logoLink')
-	const webTitle = req.app.get('webTitle')
-	const webSubtitle = req.app.get('webSubtitle')
-	const mainButtonString = req.app.get('mainButtonString')
-	const mainButtonLink = req.app.get('mainButtonLink')
-	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const settings = req.app.get('settings')
 	const language = req.app.get('language')
-	const template = req.app.get('template')
+	const template = settings.teamplate
 	const languageList = req.app.get('languageList')
 	const templateFile = 'admin'
 	const selectedLanguage = req.query.lang || language
@@ -1441,20 +1231,10 @@ exports.skill = function (req, res, next) {
 	.finally(() => {
 		const resp = {
 			T: T,
-			server: server,
 			language: language,
 			selectedLanguage: selectedLanguage,
 			languageList: languageList,
-			websiteName: websiteName,
-			logoString: logoString,
-			logoImage: logoImage,
-			logoLink: logoLink,
-			webTitle: webTitle,
-			webSubtitle: webSubtitle,
-			mainButtonString: mainButtonString,
-			mainButtonLink: mainButtonLink,
-			mainButtonTarget: mainButtonTarget,
-			template: template,
+			settings: settings,
 			contentPage: 'admin.skill.html',
 			loginUser: {
 				username: req.user.username,
@@ -1471,19 +1251,9 @@ exports.skill = function (req, res, next) {
 
 
 exports.addSkill = function (req, res, next) {
-	const protocol = req.get('X-Forwarded-Proto') || req.protocol
-	const server = protocol + '://' + req.get('host')
-	const websiteName = req.app.get('websiteName')
-	const logoString = req.app.get('logoString')
-	const logoImage = req.app.get('logoImage')
-	const logoLink = req.app.get('logoLink')
-	const webTitle = req.app.get('webTitle')
-	const webSubtitle = req.app.get('webSubtitle')
-	const mainButtonString = req.app.get('mainButtonString')
-	const mainButtonLink = req.app.get('mainButtonLink')
-	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const settings = req.app.get('settings')
 	const language = req.app.get('language')
-	const template = req.app.get('template')
+	const template = settings.teamplate
 	const templateFile = 'admin'
 
 	// Setting path
@@ -1498,18 +1268,8 @@ exports.addSkill = function (req, res, next) {
 
 	const resp = {
 		T: T,
-		server: server,
 		language: language,
-		websiteName: websiteName,
-		logoString: logoString,
-		logoImage: logoImage,
-		logoLink: logoLink,
-		webTitle: webTitle,
-		webSubtitle: webSubtitle,
-		mainButtonString: mainButtonString,
-		mainButtonLink: mainButtonLink,
-		mainButtonTarget: mainButtonTarget,
-		template: template,
+		settings: settings,
 		contentPage: 'admin.skill.add.html',
 		loginUser: {
 			username: req.user.username,
@@ -1585,19 +1345,9 @@ exports.insertSkill = function (req, res, next) {
 
 
 exports.viewSkill = function (req, res, next) {
-	const protocol = req.get('X-Forwarded-Proto') || req.protocol
-	const server = protocol + '://' + req.get('host')
-	const websiteName = req.app.get('websiteName')
-	const logoString = req.app.get('logoString')
-	const logoImage = req.app.get('logoImage')
-	const logoLink = req.app.get('logoLink')
-	const webTitle = req.app.get('webTitle')
-	const webSubtitle = req.app.get('webSubtitle')
-	const mainButtonString = req.app.get('mainButtonString')
-	const mainButtonLink = req.app.get('mainButtonLink')
-	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const settings = req.app.get('settings')
 	const language = req.app.get('language')
-	const template = req.app.get('template')
+	const template = settings.teamplate
 	const languageList = req.app.get('languageList')
 	const templateFile = 'admin'
 	const key = req.params.key
@@ -1646,20 +1396,10 @@ exports.viewSkill = function (req, res, next) {
 	.finally(() => {
 		const resp = {
 			T: T,
-			server: server,
 			language: language,
 			languageList: languageList,
 			selectedLanguage: selectedLanguage,
-			websiteName: websiteName,
-			logoString: logoString,
-			logoImage: logoImage,
-			logoLink: logoLink,
-			webTitle: webTitle,
-			webSubtitle: webSubtitle,
-			mainButtonString: mainButtonString,
-			mainButtonLink: mainButtonLink,
-			mainButtonTarget: mainButtonTarget,
-			template: template,
+			settings: settings,
 			contentPage: 'admin.skill.view.html',
 			loginUser: {
 				username: req.user.username,
@@ -1750,19 +1490,9 @@ exports.deleteSkill = function (req, res, next) {
 exports.experience = function (req, res, next) {
 	const DateFormat = require('dateformat')
 
-	const protocol = req.get('X-Forwarded-Proto') || req.protocol
-	const server = protocol + '://' + req.get('host')
-	const websiteName = req.app.get('websiteName')
-	const logoString = req.app.get('logoString')
-	const logoImage = req.app.get('logoImage')
-	const logoLink = req.app.get('logoLink')
-	const webTitle = req.app.get('webTitle')
-	const webSubtitle = req.app.get('webSubtitle')
-	const mainButtonString = req.app.get('mainButtonString')
-	const mainButtonLink = req.app.get('mainButtonLink')
-	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const settings = req.app.get('settings')
 	const language = req.app.get('language')
-	const template = req.app.get('template')
+	const template = settings.teamplate
 	const languageList = req.app.get('languageList')
 	const templateFile = 'admin'
 	const selectedLanguage = req.query.lang || language
@@ -1821,20 +1551,10 @@ exports.experience = function (req, res, next) {
 	.finally(() => {
 		const resp = {
 			T: T,
-			server: server,
 			language: language,
 			selectedLanguage: selectedLanguage,
 			languageList: languageList,
-			websiteName: websiteName,
-			logoString: logoString,
-			logoImage: logoImage,
-			logoLink: logoLink,
-			webTitle: webTitle,
-			webSubtitle: webSubtitle,
-			mainButtonString: mainButtonString,
-			mainButtonLink: mainButtonLink,
-			mainButtonTarget: mainButtonTarget,
-			template: template,
+			settings: settings,
 			contentPage: 'admin.experience.html',
 			loginUser: {
 				username: req.user.username,
@@ -1853,19 +1573,9 @@ exports.experience = function (req, res, next) {
 
 
 exports.addExperience = function (req, res, next) {
-	const protocol = req.get('X-Forwarded-Proto') || req.protocol
-	const server = protocol + '://' + req.get('host')
-	const websiteName = req.app.get('websiteName')
-	const logoString = req.app.get('logoString')
-	const logoImage = req.app.get('logoImage')
-	const logoLink = req.app.get('logoLink')
-	const webTitle = req.app.get('webTitle')
-	const webSubtitle = req.app.get('webSubtitle')
-	const mainButtonString = req.app.get('mainButtonString')
-	const mainButtonLink = req.app.get('mainButtonLink')
-	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const settings = req.app.get('settings')
 	const language = req.app.get('language')
-	const template = req.app.get('template')
+	const template = settings.teamplate
 	const templateFile = 'admin'
 	const selectedLanguage = req.query.lang || language
 
@@ -1883,18 +1593,8 @@ exports.addExperience = function (req, res, next) {
 
 	const resp = {
 		T: T,
-		server: server,
 		language: language,
-		websiteName: websiteName,
-		logoString: logoString,
-		logoImage: logoImage,
-		logoLink: logoLink,
-		webTitle: webTitle,
-		webSubtitle: webSubtitle,
-		mainButtonString: mainButtonString,
-		mainButtonLink: mainButtonLink,
-		mainButtonTarget: mainButtonTarget,
-		template: template,
+		settings: settings,
 		contentPage: 'admin.experience.add.html',
 		loginUser: {
 			username: req.user.username,
@@ -1912,19 +1612,9 @@ exports.addExperience = function (req, res, next) {
 exports.viewExperience = function (req, res, next) {
 	const DateFormat = require('dateformat')
 
-	const protocol = req.get('X-Forwarded-Proto') || req.protocol
-	const server = protocol + '://' + req.get('host')
-	const websiteName = req.app.get('websiteName')
-	const logoString = req.app.get('logoString')
-	const logoImage = req.app.get('logoImage')
-	const logoLink = req.app.get('logoLink')
-	const webTitle = req.app.get('webTitle')
-	const webSubtitle = req.app.get('webSubtitle')
-	const mainButtonString = req.app.get('mainButtonString')
-	const mainButtonLink = req.app.get('mainButtonLink')
-	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const settings = req.app.get('settings')
 	const language = req.app.get('language')
-	const template = req.app.get('template')
+	const template = settings.teamplate
 	const languageList = req.app.get('languageList')
 	const templateFile = 'admin'
 	const key = req.params.key
@@ -1977,20 +1667,10 @@ exports.viewExperience = function (req, res, next) {
 	.finally(() => {
 		const resp = {
 			T: T,
-			server: server,
 			language: language,
 			languageList: languageList,
 			selectedLanguage: selectedLanguage,
-			websiteName: websiteName,
-			logoString: logoString,
-			logoImage: logoImage,
-			logoLink: logoLink,
-			webTitle: webTitle,
-			webSubtitle: webSubtitle,
-			mainButtonString: mainButtonString,
-			mainButtonLink: mainButtonLink,
-			mainButtonTarget: mainButtonTarget,
-			template: template,
+			settings: settings,
 			contentPage: 'admin.experience.view.html',
 			loginUser: {
 				username: req.user.username,
@@ -2218,19 +1898,9 @@ exports.editExperience = function (req, res, next) {
 
 
 exports.settingsLanguage = function (req, res, next) {
-	const protocol = req.get('X-Forwarded-Proto') || req.protocol
-	const server = protocol + '://' + req.get('host')
-	const websiteName = req.app.get('websiteName')
-	const logoString = req.app.get('logoString')
-	const logoImage = req.app.get('logoImage')
-	const logoLink = req.app.get('logoLink')
-	const webTitle = req.app.get('webTitle')
-	const webSubtitle = req.app.get('webSubtitle')
-	const mainButtonString = req.app.get('mainButtonString')
-	const mainButtonLink = req.app.get('mainButtonLink')
-	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const settings = req.app.get('settings')
 	const language = req.app.get('language')
-	const template = req.app.get('template')
+	const template = settings.teamplate
 	const languageList = req.app.get('languageList')
 	const templateFile = 'admin'
 	const selectedLanguage = req.query.lang || language
@@ -2264,20 +1934,10 @@ exports.settingsLanguage = function (req, res, next) {
 	.finally(() => {
 		const resp = {
 			T: T,
-			server: server,
 			language: language,
 			selectedLanguage: selectedLanguage,
 			languageList: languageList,
-			websiteName: websiteName,
-			logoString: logoString,
-			logoImage: logoImage,
-			logoLink: logoLink,
-			webTitle: webTitle,
-			webSubtitle: webSubtitle,
-			mainButtonString: mainButtonString,
-			mainButtonLink: mainButtonLink,
-			mainButtonTarget: mainButtonTarget,
-			template: template,
+			settings: settings,
 			contentPage: 'admin.settings.language.html',
 			loginUser: {
 				username: req.user.username,
@@ -2294,19 +1954,9 @@ exports.settingsLanguage = function (req, res, next) {
 
 
 exports.addSettingsLanguage = function (req, res, next) {
-	const protocol = req.get('X-Forwarded-Proto') || req.protocol
-	const server = protocol + '://' + req.get('host')
-	const websiteName = req.app.get('websiteName')
-	const logoString = req.app.get('logoString')
-	const logoImage = req.app.get('logoImage')
-	const logoLink = req.app.get('logoLink')
-	const webTitle = req.app.get('webTitle')
-	const webSubtitle = req.app.get('webSubtitle')
-	const mainButtonString = req.app.get('mainButtonString')
-	const mainButtonLink = req.app.get('mainButtonLink')
-	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const settings = req.app.get('settings')
 	const language = req.app.get('language')
-	const template = req.app.get('template')
+	const template = settings.teamplate
 	const templateFile = 'admin'
 
 	// Setting path
@@ -2321,18 +1971,8 @@ exports.addSettingsLanguage = function (req, res, next) {
 
 	const resp = {
 		T: T,
-		server: server,
 		language: language,
-		websiteName: websiteName,
-		logoString: logoString,
-		logoImage: logoImage,
-		logoLink: logoLink,
-		webTitle: webTitle,
-		webSubtitle: webSubtitle,
-		mainButtonString: mainButtonString,
-		mainButtonLink: mainButtonLink,
-		mainButtonTarget: mainButtonTarget,
-		template: template,
+		settings: settings,
 		contentPage: 'admin.settings.language.add.html',
 		loginUser: {
 			username: req.user.username,
@@ -2465,19 +2105,9 @@ exports.deleteSettingsLanguage = function (req, res, next) {
 
 
 exports.viewSettingsLanguage = function (req, res, next) {
-	const protocol = req.get('X-Forwarded-Proto') || req.protocol
-	const server = protocol + '://' + req.get('host')
-	const websiteName = req.app.get('websiteName')
-	const logoString = req.app.get('logoString')
-	const logoImage = req.app.get('logoImage')
-	const logoLink = req.app.get('logoLink')
-	const webTitle = req.app.get('webTitle')
-	const webSubtitle = req.app.get('webSubtitle')
-	const mainButtonString = req.app.get('mainButtonString')
-	const mainButtonLink = req.app.get('mainButtonLink')
-	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const settings = req.app.get('settings')
 	const language = req.app.get('language')
-	const template = req.app.get('template')
+	const template = settings.teamplate
 	const languageList = req.app.get('languageList')
 	const templateFile = 'admin'
 	const id = req.params.id
@@ -2522,19 +2152,9 @@ exports.viewSettingsLanguage = function (req, res, next) {
 	.finally(() => {
 		const resp = {
 			T: T,
-			server: server,
 			language: language,
 			languageList: languageList,
-			websiteName: websiteName,
-			logoString: logoString,
-			logoImage: logoImage,
-			logoLink: logoLink,
-			webTitle: webTitle,
-			webSubtitle: webSubtitle,
-			mainButtonString: mainButtonString,
-			mainButtonLink: mainButtonLink,
-			mainButtonTarget: mainButtonTarget,
-			template: template,
+			settings: settings,
 			contentPage: 'admin.settings.language.view.html',
 			loginUser: {
 				username: req.user.username,
@@ -2613,19 +2233,9 @@ exports.validateSettingsLanguage = function (req, res, next) {
 
 
 exports.settingsTemplate = function (req, res, next) {
-	const protocol = req.get('X-Forwarded-Proto') || req.protocol
-	const server = protocol + '://' + req.get('host')
-	const websiteName = req.app.get('websiteName')
-	const logoString = req.app.get('logoString')
-	const logoImage = req.app.get('logoImage')
-	const logoLink = req.app.get('logoLink')
-	const webTitle = req.app.get('webTitle')
-	const webSubtitle = req.app.get('webSubtitle')
-	const mainButtonString = req.app.get('mainButtonString')
-	const mainButtonLink = req.app.get('mainButtonLink')
-	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const settings = req.app.get('settings')
 	const language = req.app.get('language')
-	const template = req.app.get('template')
+	const template = settings.teamplate
 	const languageList = req.app.get('languageList')
 	const templateFile = 'admin'
 	const selectedLanguage = req.query.lang || language
@@ -2656,20 +2266,10 @@ exports.settingsTemplate = function (req, res, next) {
 	.finally(() => {
 		const resp = {
 			T: T,
-			server: server,
 			language: language,
 			selectedLanguage: selectedLanguage,
 			languageList: languageList,
-			websiteName: websiteName,
-			logoString: logoString,
-			logoImage: logoImage,
-			logoLink: logoLink,
-			webTitle: webTitle,
-			webSubtitle: webSubtitle,
-			mainButtonString: mainButtonString,
-			mainButtonLink: mainButtonLink,
-			mainButtonTarget: mainButtonTarget,
-			template: template,
+			settings: settings,
 			contentPage: 'admin.settings.template.html',
 			loginUser: {
 				username: req.user.username,
@@ -2733,19 +2333,9 @@ exports.editSettingsTemplate = function (req, res, next) {
 
 
 exports.settingsSystem = function (req, res, next) {
-	const protocol = req.get('X-Forwarded-Proto') || req.protocol
-	const server = protocol + '://' + req.get('host')
-	const websiteName = req.app.get('websiteName')
-	const logoString = req.app.get('logoString')
-	const logoImage = req.app.get('logoImage')
-	const logoLink = req.app.get('logoLink')
-	const webTitle = req.app.get('webTitle')
-	const webSubtitle = req.app.get('webSubtitle')
-	const mainButtonString = req.app.get('mainButtonString')
-	const mainButtonLink = req.app.get('mainButtonLink')
-	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const settings = req.app.get('settings')
 	const language = req.app.get('language')
-	const template = req.app.get('template')
+	const template = settings.teamplate
 	const languageList = req.app.get('languageList')
 	const templateFile = 'admin'
 	const selectedLanguage = req.query.lang || language
@@ -2784,20 +2374,10 @@ exports.settingsSystem = function (req, res, next) {
 	.finally(() => {
 		const resp = {
 			T: T,
-			server: server,
 			language: language,
 			selectedLanguage: selectedLanguage,
 			languageList: languageList,
-			websiteName: websiteName,
-			logoString: logoString,
-			logoImage: logoImage,
-			logoLink: logoLink,
-			webTitle: webTitle,
-			webSubtitle: webSubtitle,
-			mainButtonString: mainButtonString,
-			mainButtonLink: mainButtonLink,
-			mainButtonTarget: mainButtonTarget,
-			template: template,
+			settings: settings,
 			contentPage: 'admin.settings.system.html',
 			loginUser: {
 				username: req.user.username,

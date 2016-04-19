@@ -7,7 +7,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>{{ websiteName }}</title>
+		<title>{{ settings.websiteName }}</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<!-- Facebook property -->
@@ -20,12 +20,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		<script src="js/jquery.min.js"></script>
 	</head>
 	<body>
-		<div style="background: url({{ backgroundImage }}) no-repeat; background-size: 100%; background-size: cover;" class="content" id="home">
+		<div style="background: url({{ settings.backgroundImage }}) no-repeat; background-size: 100%; background-size: cover;" class="content" id="home">
 			<div class="wrap">
 				<div class="header_style1">
 					<!-- start h_logo -->
 					<div class="logo">
-						<h1><a href="{{ logoLink }}">{{ logoString }}</a></h1>
+						<h1><a href="{{ settings.logoLink }}">{{ settings.logoString }}</a></h1>
 					</div>
 					<!-- start h_menu -->
 					<div class="h_menu">
@@ -56,10 +56,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					<!---start-da-slider-->
 					<div id="da-slider" class="da-slider">
 						<div class="da-slide da-slide-fromright da-slide-current">
-							<h2>{{ webTitle }}</h2>
-							<p>{{ webSubtitle }}</p>
+							<h2>{{ settings.webTitle }}</h2>
+							<p>{{ settings.webSubtitle }}</p>
 							<div class="center-block">
-								<a href="{{ mainButtonLink }}" {% if mainButtonTarget.length > 0 %} target="{{ mainButtonTarget }}" {% endif %} class="main-button"><span>{{ mainButtonString }}</span></a>
+								<a href="{{ settings.mainButtonLink }}" {% if settings.mainButtonTarget.length > 0 %} target="{{ settings.mainButtonTarget }}" {% endif %} class="main-button"><span>{{ settings.mainButtonString }}</span></a>
 							</div>
 						</div>
 					</div>

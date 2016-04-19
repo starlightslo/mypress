@@ -10,17 +10,9 @@ const SYSTEM = 'system'
 const ADMIN_PRIVILEGE = 90
 
 exports.login = function (req, res, next) {
-	const websiteName = req.app.get('websiteName')
-	const logoString = req.app.get('logoString')
-	const logoImage = req.app.get('logoImage')
-	const logoLink = req.app.get('logoLink')
-	const webTitle = req.app.get('webTitle')
-	const webSubtitle = req.app.get('webSubtitle')
-	const mainButtonString = req.app.get('mainButtonString')
-	const mainButtonLink = req.app.get('mainButtonLink')
-	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const settings = req.app.get('settings')
 	const language = req.app.get('language')
-	const template = req.app.get('template')
+	const template = settings.template
 	const templateFile = 'login'
 
 	// Get template language data
@@ -29,16 +21,7 @@ exports.login = function (req, res, next) {
 	const resp = {
 		T: T,
 		language: language,
-		websiteName: websiteName,
-		logoString: logoString,
-		logoImage: logoImage,
-		logoLink: logoLink,
-		webTitle: webTitle,
-		webSubtitle: webSubtitle,
-		mainButtonString: mainButtonString,
-		mainButtonLink: mainButtonLink,
-		mainButtonTarget: mainButtonTarget,
-		template: template
+		settings: settings
 	}
 	res.render(templateFile, resp)
 }
