@@ -6,6 +6,9 @@
 module.exports = {
 	port: process.env.PORT || 8080,
 	secret: '123456789012345678901234567890',
+	cache: {
+		maxage: 0	// in milliseconds
+	},
 	db: {
 		client: 'postgresql',
 		host: 'localhost',

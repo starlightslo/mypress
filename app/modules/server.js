@@ -26,7 +26,9 @@ class Server {
 		app.set('secret', this.config.secret)
 
 		// Set default public directory
-		app.use(express.static(DEFAULT_PUBLIC_DIRECTORY))
+		app.use(express.static(DEFAULT_PUBLIC_DIRECTORY, {
+			maxAge: this.config.cache.maxage
+		}))
 
 		// Set views and engine
 		app.engine('html', swig.renderFile)
@@ -49,7 +51,9 @@ class Server {
 
 	// Set the public directory
 	setPublicDirectory(path) {
-		app.use(express.static(path))
+		app.use(express.static(path, {
+			maxAge: this.config.cache.maxage
+		}))
 	}
 
 	initMiddleware() {
