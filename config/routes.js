@@ -18,7 +18,7 @@ const removeLastSlash = (req, res, next) => {
 }
 const changeTemplatePath = (req, res, next) => {
 	// Getting the template and language
-	const template = req.app.get('template')
+	const template = req.app.get('settings').template
 
 	// Remove the parameters
 	let fileUrl = req.url

@@ -10,18 +10,9 @@ const PortfolioTable = 'portfolios'
 const SkillTable = 'skills'
 
 exports.index = function (req, res, next) {
-	const websiteName = req.app.get('websiteName')
-	const logoString = req.app.get('logoString')
-	const logoImage = req.app.get('logoImage')
-	const logoLink = req.app.get('logoLink')
-	const webTitle = req.app.get('webTitle')
-	const webSubtitle = req.app.get('webSubtitle')
-	const backgroundImage = req.app.get('backgroundImage')
-	const mainButtonString = req.app.get('mainButtonString')
-	const mainButtonLink = req.app.get('mainButtonLink')
-	const mainButtonTarget = req.app.get('mainButtonTarget')
+	const settings = req.app.get('settings')
 	const language = req.app.get('language')
-	const template = req.app.get('template')
+	const template = settings.template
 	const templateFile = template + '/index'
 
 	// Get template language data
@@ -136,17 +127,7 @@ exports.index = function (req, res, next) {
 		const resp = {
 			T: T,
 			language: language,
-			websiteName: websiteName,
-			logoString: logoString,
-			logoImage: logoImage,
-			logoLink: logoLink,
-			webTitle: webTitle,
-			webSubtitle: webSubtitle,
-			backgroundImage: backgroundImage,
-			mainButtonString: mainButtonString,
-			mainButtonLink: mainButtonLink,
-			mainButtonTarget: mainButtonTarget,
-			template: template,
+			settings: settings,
 			menuList: menuList,
 			userList: userList,
 			portfolioList: portfolioList,
