@@ -473,9 +473,14 @@ exports.uploadPicture = function (req, res, next) {
 	const language = req.app.get('language')
 	const username = req.params.username
 	const selectedLanguage = req.query.lang || language
+	let isAdmin = false
+
+	if (username === 'admin') {
+		isAdmin = true
+	}
 
 	// Checking user data
-	if (!verify.username(username, 6, 16)) {
+	if ((!isAdmin && !verify.username(username, 6, 16))) {
 		res.status(400).send()
 		return
 	}
