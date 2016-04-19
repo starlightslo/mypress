@@ -11,7 +11,7 @@ module.exports = {
 	},
 	db: {
 		client: 'postgresql',
-		host: 'localhost',
+		host: process.env.POSTGRES_HOST || 'localhost',
 		database: 'mypress',
 		pool: {
 			min: 2,

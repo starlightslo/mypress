@@ -11,7 +11,7 @@ module.exports = {
 	},
 	db: {
 		client: 'postgresql',
-		host: 'localhost',
+		host: process.env.POSTGRES_HOST || 'localhost',
 		database: 'mypress',
 		pool: {
 			min: 2,
@@ -31,8 +31,8 @@ module.exports = {
 		}
 	},
 	redis: {
-		host: 'localhost',
-		port: 6379,
+		host: process.env.POSTGRES_HOST || 'localhost',
+		port: process.env.REDIS_PORT || 6379,
 		db: 0,
 		pass: ''
 	}
