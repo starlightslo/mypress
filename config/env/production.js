@@ -30,6 +30,16 @@ module.exports = {
 			password: ''	
 		}
 	},
+	logDB: {
+		client: 'mongodb',
+		host: process.env.MONGODB_HOST || 'localhost',
+		database: 'mypress',
+		port: process.env.MONGODB_PORT || 27017,
+		normalUser: {
+			user: '',
+			password: ''
+		}
+	},
 	redis: {
 		host: process.env.REDIS_HOST || 'localhost',
 		port: process.env.REDIS_PORT || 6379,

@@ -29,5 +29,15 @@ module.exports = {
 			user: 'postgres',
 			password: ''	
 		}
+	},
+	logDB: {
+		client: 'mongodb',
+		host: process.env.MONGODB_HOST || 'localhost',
+		database: 'mypress',
+		port: process.env.MONGODB_PORT || 27017,
+		normalUser: {
+			user: '',
+			password: ''
+		}
 	}
 }

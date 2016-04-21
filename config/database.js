@@ -1,6 +1,7 @@
 'use strict'
 
 const Knex = require('knex')
+const Mongoose = require('mongoose')
 
 /**
  * Expose database
@@ -59,6 +60,23 @@ module.exports = function (db) {
 			normalDB = require('knex')(normalConfig)
 			adminDB = require('knex')(adminConfig)
 			rootDB = require('knex')(rootConfig)
+			break
+		case 'mongodb':
+			// Load all models
+			require('require-dir')('models')
+
+			// Connection uri
+			let connectionUri = 'mongodb://'
+			if (db.normalUser && db.normalUser.user.length > 0) {
+				connectionUri = connectionUri + db.normalUser.user + ':' + db.normalUser.password + '@'
+			}
+			connectionUri = connectionUri + db.host + '/' + db.database
+			
+			// Connecting
+			normalDB = Mongoose.connect(connectionUri, (err) => {
+				if (err) console.error(err)
+				else console.log('Log DB is connected.')
+			})
 			break
 		default:
 			break
