@@ -1,0 +1,257 @@
+<div class="grid-form">
+	<div class="grid-form1">
+		<h3 id="forms-example">{{ T.addNewUser }}</h3>
+		<form class="form-horizontal" method="post" action="{{ server }}/{{ language }}/admin/user/add">
+			<div class="form-group">
+				<label class="col-sm-2 control-label hor-form">{{ T.privilege }}</label>
+				<div class="col-sm-10">
+					<select class="col-sm-2 control-label hor-form" id="privilege" name="privilege">
+						{% for i in Array(99) %}
+							<option value="{{loop.index}}">{{loop.index}}</option>
+						{% endfor %}
+					</select>
+				</div>
+			</div>
+			<div id="username-group" class="form-group">
+				<label class="col-sm-2 control-label hor-form">{{ T.username }}</label>
+				<div class="col-sm-10">
+					<div class="input-icon right spinner">
+						<i id="username-loading"></i>
+						<input type="text" class="form-control1" id="username" name="username" placeholder="{{ T.username }}" required>
+					</div>
+				</div>
+			</div>
+			<div id="password-group" class="form-group">
+				<label class="col-sm-2 control-label hor-form">{{ T.password }}</label>
+				<div class="col-sm-10">
+					<input type="password" class="form-control1" id="password" name="password" placeholder="{{ T.password }}" required>
+				</div>
+			</div>
+			<div id="repeated-password-group" class="form-group">
+				<label class="col-sm-2 control-label hor-form">{{ T.repeatedPassword }}</label>
+				<div class="col-sm-10">
+					<input type="password" class="form-control1" id="repeated_password" placeholder="{{ T.repeatedPassword }}" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label hor-form">{{ T.firstName }}</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control1" id="first_name" name="first_name" placeholder="{{ T.firstName }}" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label hor-form">{{ T.lastName }}</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control1" id="last_name" name="last_name" placeholder="{{ T.lastName }}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label hor-form">{{ T.email }}</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control1" id="email" name="email" placeholder="{{ T.email }}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label hor-form">{{ T.introduction }}</label>
+				<div class="col-sm-10">
+					<textarea class="form-control1" id="introduction" name="introduction" placeholder="{{ T.introductionYourself }}"></textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label hor-form">{{ T.facebook }}</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control1" id="facebook" name="facebook" placeholder="{{ T.facebook }}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label hor-form">{{ T.twitter }}</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control1" id="twitter" name="twitter" placeholder="{{ T.twitter }}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label hor-form">{{ T.google }}</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control1" id="google" name="google" placeholder="{{ T.google }}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label hor-form">{{ T.linkedin }}</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control1" id="linkedin" name="linkedin" placeholder="{{ T.linkedin }}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label hor-form">{{ T.flickr }}</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control1" id="flickr" name="flickr" placeholder="{{ T.flickr }}">
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="submit" class="btn btn-primary" disabled>{{ T.addUser }}</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<script language="JavaScript">
+	var LOADING_CLASS = 'fa fa-fw fa-spin fa-spinner'
+	var NORMAL_CLASS = 'form-group'
+	var VALIDATE_CLASS = 'form-group has-success'
+	var ERROR_CLASS = 'form-group has-error'
+	var usernameValid = false
+	var passwordvalid = false
+	var isLoading = false
+	$('#username').keyup(function() {
+		var username = $('#username').val()
+		if (verifyUsername(username, 6, 16)) {
+			$('#username-group').attr('class', NORMAL_CLASS)
+		} else {
+			$('#username-group').attr('class', ERROR_CLASS)
+		}
+	})
+
+	$('#username').focusout(function() {
+		if (isLoading) return
+
+		// Check the username is exsiting or not
+		var username = $('#username').val()
+		if (!verifyUsername(username, 6, 16)) return
+		$.ajax({
+			url: '{{ server }}/admin/user/validate/' + username,
+			type: 'GET',
+			success: function(data) {
+				if (data === '0') {
+					usernameValid = true
+				} else {
+					usernameValid = false
+				}
+				isLoading = false
+				checkData()
+			},
+			error: function() {
+				console.error('upload error')
+				usernameValid = false
+				isLoading = false
+				checkData()
+			},
+			cache: false,
+			contentType: false,
+			processData: false
+		}, 'json')
+		isLoading = true
+		setLoading('#username-loading', isLoading)
+	})
+
+	$('#password').keyup(function() {
+		passwordvalid = false
+		var password = $('#password').val()
+		if (verifyPassword(password, 6, 16)) {
+			$('#password-group').attr('class', NORMAL_CLASS)
+		} else {
+			$('#password-group').attr('class', ERROR_CLASS)
+			return
+		}
+
+		var repeated_password = $('#repeated_password').val()
+		if (password === repeated_password) {
+			passwordvalid = true
+			setValidate('#password-group', passwordvalid)
+		}
+		checkData()
+	})
+
+	$('#repeated_password').keyup(function() {
+		passwordvalid = false
+		var password = $('#password').val()
+		if (verifyPassword(password, 6, 16)) {
+			$('#repeated-password-group').attr('class', NORMAL_CLASS)
+		} else {
+			$('#repeated-password-group').attr('class', ERROR_CLASS)
+			return
+		}
+
+		var repeated_password = $('#repeated_password').val()
+		if (password === repeated_password) {
+			passwordvalid = true
+			setValidate('#password-group', passwordvalid)
+		}
+		checkData()
+	})
+
+	function setLoading(id, loading) {
+		if (loading) {
+			$(id).attr('class', LOADING_CLASS)
+		} else {
+			$(id).attr('class', '')
+		}
+	}
+	function setValidate(id, valid) {
+		if (valid) {
+			$(id).attr('class', VALIDATE_CLASS)
+		} else {
+			$(id).attr('class', ERROR_CLASS)
+		}
+	}
+	function checkData() {
+		if (usernameValid && passwordvalid) {
+			$(':submit').prop('disabled', false)
+		} else {
+			$(':submit').prop('disabled', true)
+		}
+		setValidate('#username-group', usernameValid)
+		setValidate('#repeated-password-group', passwordvalid)
+		setLoading('#username-loading', isLoading)
+	}
+
+	function isEmpty(data) {
+		if (data === null || data === undefined) {
+			return true
+		}
+		if (data.length === 0) {
+			return true
+		}
+		return false
+	}
+
+	function checkLength(data, min, max) {
+		if (data === null || data === undefined || typeof data === 'object') {
+			return false
+		}
+		if (data.length >= min && data.length <= max) {
+			return true
+		}
+		return false
+	}
+
+	function verifyUsername(data, min, max) {
+		// Checking empty
+		if (isEmpty(data)) {
+			return false
+		}
+
+		// Checking length
+		if (!checkLength(data, min, max)) {
+			return false
+		}
+
+		// Checking special characters
+		return /^[0-9a-zA-Z_\-\+]*$/.test(data)
+	}
+
+	function verifyPassword(data, min, max) {
+		// Checking empty
+		if (this.isEmpty(data)) {
+			return false
+		}
+
+		// Checking length
+		if (!this.checkLength(data, min, max)) {
+			return false
+		}
+
+		// Checking special characters
+		return /^[0-9a-zA-Z_\-\+~!@#$%\^&*=?,.]*$/.test(data)
+	}
+</script>

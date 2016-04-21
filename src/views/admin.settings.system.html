@@ -1,0 +1,193 @@
+<div class="grid-form">
+	<div class="grid-form1">
+		<div class="float-left">
+			<h3 id="forms-horizontal"></h3>
+		</div>
+		<div class="float-right">
+			<div class="dropdown">
+				<a href="#" title="" class="btn btn-default" data-toggle="dropdown" aria-expanded="false">
+					{{ selectedLanguage }}
+					<i class="fa fa-chevron-down icon_8"></i>
+					<div class="ripple-wrapper"></div>
+				</a>
+				<ul class="dropdown-menu float-right">
+					{% for lang in languageList %}
+					<li>
+						<a href="?lang={{ lang }}">{{ lang }}</a>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<form class="form-horizontal" method="post" action="{{ server }}/{{ language }}/admin/settings/system/edit?lang={{ selectedLanguage }}">
+			<div class="form-group">
+				<label class="col-sm-2 control-label hor-form">{{ T.defaultLanguage }}</label>
+				<div class="col-sm-10">
+					<select class="col-sm-2 control-label hor-form" id="defaultLanguage" name="default_language">
+						{% for lang in languageList %}
+							<option value="{{ lang }}" {% if lang === system.defaultLanguage %} selected {% endif %}>{{ lang }}</option>
+						{% endfor %}
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">{{ T.websiteName }}</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="websiteName" name="website_name" placeholder="{{ T.websiteName }}" value="{{ system.websiteName }}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">{{ T.webTitle }}</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="webTitle" name="web_title" placeholder="{{ T.webTitle }}" value="{{ system.webTitle }}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">{{ T.webSubtitle }}</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="webSubtitle" name="web_subtitle" placeholder="{{ T.webSubtitle }}" value="{{ system.webSubtitle }}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">{{ T.backgroundImage }}</label>
+				<div class="col-sm-10">
+					<div class="picture-inline-group">
+						{% if system.backgroundImage.length > 0 %}
+							<img class="picture" id="background-img" src="{{ server }}/{{ system.backgroundImage }}" />
+						{% else %}
+							<img class="picture" id="background-img" />
+						{% endif %}
+					</div>
+					<div class="upload-block">
+						<a href="#" class="btn btn-sm btn-info btn-upload">
+							<label class="upload">
+								Upload new picture
+								<input type="file" class="upload-picture" id="backgroundImageFile" name="background_image" />
+								<button type="button" style="display: none;">Upload</button>
+							</label>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">{{ T.logoImage }}</label>
+				<div class="col-sm-10">
+					<div class="picture-inline-group">
+						{% if system.logoImage.length > 0 %}
+							<img class="picture" id="logo-img" src="{{ server }}/{{ system.logoImage }}" />
+						{% else %}
+							<img class="picture" id="logo-img" />
+						{% endif %}
+					</div>
+					<div class="upload-block">
+						<a href="#" class="btn btn-sm btn-info btn-upload">
+							<label class="upload">
+								Upload new picture
+								<input type="file" class="upload-picture" id="logoImageFile" name="logo_image" />
+								<button type="button" style="display: none;">Upload</button>
+							</label>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">{{ T.logoString }}</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="logoString" name="logo_string" placeholder="{{ T.logoString }}" value="{{ system.logoString }}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">{{ T.logoLink }}</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="logoLink" name="logo_link" placeholder="{{ T.logoLink }}" value="{{ system.logoLink }}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">{{ T.mainButtonString }}</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="mainButtonString" name="main_button_string" placeholder="{{ T.mainButtonString }}" value="{{ system.mainButtonString }}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">{{ T.mainButtonLink }}</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="mainButtonLink" name="main_button_link" placeholder="{{ T.mainButtonLink }}" value="{{ system.mainButtonLink }}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label hor-form">{{ T.mainButtonTarget }}</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="mainButtonTarget" name="main_button_target" placeholder="_blank" value="{{ system.mainButtonTarget }}">
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="submit" class="btn btn-primary">{{ T.save }}</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<script language="JavaScript">
+	var BACKGROUND_IMAGE = 'backgroundImage'
+	var LOGO_IMAGE = 'logoImage'
+
+	var upload = function(data, file) {
+		name = file.name
+		size = file.size
+		type = file.type
+
+		if (file.name.length < 1) {
+		} else if (file.size > 1000000) {
+			alert("File is to big")
+		} else if (file.type != 'image/png' && file.type != 'image/jpg' && file.type != 'image/gif' && file.type != 'image/jpeg') {
+			alert("File doesnt match png, jpg or gif")
+		} else { 
+			// Create new form data and put data into the form
+			var formData = new FormData()
+			formData.append("picture", file)
+			formData.append("data", data)
+
+			// Starting to upload
+			$.ajax({
+				url: '{{ server }}/admin/settings/system/upload?lang={{ selectedLanguage }}',
+				type: 'POST',
+				xhr: function() {
+					myXhr = $.ajaxSettings.xhr();
+					return myXhr
+				},
+				success: function(result, textStatus, xhr) {
+					if (xhr && xhr.status === 204) {
+						// Reload the image
+						if (data === BACKGROUND_IMAGE) {
+							$("#background-img").attr("src", '{{ server }}/uploads/background_image?' + (new Date()).getTime())
+						} else if (data === LOGO_IMAGE) {
+							$("#logo-img").attr("src", '{{ server }}/uploads/logo_image?' + (new Date()).getTime())
+						}
+					} else {
+						console.error('upload error')
+						console.error('responseText: ' + xhr.responseText)
+						console.error('status: ' + xhr.status)
+					}
+				},
+				error: function() {
+					console.error('upload error')
+				},
+				data: formData,
+				cache: false,
+				contentType: false,
+				processData: false
+			}, 'json')
+		}
+	}
+
+	$('#backgroundImageFile').change(function(){
+		var file = this.files[0]
+		upload('backgroundImage', file)
+	})
+	$('#logoImageFile').change(function(){
+		var file = this.files[0]
+		upload('logoImage', file)
+	})
+</script>
