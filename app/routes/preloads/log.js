@@ -1,5 +1,7 @@
 'use strict'
 
+const _ = require('underscore');
+
 // Model
 const Log = require('../../models/log')
 
@@ -7,12 +9,19 @@ const Log = require('../../models/log')
  * This module will log every request.
  */
 module.exports = function(req, res, next) {
+	// Clone body data
+	let body = _.clone(req.body)
+
+	// Remove sensitive data
+	if (body && body.password) delete body.password
+
 	// Log
 	Log.add({
 		ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
 		method: req.method,
 		endpoint: req.originalUrl,
-		user: req.user
+		user: req.user,
+		body: body
 	})
 	.then(() => {})
 

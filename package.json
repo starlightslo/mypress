@@ -45,6 +45,7 @@
     "passport-local": "^1.0.0",
     "pg": "^4.5.3",
     "require-dir": "^0.3.0",
-    "swig": "^1.4.2"
+    "swig": "^1.4.2",
+    "underscore": "^1.8.3"
   }
 }
