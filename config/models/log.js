@@ -7,7 +7,7 @@ const LogSchema = new Schema({
 	ip: String,
 	method: String,
 	endpoint: String,
-	user: Number,
+	user: Object,
 	timestamp: {
 		type: Date,
 		default: Date.now
