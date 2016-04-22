@@ -10,6 +10,9 @@ const LogSchema = new Schema({
 	endpoint: String,
 	user: Object,
 	body: Object,
+	type: String,
+	action: String,
+	detail: Object,
 	timestamp: {
 		type: Date,
 		default: Date.now

@@ -1,6 +1,9 @@
 'use strict'
 
-const _ = require('underscore');
+const _ = require('underscore')
+
+const REQUEST = 'Request'
+const SUCCESS = 'Success'
 
 // Model
 const Log = require('../../models/log')
@@ -22,7 +25,10 @@ module.exports = function(req, res, next) {
 		method: req.method,
 		endpoint: req.originalUrl,
 		user: req.user,
-		body: body
+		body: body,
+		type: REQUEST,
+		action: SUCCESS,
+		detail: ''
 	})
 	.then(() => {})
 
