@@ -2,6 +2,7 @@
 
 const knex = require('knex')
 const bcrypt = require('bcryptjs')
+const _ = require('underscore')
 const config = require('../../config/config')
 const salt = bcrypt.genSaltSync(config.saltLength)
 
@@ -1753,7 +1754,7 @@ exports.insertExperience = function (req, res, next) {
 	const stillHere = req.body.still_here === 'on' ? true : false || false
 
 	// Checking user data formate
-	if ((!verify.isBoolean(stillHere)) || (!verify.isDate(startWorkingDate, 'mm/dd/yyyy'))) {
+	if ((!_.isBoolean(stillHere)) || (!verify.isDate(startWorkingDate, 'mm/dd/yyyy'))) {
 		res.status(400).send()
 		return
 	}
@@ -1856,7 +1857,7 @@ exports.editExperience = function (req, res, next) {
 	const stillHere = req.body.still_here === 'on' ? true : false || false
 
 	// Checking user data formate
-	if ((!verify.username(key, 1, 16)) || (!verify.isBoolean(stillHere)) || (!verify.isDate(startWorkingDate, 'mm/dd/yyyy'))) {
+	if ((!verify.username(key, 1, 16)) || (!_.isBoolean(stillHere)) || (!verify.isDate(startWorkingDate, 'mm/dd/yyyy'))) {
 		res.status(400).send()
 		return
 	}

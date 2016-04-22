@@ -35,13 +35,6 @@ class Verify {
 		return false
 	}
 
-	isBoolean(data) {
-		if (data === null || data === undefined || typeof data === 'object') {
-			return false
-		}
-		return (typeof data === 'boolean')
-	}
-
 	isDate(data, format) {
 		if (data === null || data === undefined || typeof data === 'object') {
 			return false
