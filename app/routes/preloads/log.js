@@ -18,6 +18,7 @@ module.exports = function(req, res, next) {
 	// Log
 	Log.add({
 		ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
+		user_agent: req.headers['User-Agent'] || req.get('User-Agent') || '',
 		method: req.method,
 		endpoint: req.originalUrl,
 		user: req.user,

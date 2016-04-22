@@ -5,6 +5,7 @@ const Schema = mongoose.Schema
 
 const LogSchema = new Schema({
 	ip: String,
+	user_agent: String,
 	method: String,
 	endpoint: String,
 	user: Object,
