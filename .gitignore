@@ -1,3 +1,15 @@
+# Coverage Report
+coverage.html
+
+# SQlite3
+*.sqlite3
+
+# Visual Studio Code
+.vscode
+
+# yarn
+yarn.lock
+
 # Public
 public
 

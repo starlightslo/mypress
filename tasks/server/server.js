@@ -1,23 +1,18 @@
-const gulp = require('gulp')
-const spawn = require('child_process').spawn
+/* jshint esversion: 6 */
 
-const path = require('../const').path
-const tasks = require('../const').tasks
+const gulp = require('gulp');
+const nodemon = require('gulp-nodemon');
 
-var node
+const path = require('../const').path;
+const tasks = require('../const').tasks;
 
-gulp.task(tasks.SERVER, () => {
-	if (node) node.kill()
-	node = spawn('node', [path.INDEX], {stdio: 'inherit'})
-	node.on('close', function (code) {
-		if (code === 8) {
-			gulp.log('Error detected, waiting for changes...')
-		}
-	})
-})
-
-
-// clean up if an error goes unhandled.
-process.on('exit', function() {
-	if (node) node.kill()
-})
+gulp.task(tasks.SERVER, [], () => {
+    nodemon({
+        script: path.INDEX,
+        ext: 'js',
+        ignore: [],
+        watch: [path.SERVER_SRC]
+    }).on('restart', () => {
+        console.info('restarted!');
+    });
+});

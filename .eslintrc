@@ -1,0 +1,33 @@
+{
+  "env": {
+    "node": true,
+    "es6": true
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true,
+      "jsx": true
+    },
+    "sourceType": "module"
+  },
+  "rules": {
+    "indent": ["error", 4, {"SwitchCase": 1}],
+    "curly": ["error", "multi-line"],
+    "space-before-function-paren": ["error", "never"],
+    "comma-dangle": ["error", "never"],
+    "no-console": ["warn", { "allow": ["warn", "error", "info"] }],
+    "no-multi-assign": ["off"],
+    "strict": ["error", "global"],
+    "import/no-extraneous-dependencies": "off",
+    "quotes": ["error", "single"],
+    "prefer-arrow-callback": "error",
+    "eol-last": ["error", "always"],
+    "semi": ["error", "always"],
+    "arrow-parens": ["error", "always"],
+    "prefer-const": ["error"],
+    "handle-callback-err": ["error", "always"],
+    "func-style": ["error", "expression"],
+    "eqeqeq": ["error", "always"],
+    "no-var": ["error"]
+  }
+}

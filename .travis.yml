@@ -2,10 +2,11 @@ language: node_js
 node_js:
   - "4.3"
   - "4.4"
+  - "6.10"
 sudo: false
 branches:
   only:
     - master
-    - development
+    - develop
 os:
   - linux
