@@ -12,7 +12,8 @@ module.exports = {
                 TZ: 'UTC'
             },
             env_production: {
-                NODE_ENV: 'production'
+                NODE_ENV: 'production',
+                PORT: 9000
             }
         }
     ],
@@ -40,7 +41,8 @@ module.exports = {
             'post-deploy': 'yarn install && yarn run build && yarn upgrade && pm2 reload ecosystem.config.js --env dev',
             ssh_options: 'StrictHostKeyChecking=no',
             env: {
-                NODE_ENV: 'dev'
+                NODE_ENV: 'dev',
+                PORT: 9000
             }
         }
     }
