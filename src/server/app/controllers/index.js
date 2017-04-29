@@ -1,6 +1,11 @@
 
 exports.index = (request, reply) => {
-    reply.view('index', {});
+    const data = {
+        language: request.pre.settings.language,
+        text: request.pre.settings.text,
+        settings: request.pre.settings.settings
+    };
+    reply.view('index', data);
 };
 
 exports.ping = (request, reply) => {

@@ -1,16 +1,36 @@
 const Joi = require('joi');
 
 exports.register = (server, options, next) => {
+    const CommonController = require('../../app/controllers/common');
     const IndexController = require('../../app/controllers/index');
     server.route([{
         method: 'GET',
         path: '/',
-        handler: IndexController.index
-    },{
+        config: {
+            pre: [{
+                method: CommonController.settings,
+                assign: 'settings'
+            }],
+            handler: IndexController.index
+        }
+    }, {
+        method: 'GET',
+        path: '/{lang}',
+        config: {
+            pre: [{
+                method: CommonController.settings,
+                assign: 'settings'
+            }],
+            handler: IndexController.index
+        }
+    }]);
+
+    // Ping - Pong
+    server.route({
         method: 'GET',
         path: '/ping',
         handler: IndexController.ping
-    }]);
+    });
 
     // Handling static files
     server.route([

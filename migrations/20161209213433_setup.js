@@ -267,6 +267,7 @@ exports.up = (knex, Promise) => {
             table.text('description');
             table.text('language');
             table.string('default_language');
+            table.string('template');
             table.text('logo_string');
             table.text('logo_image');
             table.text('logo_link');
@@ -296,6 +297,7 @@ exports.up = (knex, Promise) => {
                 }),
                 language: JSON.stringify(['en','tw']),
                 default_language: 'en',
+                template: 'default',
                 logo_string: JSON.stringify({
                     default: 'MyPress',
                     en: 'MyPress',

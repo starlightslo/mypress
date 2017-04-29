@@ -27,7 +27,8 @@ const defaults = {
         views: require('path').join(__dirname, '../../../out/client/views'),
         routes: './config/routes',
         plugins: './app/plugins',
-        strategy: './app/strategies'
+        strategy: './app/strategies',
+        language: './config/languages'
     },
     env: process.env.NODE_ENV || DEV_ENV
 };

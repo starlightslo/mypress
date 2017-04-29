@@ -59,6 +59,7 @@
     "hapi-bunyan": "^0.7.0",
     "jsonwebtoken": "^7.4.0",
     "knex": "^0.12.9",
+    "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "pg": "^6.1.5",
     "require-dir": "^0.3.1",

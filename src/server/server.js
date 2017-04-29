@@ -30,7 +30,6 @@ class Server {
         }
 
         // Create Hapi server
-
         this.server = new Hapi.Server(hapiConfig);
         this.server.connection({
             port: this.config.port
@@ -60,7 +59,7 @@ class Server {
             this.setSession(this.config.session);
         }
 
-        // Set up swagger and db manager if environment not on the production
+        // Set up hapi db manager if environment not on the production
         if (this.config.env !== Environment.PRODUCTION) {
             // Hapi DB Manager
             const dbManagerOptions = {
@@ -212,42 +211,6 @@ class Server {
         this.server.r = ResponseHandler;
     }
 
-    loadSettings() {
-        return new Promise((resolve, reject) => {
-            if (this.server.app.db.mypress) {
-                this.server.app.db.mypress('settings')
-                    .first()
-                    .then((data) => {
-                        if (data) {
-                            this.server.appName = JSON.parse(data.app_name);
-                            this.server.keywords = JSON.parse(data.keywords);
-                            this.server.description = JSON.parse(data.description);
-                            this.server.logoString = JSON.parse(data.logo_string);
-                            this.server.logoImage = JSON.parse(data.logo_image);
-                            this.server.logoLink = JSON.parse(data.logo_link);
-                            this.server.websiteTitle = JSON.parse(data.website_title);
-                            this.server.websiteSubtitle = JSON.parse(data.website_subtitle);
-                            this.server.backgroundImage = JSON.parse(data.background_image);
-                            this.server.mainButtonString = JSON.parse(data.main_button_string);
-                            this.server.mainButtonLink = JSON.parse(data.main_button_link);
-                            this.server.defaultLanguage = data.default_language;
-                            this.server.supportedLanguageList = JSON.parse(data.language);
-                            this.server.blogName = JSON.parse(data.blog_name);
-                            resolve();
-                        } else {
-                            reject('No data in settings table.');
-                        }
-                    })
-                    .catch((err) => {
-                        console.error(err);
-                        resolve();
-                    });
-            } else {
-                resolve();
-            }
-        });
-    }
-
     start() {
         return new Promise((resolve, reject) => {
             // Loading strategies
@@ -257,9 +220,6 @@ class Server {
             }).then(() => {
                 // Loading routes
                 return this.loadRoutes();
-            }).then(() => {
-                // Loading settings
-                return this.loadSettings();
             }).then(() => {
                 // Setup logger
                 this.setLogger();
