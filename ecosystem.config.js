@@ -26,17 +26,19 @@ module.exports = {
             user: 'tony',
             host: '',
             ref: 'origin/master',
-            repo: 'git@github.com:starlightslo/mypress.git',
+            repo: 'https://github.com/starlightslo/mypress.git',
             path: '/home/tony/production/mypress',
-            'post-deploy': 'yarn install && pm2 reload ecosystem.config.js --env production'
+            'post-deploy': 'yarn install && pm2 reload ecosystem.config.js --env production',
+            ssh_options: 'StrictHostKeyChecking=no'
         },
         dev: {
             user: 'tony',
             host: '127.0.0.1',
             ref: 'origin/develop',
-            repo: 'git@github.com:starlightslo/mypress.git',
+            repo: 'https://github.com/starlightslo/mypress.git',
             path: '/home/tony/develop/mypress',
             'post-deploy': 'yarn install && pm2 reload ecosystem.config.js --env dev',
+            ssh_options: 'StrictHostKeyChecking=no',
             env: {
                 NODE_ENV: 'dev'
             }
