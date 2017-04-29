@@ -28,7 +28,7 @@ module.exports = {
             ref: 'origin/master',
             repo: 'https://github.com/starlightslo/mypress.git',
             path: '/home/tony/production/mypress',
-            'post-deploy': 'yarn install && pm2 reload ecosystem.config.js --env production',
+            'post-deploy': 'yarn install && yarn run build && yarn upgrade && pm2 reload ecosystem.config.js --env production',
             ssh_options: 'StrictHostKeyChecking=no'
         },
         dev: {
@@ -37,7 +37,7 @@ module.exports = {
             ref: 'origin/develop',
             repo: 'https://github.com/starlightslo/mypress.git',
             path: '/home/tony/develop/mypress',
-            'post-deploy': 'yarn install && pm2 reload ecosystem.config.js --env dev',
+            'post-deploy': 'yarn install && yarn run build && yarn upgrade && pm2 reload ecosystem.config.js --env dev',
             ssh_options: 'StrictHostKeyChecking=no',
             env: {
                 NODE_ENV: 'dev'

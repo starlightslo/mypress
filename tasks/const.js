@@ -5,7 +5,7 @@ exports.path = {
     CLIENT_PUBLIC_DIST: './out/client/public',
     CLIENT_VIEW_DIST: './out/client/public/views',
     CLIENT_JS: './src/client/**/*.js',
-    CLIENT_JS_DIST: './src/client/js',
+    CLIENT_JS_DIST: './out/client/public/js',
     CSS: './src/client/**/*.css',
     IMAGE: './src/client/**/images/*',
     IMAGELIST: [
