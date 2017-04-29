@@ -17,6 +17,15 @@ gulp.task(tasks.WATCH, () => {
     gulp.watch(path.VIEW, [tasks.CLIENT_REACT_DIST]);
 });
 
+gulp.task(tasks.BUILD, [
+    tasks.CLIENT_JS_DIST,
+    tasks.CLIENT_CSS_DIST,
+    tasks.CLIENT_IMAGE_DIST,
+    tasks.CLIENT_FONT_DIST,
+    tasks.CLIENT_VIEWS_DIST,
+    tasks.CLIENT_REACT_DIST
+]);
+
 // Default Task
 gulp.task('default', [
     tasks.SERVER,
