@@ -1,3 +1,5 @@
+const ErrorMessage = require('../enums/error-message');
+
 const SETTINGS = 'settings';
 const DEFAULT = 'default';
 
@@ -82,13 +84,13 @@ class SettingsModel {
                             settings: settings
                         });
                     } else {
-                        reject('No data in settings table.');
+                        reject(ErrorMessage.NO_DATA_IN_TABLE);
                     }
                 }).catch((err) => {
                     reject(err);
                 });
             } else {
-                reject('No Database.');
+                reject(ErrorMessage.NO_DATABASE);
             }
         });
     }
