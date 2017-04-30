@@ -1,0 +1,17 @@
+{
+  "app_name": "{\"default\":\"MyPress\",\"en\":\"MyPress\",\"tw\":\"我的Press\"}",
+  "keywords": "{\"default\":\"MyPress, Node, personal, company\",\"en\":\"MyPress, Node, personal, company\",\"tw\":\"MyPress, Node, 個人, 公司\"}",
+  "description": "{\"default\":\"MyPress is simply to create a website to introduce yourself\",\"en\":\"MyPress is simply to create a website to introduce yourself\",\"tw\":\"MyPress 讓你簡單的創建網站來介紹您自己\"}",
+  "language": "[\"en\",\"tw\"]",
+  "default_language": "en",
+  "template": "default",
+  "logo_string": "{\"default\":\"MyPress\",\"en\":\"MyPress\",\"tw\":\"MyPress\"}",
+  "logo_image": "{\"default\":\"a\",\"en\":\"a\",\"tw\":\"a\"}",
+  "logo_link": "{\"default\":\"#\",\"en\":\"#\",\"tw\":\"#\"}",
+  "website_title": "{\"default\":\"PERSONAL & COMPANY\",\"en\":\"PERSONAL & COMPANY\",\"tw\":\"個人 & 公司\"}",
+  "website_subtitle": "{\"default\":\"MyPress is simply to create a website to introduce yourself\",\"en\":\"MyPress is simply to create a website to introduce yourself\",\"tw\":\"MyPress 讓你簡單的創建網站來介紹您自己\"}",
+  "background_image": "{\"default\":\"/images/slider.jpg\",\"en\":\"/images/slider.jpg\",\"tw\":\"/images/slider.jpg\"}",
+  "main_button_string": "{\"default\":\"DOWNLOAD\",\"en\":\"DOWNLOAD\",\"tw\":\"快速下載\"}",
+  "main_button_link": "{\"default\":\"https://github.com/starlightslo/mypress2\",\"en\":\"https://github.com/starlightslo/mypress2\",\"tw\":\"https://github.com/starlightslo/mypress2\"}",
+  "blog_name": "{\"default\":\"MyPress Blog\",\"en\":\"MyPress Blog\",\"tw\":\"MyPress 部落格\"}"
+}

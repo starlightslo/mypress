@@ -15,7 +15,7 @@ const Config = require('../../src/server/config/config');
 const init = require('../../src/server/init');
 const server = new Server(Config);
 
-describe('Index Controller', () => {
+describe('Index Controller - ', () => {
     before((done) => {
         // Start the server
         server.start().then(() => {
@@ -47,7 +47,7 @@ describe('Index Controller', () => {
         });
     });
 
-    it('Ping - Pong', (done) => {
+    it('Ping / Pong', (done) => {
         server.self().inject({
             method: 'GET',
             url: '/ping'
