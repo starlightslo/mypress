@@ -13,7 +13,7 @@ const APP = 'MyPress';
  */
 const defaults = {
     app: APP,
-    appName: APP + ' - ' + process.env.NODE_ENV || DEV_ENV,
+    appName: APP + ' - ' + (process.env.NODE_ENV || DEV_ENV),
     version: packageJSON.version,
     language: 'en',
     saltLength: 10,

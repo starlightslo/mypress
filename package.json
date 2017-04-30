@@ -4,7 +4,7 @@
   "description": "MyPress is simply to create a website to introduce yourself.",
   "main": "index.js",
   "scripts": {
-    "test": "npm run migration-test && NODE_ENV=test node_modules/.bin/lab test/ -t 100 -L",
+    "test": "npm run migration-test && NODE_ENV=test node_modules/.bin/lab test/ -L -I '__core-js_shared__'",
     "test-cov-html": "npm run migration-test && NODE_ENV=test node_modules/.bin/lab test/ -r html -o coverage.html",
     "start": "TZ=UTC npm run dev",
     "dev": "npm run migration-dev && TZ=UTC NODE_ENV=dev node_modules/.bin/gulp & npm run watch:bundle",
@@ -26,6 +26,7 @@
     "babel-preset-stage-3": "^6.24.1",
     "babelify": "^7.3.0",
     "browser-sync": "^2.18.8",
+    "code": "^4.0.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
     "gulp-clean-css": "^3.0.4",
