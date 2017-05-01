@@ -1,4 +1,4 @@
-const Config = require('./config/config');
+const Config = require('./config/config')(process.env.NODE_ENV);
 const Utils = require('./app/modules/utils');
 const Server = require('./server');
 const init = require('./init');

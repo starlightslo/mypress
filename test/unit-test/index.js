@@ -11,7 +11,7 @@ const expect = Code.expect;
 
 // Server config
 const Server = require('../../src/server/server');
-const Config = require('../../src/server/config/config');
+const Config = require('../../src/server/config/config')(process.env.NODE_ENV);
 const init = require('../../src/server/init');
 const server = new Server(Config);
 
