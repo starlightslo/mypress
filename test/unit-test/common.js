@@ -11,7 +11,7 @@ const before = lab.before;
 const after = lab.after;
 const expect = Code.expect;
 
-// Server config
+// Controller
 const CommonController = require('../../src/server/app/controllers/common');
 
 // Define data
