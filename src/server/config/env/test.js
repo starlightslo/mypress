@@ -23,25 +23,7 @@ module.exports = () => {
         logConfig: {
             name: 'MyPress',
             env: 'test',
-            streams: [{
-                level: 'trace',
-                stream: process.stdout
-            }, {
-                level: 'debug',
-                path: 'logs/debug.log'
-            }, {
-                level: 'info',
-                path: 'logs/info.log'
-            }, {
-                level: 'warn',
-                path: 'logs/warn.log'
-            }, {
-                level: 'error',
-                path: 'logs/error.log'
-            }, {
-                level: 'fatal',
-                path: 'logs/fatal.log'
-            }]
+            streams: []
         }
     };
 };
