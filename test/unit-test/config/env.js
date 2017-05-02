@@ -19,8 +19,8 @@ const DB_FILENAME = 'db-name';
 const DB_NAME = 'db-name';
 const DB_USER = 'db-user';
 const DB_PASSWORD = 'db-password';
-const DB_POOL_MIN = 1;
-const DB_POOL_MAX = 99;
+const DB_POOL_MIN = '1';
+const DB_POOL_MAX = '99';
 
 describe('Environment - ', () => {
     before((done) => {
