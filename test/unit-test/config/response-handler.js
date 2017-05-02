@@ -56,25 +56,41 @@ describe('Response Handler - ', () => {
 
     it('Error', (done) => {
         responseHandler(400, 'Error', requestWithDevMock, (result) => {
-            done();
+            return {
+                code: (code) => {
+                    done();
+                }
+            };
         });
     });
 
     it('200 with OK', (done) => {
         responseHandler(200, 'OK', requestWithDevMock, (result) => {
-            done();
+            return {
+                code: (code) => {
+                    done();
+                }
+            };
         });
     });
 
     it('200 with Object - Dev', (done) => {
         responseHandler(200, {}, requestWithDevMock, (result) => {
-            done();
+            return {
+                code: (code) => {
+                    done();
+                }
+            };
         });
     });
 
     it('200 with Object - Production', (done) => {
         responseHandler(200, {}, requestWithProductionMock, (result) => {
-            done();
+            return {
+                code: (code) => {
+                    done();
+                }
+            };
         });
     });
 
