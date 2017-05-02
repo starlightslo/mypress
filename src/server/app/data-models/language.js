@@ -19,14 +19,11 @@ class LanugageDataModel {
         if (request.params.lang) {
             this.setLanguage(request.params.lang);
         }
-
-        // Store config
-        this.config = request.server.config;
     }
 
     setLanguage(lang) {
         // Only set language when it is in the supported list.
-        if (this.supportedLanguageList && this.supportedLanguageList.indexOf(lang) > -1) {
+        if (this.supportedLanguageList.indexOf(lang) > -1) {
             this.language = lang;
         }
     }

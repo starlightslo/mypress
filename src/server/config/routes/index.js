@@ -11,7 +11,8 @@ exports.register = (server, options, next) => {
                 method: CommonController.settings,
                 assign: 'settings'
             }],
-            handler: IndexController.index
+            handler: IndexController.index,
+            auth: false
         }
     }, {
         method: 'GET',
@@ -21,7 +22,8 @@ exports.register = (server, options, next) => {
                 method: CommonController.settings,
                 assign: 'settings'
             }],
-            handler: IndexController.index
+            handler: IndexController.index,
+            auth: false
         }
     }]);
 
@@ -29,7 +31,10 @@ exports.register = (server, options, next) => {
     server.route({
         method: 'GET',
         path: '/ping',
-        handler: IndexController.ping
+        config: {
+            handler: IndexController.ping,
+            auth: false
+        }
     });
 
     // Handling static files

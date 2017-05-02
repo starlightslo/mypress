@@ -1,5 +1,5 @@
 const _ = require('lodash/core');
-const LanugageDataModel = require('../data-models/lanugage');
+const LanugageDataModel = require('../data-models/language');
 
 const DEFAULT = 'default';
 const SYSTEM = 'system';

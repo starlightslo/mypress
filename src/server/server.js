@@ -24,11 +24,6 @@ class Server {
             }
         };
 
-        // Adding cache feature
-        if (this.config.cache) {
-            hapiConfig['cache'] = this.config.cache;
-        }
-
         // Create Hapi server
         this.server = new Hapi.Server(hapiConfig);
         this.server.connection({
@@ -53,11 +48,6 @@ class Server {
 
         // Serving static file
         this.server.register(require('inert'), () => { });
-
-        // Setting session
-        if (this.config.session) {
-            this.setSession(this.config.session);
-        }
 
         // Set up hapi db manager if environment not on the production
         if (this.config.env !== Environment.PRODUCTION) {
@@ -188,10 +178,6 @@ class Server {
         }
     }
 
-    addRoute(route) {
-        this.server.route(route);
-    }
-
     addPlugin(plugin, options) {
         this.server.register({
             register: plugin,
@@ -201,10 +187,6 @@ class Server {
                 console.error('Failed to load plugin:', err);
             }
         });
-    }
-
-    setSession(session) {
-        this.server.state('session', session);
     }
 
     setHandler() {
@@ -230,13 +212,11 @@ class Server {
                 // Start server
                 this.server.start((err) => {
                     if (err) {
-                        console.error(err);
                         reject(err);
                     }
                     resolve();
                 });
             }).catch((err) => {
-                console.error(err);
                 reject(err);
             });
         });
