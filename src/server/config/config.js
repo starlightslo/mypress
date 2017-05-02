@@ -1,9 +1,9 @@
 const packageJSON = require('../../../package.json');
 const extend = require('util')._extend;
 
-const dev = require('./env/dev');
-const test = require('./env/test');
-const production = require('./env/production');
+const dev = require('./env/dev')();
+const test = require('./env/test')();
+const production = require('./env/production')();
 
 const DEV_ENV = 'dev';
 const APP = 'MyPress';

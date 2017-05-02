@@ -13,9 +13,9 @@ const expect = Code.expect;
 
 // Define data
 const Environment = require('../../../src/server/app/enums/environment');
-const devEnv = require('../../../src/server/config/env/dev');
-const testEnv = require('../../../src/server/config/env/test');
-const productionEnv = require('../../../src/server/config/env/production');
+const devEnv = require('../../../src/server/config/env/dev')();
+const testEnv = require('../../../src/server/config/env/test')();
+const productionEnv = require('../../../src/server/config/env/production')();
 
 describe('Config - ', () => {
     before((done) => {
@@ -24,25 +24,25 @@ describe('Config - ', () => {
 
     it('Empty', (done) => {
         const config = require('../../../src/server/config/config')(null);
-        expect(Hoek.deepEqual(config, devEnv)).to.be.true();
+        expect(config.env).to.equal(Environment.DEV);
         done();
     });
 
     it('Dev', (done) => {
         const config = require('../../../src/server/config/config')(Environment.DEV);
-        expect(Hoek.deepEqual(config, devEnv)).to.be.true();
+        expect(config.env).to.equal(Environment.DEV);
         done();
     });
 
     it('Test', (done) => {
         const config = require('../../../src/server/config/config')(Environment.TEST);
-        expect(Hoek.deepEqual(config, testEnv)).to.be.true();
+        expect(config.env).to.equal(Environment.TEST);
         done();
     });
 
     it('Production', (done) => {
         const config = require('../../../src/server/config/config')(Environment.PRODUCTION);
-        expect(Hoek.deepEqual(config, productionEnv)).to.be.true();
+        expect(config.env).to.equal(Environment.PRODUCTION);
         done();
     });
 
