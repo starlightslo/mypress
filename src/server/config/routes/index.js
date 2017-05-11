@@ -39,11 +39,11 @@ exports.register = (server, options, next) => {
 
     // Handling static files
     server.route([
-        { method: 'GET', path: '/css/{filename*}', handler: IndexController.cssFile },
-        { method: 'GET', path: '/js/{filename*}', handler: IndexController.jsFile },
-        { method: 'GET', path: '/fonts/{filename*}', handler: IndexController.fontFile },
-        { method: 'GET', path: '/images/{filename*}', handler: IndexController.imageFile },
-        { method: 'GET', path: '/views/{filename*}', handler: IndexController.htmlFile }
+        { method: 'GET', path: '/css/{filename*}', config: { handler: IndexController.cssFile, auth: false } },
+        { method: 'GET', path: '/js/{filename*}', config: { handler: IndexController.jsFile, auth: false } },
+        { method: 'GET', path: '/fonts/{filename*}', config: { handler: IndexController.fontFile, auth: false } },
+        { method: 'GET', path: '/images/{filename*}', config: { handler: IndexController.imageFile, auth: false } },
+        { method: 'GET', path: '/views/{filename*}', config: { handler: IndexController.htmlFile, auth: false } }
     ]);
 };
 
